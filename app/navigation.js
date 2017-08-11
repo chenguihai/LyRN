@@ -6,6 +6,8 @@ import ProfileView from './views/profile';
 
 export const TabNavigatorConfig = {
     tabBarPosition: 'bottom',
+    swipeEnabled: false,
+    
     tabBarOptions: {
         // 是否显示icon
         showIcon: true,
@@ -21,6 +23,7 @@ export const TabNavigatorConfig = {
             margin: 0,
             color: 'rgb(122, 131, 137)'
         },
+        activeTintColor: '#09bb07',
         // 底部标签栏指示器的样式
         indicatorStyle: {
             height: 0
