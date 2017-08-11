@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-export default class HomePage extends Component {
+export default class ProfileView extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>首页</Text>
+                <Text>我的</Text>
             </View>
         );
     }
