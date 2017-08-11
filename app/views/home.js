@@ -51,7 +51,7 @@ export default class HomeView extends Component {
         {...props} 
     />;
 
-    _renderPager = (props) => Platform.OS === 'ios' ? <TabViewPagerScroll {...props} /> : <TabViewPagerPan {...props} />;
+    _renderPager = (props) => Platform.OS === 'ios' ? <TabViewPagerScroll swipeEnabled={false} {...props} /> : <TabViewPagerPan swipeEnabled={false} {...props} />;
 
     _renderScene = SceneMap({
         '1': TrainPage,

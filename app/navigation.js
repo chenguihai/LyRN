@@ -38,20 +38,20 @@ const obj = {
     Home: {
         screen: HomeView,
         title: '首页',
-        activeIcon: require('./images/home_icon.png'),
-        unactiveIcon: require('./images/home_icon.png')
+        unactiveIcon: require('./images/tab_icon/home.png'),
+        activeIcon: require('./images/tab_icon/home_active.png')
     },
     ShopMall: {
         screen: ShopMallView,
         title: '商城',
-        activeIcon: require('./images/shopmall_icon.png'),
-        unactiveIcon: require('./images/shopmall_icon.png')
+        unactiveIcon: require('./images/tab_icon/shopmall.png'),
+        activeIcon: require('./images/tab_icon/shopmall_active.png')
     },
     Profile: {
         screen: ProfileView,
         title: '我的',
-        activeIcon: require('./images/profile_icon.png'),
-        unactiveIcon: require('./images/profile_icon.png')
+        unactiveIcon: require('./images/tab_icon/profile.png'),
+        activeIcon: require('./images/tab_icon/profile_active.png')
     }
 };
 
