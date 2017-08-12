@@ -7,7 +7,6 @@ import ProfileView from './views/profile';
 export const TabNavigatorConfig = {
     tabBarPosition: 'bottom',
     swipeEnabled: false,
-    
     tabBarOptions: {
         // 是否显示icon
         showIcon: true,

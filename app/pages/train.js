@@ -1,9 +1,36 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Animated, Easing, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import _ from '../util';
 
 export default class TrainPage extends Component {
+
+    checkboxMap = {
+        false: require('../images/checkbox.png'),
+        true: require('../images/checkbox_active.png')
+    }
+
+    state = {
+        checkboxStudent: false,
+        checkboxHighRail: false,
+        cityOpacity: new Animated.Value(1)
+    }
+
+    changeCityPosition = () => {
+        Animated.timing(this.state.cityOpacity, {
+            toValue: 0,
+            duration: 2000,
+            easing: Easing.linear
+        }).start();
+    }
+
+    handleCheckbox = (field, val) => {
+        this.setState({
+            [field]: !val            
+        });
+    }
+
     render() {
+        const { checkboxStudent, checkboxHighRail, cityOpacity } = this.state;
         const { width } = Dimensions.get('window');
 
         return (
@@ -24,9 +51,18 @@ export default class TrainPage extends Component {
                     <View style={styles.query_city}>
                         <View style={styles.query_city_item}>
                             <Text style={styles.city_txt}>出发城市</Text>
-                            <Text style={styles.city}>上饶</Text>
+                            <TouchableOpacity>
+                                <Animated.Text style={[
+                                    styles.city, 
+                                    { opacity: cityOpacity }
+                                ]}>
+                                    上饶
+                                </Animated.Text>
+                            </TouchableOpacity>
                         </View>
-                        <Image style={styles.change_city} source={require('../images/change_city.png')} />
+                        <TouchableOpacity onPress={this.changeCityPosition}>
+                            <Image style={styles.change_city} source={require('../images/change_city.png')} />
+                        </TouchableOpacity>
                         <View style={[
                             styles.query_city_item, 
                             { alignItems: 'flex-end' }
@@ -45,27 +81,41 @@ export default class TrainPage extends Component {
                     </View>
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
-                        <View style={styles.checkbox_item}>
-                            <TouchableOpacity onPress={() => alert(1)}>
-                                <View>
-                                    <Text style={styles.checkbox_txt}>学生票</Text>
-                                </View>
-                                <Image style={styles.checkbox_image} source={require('../images/checkbox.png')} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.checkbox_item}>
-                            <TouchableOpacity>
-                                <View>
-                                    <Text style={styles.checkbox_txt}>高铁/动车</Text>
-                                </View>
-                                <View>
-                                    <Image style={styles.checkbox_image} source={require('../images/checkbox_active.png')} />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => this.handleCheckbox('checkboxStudent', checkboxStudent)}
+                        >
+                            <View style={styles.checkbox_item}>
+                                <Text style={styles.checkbox_txt}>学生票</Text>
+                                <Image 
+                                    style={styles.checkbox_image} 
+                                    source={this.checkboxMap[checkboxStudent]} 
+                                />
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => this.handleCheckbox('checkboxHighRail', checkboxHighRail)}
+                        >
+                            <View style={styles.checkbox_item}>
+                                <Text style={styles.checkbox_txt}>高铁/动车</Text>
+                                <Image 
+                                    style={styles.checkbox_image} 
+                                    source={this.checkboxMap[checkboxHighRail]} 
+                                />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                    <View>
-                        <Text>火车票查询</Text>
+                    <View style={{ alignItems: 'center', 
+                        marginTop: 13, 
+                        marginBottom: 13 }}>
+                        <View style={[
+                            styles.search_button, 
+                            { width: width * 0.86, 
+                                position: 'relative' }
+                        ]}>
+                            <Text style={styles.button_txt}>火车票查询</Text>
+                        </View>
                     </View>
                 </View>
             </View>
@@ -149,7 +199,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginRight: 15,
         marginLeft: 15,
-        height: 18,
+        // Height: 18,
         paddingTop: 15,
         paddingBottom: 18
     },
@@ -166,5 +216,19 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
         marginLeft: 3
+    },
+    'search_button': {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 45,
+        // marginTop: 13,
+        // marginBottom: 13,
+        backgroundColor: '#28c54d',
+        borderRadius: 22.5
+    },
+    'button_txt': {
+        color: '#FFF',
+        fontSize: 18,
+        fontWeight: '700'
     }
 });
