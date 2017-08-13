@@ -14,10 +14,11 @@ export default class OperationComponent extends Component {
             <View style={styles.row} key={index}>
                 {
                     rowData.map((item) => {
-                        const { ICImageUrl, ICTitle } = item;
+                        const { ICImageUrl, ICSubScriptUrl, IsSubscriptShow, ICTitle } = item;
 
                         return <View style={styles.row_item} key={ICImageUrl}>
                             <Image style={styles.image} source={{ uri: ICImageUrl }} />
+                            {ICSubScriptUrl !== '' && IsSubscriptShow && <Image style={styles.sub_image} source={{ uri: ICSubScriptUrl }}/>}
                             <Text style={styles.txt}>{ICTitle}</Text>
                         </View>;
                     })
@@ -39,7 +40,8 @@ export default class OperationComponent extends Component {
 
 const styles = StyleSheet.create({
     box: {
-        marginTop: -15
+        marginTop: -15,
+        paddingBottom: 22
     },
     row: {
         flexDirection: 'row'
@@ -52,6 +54,13 @@ const styles = StyleSheet.create({
     image: {
         width: 24,
         height: 24
+    },
+    'sub_image': {
+        position: 'absolute',
+        width: 31,
+        height: 14,
+        right: 3,
+        top: -5
     },
     txt: {
         fontSize: 11,

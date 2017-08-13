@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, Animated, Easing, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { 
+    View, 
+    ScrollView, 
+    Text, 
+    Image, 
+    Animated, 
+    Easing, 
+    StyleSheet, 
+    Dimensions, 
+    TouchableOpacity 
+} from 'react-native';
 import _ from '../util';
 
 import BannerComponent from '../components/home/banner';
 import OperationComponent from '../components/home/operation';
+import PubOperationComponent from '../components/home/pub_operation';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -14,6 +25,7 @@ class TrainPage extends Component {
 
     static propTypes = {
         getBanner: PropTypes.func,
+        getTab: PropTypes.func,
         Home: PropTypes.object
     }
 
@@ -30,6 +42,7 @@ class TrainPage extends Component {
 
     componentWillMount() {
         this.props.getBanner();
+        this.props.getTab();
     }
 
     changeCityPosition = () => {
@@ -49,10 +62,12 @@ class TrainPage extends Component {
     render() {
         const { checkboxStudent, checkboxHighRail, cityOpacity } = this.state;
         const { width } = Dimensions.get('window');
-        const { Icons = { List: [] } } = this.props.Home.data1;
+        const { data1, data2 } = this.props.Home;
+        const { Adverts = { List: [] }, Icons = { List: [] } } = data1;
+        const { OperationIcon = [] } = data2;
 
         return (
-            <View style={styles.wrap}>
+            <ScrollView style={styles.wrap}>
                 <View style={styles.container}>
                     {/* Notice start  */}
                     <Text style={styles.notice} numberOfLines={1}>
@@ -60,10 +75,7 @@ class TrainPage extends Component {
                     </Text>
                     {/* Notice end  */}
                     {/* Banner start  */}
-                    <Image 
-                        resizeMode ="stretch" 
-                        style={{ width,
-                            height: 116 }} source={require('../images/banner.jpg')} /> 
+                    {Adverts.List.length > 0 && <BannerComponent data={Adverts.List} />}
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
                     <View style={styles.query_city}>
@@ -139,7 +151,8 @@ class TrainPage extends Component {
                     {/* 查询按钮结束  */}
                     {Icons.List.length > 0 && <OperationComponent data={Icons.List} />}
                 </View>
-            </View>
+                {OperationIcon.length > 0 && <PubOperationComponent data={OperationIcon} />}
+            </ScrollView>
         );
     }
 }
@@ -147,7 +160,7 @@ class TrainPage extends Component {
 const styles = StyleSheet.create({ 
     wrap: { 
         flex: 1, 
-        backgroundColor: '#f3f4f8'
+        backgroundColor: '#f3f4f8',
     },
     container: {
         backgroundColor: '#FFF',
@@ -259,7 +272,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getBanner: bindActionCreators(HomeAction.getBanner, dispatch)
+    getBanner: bindActionCreators(HomeAction.getBanner, dispatch),
+    getTab: bindActionCreators(HomeAction.getTab, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);

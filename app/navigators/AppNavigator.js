@@ -3,7 +3,6 @@ import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
 
-// import HomeView from '../views/home';
 import ShopMallView from '../views/shopmall';
 import ProfileView from '../views/profile';
 
@@ -14,13 +13,33 @@ import BusPage from '../pages/bus';
 const HomeNavigator = TabNavigator({
     '火车票': { screen: TrainPage },
     '机票': { screen: FlightPage },
-    'BusPage': { screen: BusPage },
+    '汽车/船票': { screen: BusPage },
 }, { 
     tabBarPosition: 'top',
     lazyLoad: false,
     scrollEnabled: true,
     swipeEnabled: false,
-    animationEnabled: false
+    animationEnabled: false,
+    tabBarOptions: {
+        // 是否显示icon
+        showIcon: false,
+        // 底部标签栏样式
+        style: {
+            height: 50,
+            backgroundColor: '#FFF'
+        },
+        tabStyle: {
+        },
+        labelStyle: {
+            fontSize: 14,
+            color: '#666'
+        },
+        activeTintColor: '#09bb07',
+        // 底部标签栏指示器的样式
+        indicatorStyle: {
+            backgroundColor: '#09bb07'
+        }
+    }
 });
 
 const TabNavigatorConfig = {

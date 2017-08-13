@@ -1,56 +1,61 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     StyleSheet,
-    Text,
+    Image,
     View
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
 
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1
-    },
-    slide1: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DD6EB',
-    },
-    slide2: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#97CAE5',
-    },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9',
-    },
-    text: {
-        color: '#fff',
-        fontSize: 30,
-        fontWeight: 'bold',
-    }
-});
+const bannerHeight = 116;
 
 export default class BannerComponent extends Component {
+    static propTypes = {
+        data: PropTypes.array
+    }
     render() {
+        const { data } = this.props;
+        
         return (
-            <Swiper style={styles.wrapper} showsButtons={true}>
-                <View style={styles.slide1}>
-                    <Text style={styles.text}>Hello Swiper</Text>
-                </View>
-                <View style={styles.slide2}>
-                    <Text style={styles.text}>Beautiful</Text>
-                </View>
-                <View style={styles.slide3}>
-                    <Text style={styles.text}>And simple</Text>
-                </View>
+            <Swiper 
+                height={bannerHeight} 
+                autoplay={true} 
+                dotStyle={{
+                    width: 6,
+                    height: 6
+                }}
+                activeDotStyle={{
+                    width: 6,
+                    height: 6
+                }}
+                paginationStyle={styles.paginationStyle}
+                activeDotColor="#f63"
+            >
+                {
+                    data.map((item, index) => {
+                        const { ACImageUrl } = item;
+                        
+                        return (
+                            <View style={styles.slide} key={index}>
+                                <Image resizeMode ="stretch" style={styles.image} source={{ uri: ACImageUrl }} />
+                            </View>
+                        );
+                    })
+                }
             </Swiper>
         );
     }
 }
-    
+
+const styles = StyleSheet.create({
+    slide: {
+        flex: 1
+    },
+    image: {
+        flex: 1
+    },
+    paginationStyle: {
+        bottom: bannerHeight * 0.06
+    }
+});
