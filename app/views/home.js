@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Platform } from 'react-native';
 import { TabViewAnimated, TabViewPagerScroll, TabViewPagerPan, TabBar, SceneMap } from 'react-native-tab-view';
-import TrainPage from '../pages/train';
-import FlightPage from '../pages/flight';
-import BusPage from '../pages/bus';
 
 const themeColor = '#09bb07';
 

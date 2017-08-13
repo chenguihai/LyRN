@@ -1,12 +1,32 @@
 import React from 'react';
 import { Image } from 'react-native';
-import HomeView from './views/home';
-import ShopMallView from './views/shopmall';
-import ProfileView from './views/profile';
+import { connect } from 'react-redux';
+import { TabNavigator } from 'react-navigation';
 
-export const TabNavigatorConfig = {
+// import HomeView from '../views/home';
+import ShopMallView from '../views/shopmall';
+import ProfileView from '../views/profile';
+
+import TrainPage from '../pages/train';
+import FlightPage from '../pages/flight';
+import BusPage from '../pages/bus';
+
+const HomeNavigator = TabNavigator({
+    '火车票': { screen: TrainPage },
+    '机票': { screen: FlightPage },
+    'BusPage': { screen: BusPage },
+}, { 
+    tabBarPosition: 'top',
+    lazyLoad: false,
+    scrollEnabled: true,
+    swipeEnabled: false,
+    animationEnabled: false
+});
+
+const TabNavigatorConfig = {
     tabBarPosition: 'bottom',
     swipeEnabled: false,
+    animationEnabled: false,
     tabBarOptions: {
         // 是否显示icon
         showIcon: true,
@@ -35,22 +55,22 @@ export const TabNavigatorConfig = {
  */
 const obj = {
     Home: {
-        screen: HomeView,
+        screen: HomeNavigator,
         title: '首页',
-        unactiveIcon: require('./images/tab_icon/home.png'),
-        activeIcon: require('./images/tab_icon/home_active.png')
+        unactiveIcon: require('../images/tab_icon/home.png'),
+        activeIcon: require('../images/tab_icon/home_active.png')
     },
     ShopMall: {
         screen: ShopMallView,
         title: '商城',
-        unactiveIcon: require('./images/tab_icon/shopmall.png'),
-        activeIcon: require('./images/tab_icon/shopmall_active.png')
+        unactiveIcon: require('../images/tab_icon/shopmall.png'),
+        activeIcon: require('../images/tab_icon/shopmall_active.png')
     },
     Profile: {
         screen: ProfileView,
         title: '我的',
-        unactiveIcon: require('./images/tab_icon/profile.png'),
-        activeIcon: require('./images/tab_icon/profile_active.png')
+        unactiveIcon: require('../images/tab_icon/profile.png'),
+        activeIcon: require('../images/tab_icon/profile_active.png')
     }
 };
 
@@ -70,7 +90,7 @@ const generateRouteConfig = (route) => ({
     }
 });
 
-export const RouteConfigs = {};
+const RouteConfigs = {};
 
 [
     'Home', 
@@ -79,3 +99,9 @@ export const RouteConfigs = {};
 ].forEach((item) => {
     RouteConfigs[item] = generateRouteConfig(obj[item]);
 });
+
+export const AppNavigator = TabNavigator(RouteConfigs, TabNavigatorConfig);
+
+const AppWithNavigationState = () => <AppNavigator />;
+
+export default connect()(AppWithNavigationState);

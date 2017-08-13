@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, Image, Animated, Easing, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import _ from '../util';
 
-export default class TrainPage extends Component {
+import BannerComponent from '../components/home/banner';
+import OperationComponent from '../components/home/operation';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { HomeAction } from '../actions';
+
+class TrainPage extends Component {
+
+    static propTypes = {
+        getBanner: PropTypes.func,
+        Home: PropTypes.object
+    }
 
     checkboxMap = {
         false: require('../images/checkbox.png'),
@@ -13,6 +26,10 @@ export default class TrainPage extends Component {
         checkboxStudent: false,
         checkboxHighRail: false,
         cityOpacity: new Animated.Value(1)
+    }
+
+    componentWillMount() {
+        this.props.getBanner();
     }
 
     changeCityPosition = () => {
@@ -32,6 +49,7 @@ export default class TrainPage extends Component {
     render() {
         const { checkboxStudent, checkboxHighRail, cityOpacity } = this.state;
         const { width } = Dimensions.get('window');
+        const { Icons = { List: [] } } = this.props.Home.data1;
 
         return (
             <View style={styles.wrap}>
@@ -45,7 +63,7 @@ export default class TrainPage extends Component {
                     <Image 
                         resizeMode ="stretch" 
                         style={{ width,
-                            height: 116 }} source={require('../images/banner.jpg')} />
+                            height: 116 }} source={require('../images/banner.jpg')} /> 
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
                     <View style={styles.query_city}>
@@ -106,6 +124,7 @@ export default class TrainPage extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    {/* 查询按钮开始  */}
                     <View style={{ alignItems: 'center', 
                         marginTop: 13, 
                         marginBottom: 13 }}>
@@ -117,6 +136,8 @@ export default class TrainPage extends Component {
                             <Text style={styles.button_txt}>火车票查询</Text>
                         </View>
                     </View>
+                    {/* 查询按钮结束  */}
+                    {Icons.List.length > 0 && <OperationComponent data={Icons.List} />}
                 </View>
             </View>
         );
@@ -232,3 +253,13 @@ const styles = StyleSheet.create({
         fontWeight: '700'
     }
 });
+
+const mapStateToProps = (state) => ({
+    Home: state.Home,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getBanner: bindActionCreators(HomeAction.getBanner, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);
