@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { connect } from 'react-redux';
-import { TabNavigator } from 'react-navigation';
+import { TabNavigator, StackNavigator } from 'react-navigation';
 
 import ShopMallView from '../views/shopmall';
 import ProfileView from '../views/profile';
@@ -9,6 +9,7 @@ import ProfileView from '../views/profile';
 import TrainPage from '../pages/train';
 import FlightPage from '../pages/flight';
 import BusPage from '../pages/bus';
+import CityPage from '../pages/city';
 
 const HomeNavigator = TabNavigator({
     '火车票': { screen: TrainPage },
@@ -17,6 +18,7 @@ const HomeNavigator = TabNavigator({
 }, { 
     tabBarPosition: 'top',
     lazyLoad: false,
+    lazy: true,
     scrollEnabled: true,
     swipeEnabled: false,
     animationEnabled: false,
@@ -121,6 +123,18 @@ const RouteConfigs = {};
 
 export const AppNavigator = TabNavigator(RouteConfigs, TabNavigatorConfig);
 
-const AppWithNavigationState = () => <AppNavigator />;
+const MainNavigator = StackNavigator({
+    'main': { screen: AppNavigator, 
+        navigationOptions: {
+            header: null
+        } },
+    'city': { screen: CityPage, 
+        navigationOptions: {
+            title: '选择城市'
+        } }
+}, {
+});
+
+const AppWithNavigationState = () => <MainNavigator />;
 
 export default connect()(AppWithNavigationState);

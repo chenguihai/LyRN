@@ -1,1 +1,3 @@
-export { default as HomeAction } from './home';
+export { default as TrainAction } from './train';
+export { default as FlightAction } from './flight';
+export { default as BusAction } from './bus';

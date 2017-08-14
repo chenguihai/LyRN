@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import Home from './home';
+import Train from './train';
+import Flight from './flight';
+import Bus from './bus';
 
 const AppReducer = combineReducers({
-    Home,
+    Train,
+    Flight,
+    Bus
 });
 
 export default AppReducer;

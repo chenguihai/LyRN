@@ -26,9 +26,11 @@ Util.prototype.chunk = function(arr, num) {
     return ret;
 };
 
-Util.prototype.get = async (uri) => {
+Util.prototype.get = async (uri, data) => {
     try {    
-        return await axios.get(_.prefixUri + uri);
+        return await axios.get(_.prefixUri + uri, {
+            params: data
+        });
     } catch (error) {
         if (error.response) {
             // The request was made and the server responded with a status code
