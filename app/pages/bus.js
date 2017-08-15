@@ -49,7 +49,7 @@ class BusPage extends Component {
         const { data2 } = this.props.Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data;
         const { OperationIcon = [] } = data2;
-
+        console.log(this.props);
         return (
             <ScrollView style={styles.wrap}>
                 <View style={styles.container}>

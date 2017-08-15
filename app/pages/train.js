@@ -36,6 +36,23 @@ class TrainPage extends Component {
         this.props.getBanner();
         this.props.getNotice();
         this.props.getTab();
+        console.log('组件将要挂载');
+    }
+
+    componentDidMount() {
+        console.log('组件已经挂载');
+    }
+
+    componentWillUpdate() {
+        console.log('组件将要更新');
+    }
+
+    componentDidUpdate() {
+        console.log('组件已经更新');
+    }
+
+    componentWillUnmount() {
+        console.log('组件将要卸载');
     }
 
     handleCheckbox = (field, val) => {
