@@ -124,14 +124,13 @@ const RouteConfigs = {};
 export const AppNavigator = TabNavigator(RouteConfigs, TabNavigatorConfig);
 
 const MainNavigator = StackNavigator({
-    
-    'main': { screen: AppNavigator, 
-        navigationOptions: {
-            header: null
-        } },
     'city': { screen: CityPage, 
         navigationOptions: {
             title: '选择城市'
+        } },
+    'main': { screen: AppNavigator, 
+        navigationOptions: {
+            header: null
         } },
 }, {
 });

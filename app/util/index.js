@@ -2,6 +2,7 @@
 
 import { StyleSheet, Platform } from 'react-native';
 import axios from 'axios';
+import lodash from './lodash.custom.min.js';
 
 const Util = () => {};
 
@@ -11,6 +12,8 @@ Util.prototype = {
     hairlineWidth: StyleSheet.hairlineWidth,
     prefixUri: 'http://wx.17u.cn/pubapi/'
 };
+
+Util.prototype.debounce = lodash.debounce;
 
 Util.prototype.chunk = function(arr, num) {
     num = Number(num) || 1;
