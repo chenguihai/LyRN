@@ -10,6 +10,7 @@ import TrainPage from '../pages/train';
 import FlightPage from '../pages/flight';
 import BusPage from '../pages/bus';
 import CityPage from '../pages/city';
+import CalendarPage from '../pages/calendar';
 
 const HomeNavigator = TabNavigator({
     '火车票': { screen: TrainPage },
@@ -124,7 +125,12 @@ const RouteConfigs = {};
 export const AppNavigator = TabNavigator(RouteConfigs, TabNavigatorConfig);
 
 const MainNavigator = StackNavigator({
-    
+    'calendar': {
+        screen: CalendarPage,
+        navigationOptions: {
+            title: '选择日期'
+        }
+    },
     'main': { screen: AppNavigator, 
         navigationOptions: {
             header: null
