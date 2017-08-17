@@ -18,25 +18,57 @@ export default class CityListBlock extends Component {
         data: PropTypes.array
     }
 
+    _renderItem(item, index) {
+        return (
+            <View key={index} style={[
+                styles.item, 
+                { 
+                    width: this.innerWidth * 0.3, 
+                    marginRight: this.innerWidth * .1 / 2 // eslint-disable-line
+                }
+            ]}>
+                <Text style={styles.item_txt}>{item.Name}</Text>
+            </View>
+        );
+    }
+
+    _renderRow(data) {
+        return data.map((rowData, rowIndex) => 
+            <View 
+                key={rowIndex} 
+                style={[
+                    styles.row,
+                    { 
+                        marginTop: rowIndex !== 0 ? this.innerWidth * .1 / 2 : 0 // eslint-disable-line
+                    }
+                ]}
+            >
+                {
+                    rowData.map(this._renderItem.bind(this)) // eslint-disable-line no-unused-vars
+                }
+            </View>
+        );
+    }
+
     render() {
         const { width } = Dimensions.get('window');
         const { data } = this.props;
-        const innerWidth = width - 30;
 
+        this.gutter = width * 0.1 / 2;
+        this.innerWidth = width * 0.9;
         
         return (
-            <View style={styles.list_block}>
-                <View>
-                    {
-                        data.map((item, key) => 
-                            <View key={key} style={[
-                                styles.item, 
-                                { width: innerWidth * 0.3 }
-                            ]}>
-                                <Text>{item.Name}</Text>
-                            </View>
-                        )
-                    }
+            <View style={[
+                styles.list_block,
+                {
+                    paddingTop: this.gutter,
+                    paddingBottom: this.gutter,
+                    paddingLeft: this.gutter,
+                    paddingRight: this.gutter
+                }
+            ]}>
+                <View style={styles.list}>
+                    {this._renderRow(_.chunk(data, 3))}
                 </View>
             </View>
         );
@@ -45,14 +77,13 @@ export default class CityListBlock extends Component {
 
 const styles = StyleSheet.create({
     'list_block': {
-        backgroundColor: '#FFF',
-        paddingTop: 6,
-        paddingBottom: 6,
-        paddingLeft: 15,
-        paddingRight: 15
+        backgroundColor: '#FFF'
     },
     list: {
-
+         
+    },
+    row: {
+        flexDirection: 'row',
     },
     item: {
         height: 35,
@@ -61,5 +92,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 5
+    },
+    'item_txt': {
+        fontSize: 14,
+        color: '#2d2d2d'
     }
 });

@@ -1,32 +1,49 @@
 /* eslint-disable no-debugger */
 import React, { Component } from 'react';
 import { 
-    View,
+    ScrollView,
     StyleSheet,
 } from 'react-native';
 
 import SearchComponent from '../components/city/search';
-import CityListTitle from '../components/city/city_list_title';
+import CityLocationComponent from '../components/city/city_list_location'; // 当前城市
+import CityListTitle from '../components/city/city_list_title'; 
 import CityListBlock from '../components/city/city_list_block';
+import CityLetterComponent from '../components/city/city_list_letter';
+import CityList from '../components/city/city_list';
 
 export default class CityPage extends Component {
 
     render() {
-        const history = [
-            { 'ID': null, 
-                'Name': '北京',
-                'QPY': 'beijing', 
-                'JPY': 'bj', 
-                'CityName': null }
-        ];
+        const city = { 'ID': null, 
+            'Name': '北京',
+            'QPY': 'beijing', 
+            'JPY': 'bj', 
+            'CityName': null };
+        const history = [];
+        const hot = [];
 
+        for (let i = 0; i < 1; i++) {
+            history.push(city);
+        }
+
+        for (let i = 0; i < 10; i++) {
+            hot.push(city);
+        }
         
         return (
-            <View style={styles.wrap}>
+            <ScrollView style={styles.wrap}>
                 <SearchComponent />
+                <CityListTitle title="当前城市" />
+                <CityLocationComponent data={[{ Name: '北京' }]} />
                 <CityListTitle title="历史选择" />
                 <CityListBlock data={history} />
-            </View>
+                <CityListTitle title="热门" />
+                <CityListBlock data={hot} />
+                <CityListTitle title="更多城市" />
+                <CityLetterComponent />
+                <CityList />
+            </ScrollView>
         );
     }
 }
@@ -34,7 +51,6 @@ export default class CityPage extends Component {
 const styles = StyleSheet.create({ 
     wrap: { 
         flex: 1, 
-        // backgroundColor: '#f3f4f8',
-        backgroundColor: 'black'
+        backgroundColor: '#f3f4f8',
     },
 });

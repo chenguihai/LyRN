@@ -67,9 +67,8 @@ export default class SearchComponent extends Component {
 
         if (hasContent) {
             this.cleanInput();
-        } else {
-            this._searchInput.blur();
-        }
+        } 
+        this._searchInput.blur();
     }
 
     render() {
