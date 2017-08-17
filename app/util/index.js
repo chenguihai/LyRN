@@ -10,7 +10,7 @@ Util.prototype = {
     constructor: Util,
     os: Platform.OS,
     hairlineWidth: StyleSheet.hairlineWidth,
-    prefixUri: 'http://wx.17u.cn/pubapi/'
+    prefixUri: 'http://wx.17u.cn/'
 };
 
 Util.prototype.debounce = lodash.debounce;

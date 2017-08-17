@@ -5,7 +5,7 @@ const GET_NOTICE = { type: Types.GET_TRAIN_NOTICE };
 const GET_TAB = { type: Types.GET_TAB };
 
 const getBanner = () => (dispatch) => {
-    _.get('home/Commercial.ashx')
+    _.get('pubapi/home/Commercial.ashx')
         .then(({ data }) => {
             dispatch(
                 { ...GET_BANNER,
@@ -15,7 +15,7 @@ const getBanner = () => (dispatch) => {
 };
 
 const getNotice = () => (dispatch) => {
-    _.get('home/notice.ashx?cardId=&cardCode=&openId=&projectId=10&type=')
+    _.get('pubapi/home/notice.ashx?cardId=&cardCode=&openId=&projectId=10&type=')
         .then(({ data }) => {
             dispatch({ 
                 ...GET_NOTICE, 
@@ -25,7 +25,7 @@ const getNotice = () => (dispatch) => {
 };
 
 const getTab = () => (dispatch) => {
-    _.get('home/tabicon.ashx')
+    _.get('pubapi/home/tabicon.ashx')
         .then(({ data }) => {
             dispatch(
                 { ...GET_TAB,
