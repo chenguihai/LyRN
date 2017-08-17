@@ -53,7 +53,7 @@ export default class CalenDarPage extends Component {
             const innerStyle = date === this.dayOfMonth ? styles.active_background : {};
             const textStyle = date === this.dayOfMonth ? styles.active_txt : {};
             const disableTxtStyle = date < this.dayOfMonth ? styles.disable_txt : {};
-
+            
             return (
                 <View style={[
                     styles.each_day,
@@ -84,6 +84,9 @@ export default class CalenDarPage extends Component {
         return (
             <View>
                 <CalendarHeaderPage />
+                <View style={styles.header}>
+                    <Text style={styles.header_txt}>{this.year}年{this.month + 1}月</Text>
+                </View>
                 <View style={[
                     styles.each_month,
                     {
@@ -105,6 +108,16 @@ export default class CalenDarPage extends Component {
 }
 
 const styles = StyleSheet.create({
+    'header': {
+        height: 30,
+        backgroundColor: '#f2f5f7',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    'header_txt': {
+        fontSize: 14,
+        color: '#000'
+    },
     'each_month': {
         backgroundColor: '#FFF'
     },
@@ -112,7 +125,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     'each_day': {
-        height: 35
+        height: 35,
+        alignItems: 'center'
     },
     'each_day_inner': {
         width: 28,
