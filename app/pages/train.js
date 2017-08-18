@@ -36,23 +36,6 @@ class TrainPage extends Component {
         this.props.getBanner();
         this.props.getNotice();
         this.props.getTab();
-        console.log('组件将要挂载');
-    }
-
-    componentDidMount() {
-        console.log('组件已经挂载');
-    }
-
-    componentWillUpdate() {
-        console.log('组件将要更新');
-    }
-
-    componentDidUpdate() {
-        console.log('组件已经更新');
-    }
-
-    componentWillUnmount() {
-        console.log('组件将要卸载');
     }
 
     handleCheckbox = (field, val) => {
@@ -80,7 +63,7 @@ class TrainPage extends Component {
                     <QueryCityComponent navigation={navigation} fromCity="上饶" toCity="上海" />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
-                    <QueryDateComponent date="8月15日" description="明日出发" />
+                    <QueryDateComponent navigation={navigation} />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
                         <CheckboxComponent title="学生票" />

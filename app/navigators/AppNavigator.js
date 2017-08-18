@@ -125,12 +125,7 @@ const RouteConfigs = {};
 export const AppNavigator = TabNavigator(RouteConfigs, TabNavigatorConfig);
 
 const MainNavigator = StackNavigator({
-    'calendar': {
-        screen: CalendarPage,
-        navigationOptions: {
-            title: '选择日期'
-        }
-    },
+    
     'main': { screen: AppNavigator, 
         navigationOptions: {
             header: null
@@ -139,6 +134,12 @@ const MainNavigator = StackNavigator({
         navigationOptions: {
             title: '选择城市'
         } },
+    'calendar': {
+        screen: CalendarPage,
+        navigationOptions: {
+            title: '选择日期'
+        }
+    },
 }, {
 });
 

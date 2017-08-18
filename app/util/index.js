@@ -15,6 +15,10 @@ Util.prototype = {
 
 Util.prototype.debounce = lodash.debounce;
 
+Util.prototype.isNull = function(value) {
+    return value === null;
+};
+
 Util.prototype.chunk = function(arr, num) {
     num = Number(num) || 1;
     const ret = [];

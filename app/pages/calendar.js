@@ -1,147 +1,121 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { 
-    ScrollView,
-    View,
-    Text,
-    StyleSheet,
-    Dimensions
+    View
 } from 'react-native';
 import CalendarHeaderPage from './calendar_header';
+import CalendarMonthComponent from '../components/calendar/calendar_month';
 
 export default class CalenDarPage extends Component {
 
-    today = new Date(); // 获取当前时间的Date对象
-    year = this.today.getFullYear(); // 获取Date对象中的年份
-    month = this.today.getMonth(); // 获取Date对象中的月份
-    dayOfMonth = this.today.getDate(); // 获取Date对象中一月中的某一天
-    firstDay = new Date(this.year, this.month, 1).getDay(); // 当月的第一天是礼拜几
-    daysNum = this.getDayNum(this.year)[this.month]; // 这个月的总天数
-    lineNumber = Math.ceil((this.daysNum + this.firstDay) / 7); // 总行数
+    static propTypes = {
+        startDate: PropTypes.oneOfType([
+            PropTypes.number, 
+            PropTypes.string,
+            PropTypes.date
+        ]),
+        endDate: PropTypes.oneOfType([
+            PropTypes.number, 
+            PropTypes.string,
+            PropTypes.date
+        ])
+    }
 
-    getDayNum(year) {
-        const days_per_month = [ // eslint-disable-line
-            31,
-            28, 
-            31, 
-            30, 
-            31, 
-            30, 
-            31, 
-            31,
-            30,
-            31,
-            30,
-            31
-        ];
-        if (year % 4 === 0 && year % 400 !== 0 || year % 400 === 0) { // eslint-disable-line
-            days_per_month[1] = 29; // eslint-disable-line
+    static defaultProps = {
+        startDate: new Date(),
+        endDate: ''
+    }
+
+    startDate = '';
+    endDate = '';
+    month = '';
+    year = '';
+    calendar = [];
+
+    init() {
+        const { startDate, endDate } = this.props;
+
+        this.startDate = startDate;
+        this.endDate = endDate !== '' ? endDate : new Date(Number(this.startDate) + 10368e6); // eslint-disable-line
+        this.year = this.startDate.getFullYear();
+        this.month = this.startDate.getMonth() + 1;
+        // debugger; // eslint-disable-line
+        this.createCalendar();
+    }
+
+    createCalendar() { // eslint-disable-line
+        const endYear = this.endDate.getFullYear(); // 获取结束年份
+        const endMonth = this.endDate.getMonth() + 1; // 获取结束月份
+        const monthNum = (endYear - this.year) * 12 + endMonth - this.month; // eslint-disable-line
+        for (let i = 0; i <= monthNum; i++) {
+            // debugger; // eslint-disable-line
+            const idx = this.month + i;
+            const month = idx - Math.floor((idx - 1) / 12) * 12; // eslint-disable-line
+            const year = Math.floor((idx - 1) / 12) + this.year;
+            const monthObj = {
+                year: '',
+                month: '',
+                dayList: []
+            };
+
+            monthObj.year = year;
+            monthObj.month = month;
+            monthObj.dayList = this.createDayList(year, month);
+            this.calendar.push(monthObj);
         }
-
-        return days_per_month; // eslint-disable-line
     }
 
-    componentDidMount() {
-        console.log(new Array(this.lineNumber));
+    /**
+     * 获取当月的日历数组
+     * @param {number} year 
+     * @param {number} month 
+     * @return {array} 
+     */
+
+    createDayList(year, month) {
+        const dayList = [];
+        const dayNumofMonth = this.getDayNum(year, month); // 获取当前月份的总天数
+        const weekofFirstDay = new Date(year, month - 1, 1).getDay(); // 获取当前月的第一天是星期几
+
+        for (let i = 0; i < weekofFirstDay; i++) {
+            dayList.push(null);
+        }
+        for (let i = 1; i <= dayNumofMonth; i++) {
+            dayList.push(i);
+        }
+        
+        return dayList;
+    }   
+
+    /**
+     * 获取当月的总天数
+     * @param {number} year 要获取总天数所在的年份
+     * @param {number} month 要获取总天数所在的月份
+     * @return {number} 返回当月的总天数
+     */
+
+    getDayNum(year, month) {
+        let dayOfMonth = [31,28,31,30,31,30,31,31,30,31,30,31]; // eslint-disable-line
+        // 判断是否为闰年,闰年2月份有29天
+        if(year % 4 === 0 && year % 100 !== 0 || year % 400 === 0){  // eslint-disable-line
+            dayOfMonth[1] = 29;
+        }
+        
+        return dayOfMonth[month - 1];
     }
 
-    _renderRow(rowIndex) {
-        const columnArr = new Array(7).fill('');
-
-        return columnArr.map((item, index) => {
-            const idx = index + rowIndex * 7; // eslint-disable-line
-            const date = idx - this.firstDay + 1; // eslint-disable-line
-            const innerStyle = date === this.dayOfMonth ? styles.active_background : {};
-            const textStyle = date === this.dayOfMonth ? styles.active_txt : {};
-            const disableTxtStyle = date < this.dayOfMonth ? styles.disable_txt : {};
-            
-            return (
-                <View style={[
-                    styles.each_day,
-                    { width: this.innerWidth / 7 }
-                ]} key={idx}>
-                    <View style={[
-                        styles.each_day_inner,
-                        innerStyle
-                    ]}>
-                        <Text style={[
-                            textStyle, 
-                            disableTxtStyle
-                        ]}>{date <= 0 || date > this.daysNum ? '' : date}</Text> 
-                    </View>
-                    <Text></Text>
-                </View>
-            );
-        });
+    handleSelect = (time) => {
+        alert(time);
     }
 
     render() {
-        const rowArr = new Array(this.lineNumber).fill('');
-        const { width } = Dimensions.get('window');
-
-        this.innerWidth = width * 0.9;
-        this.gutter = width * 0.05;
+        this.init();
         
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 <CalendarHeaderPage />
-                <View style={styles.header}>
-                    <Text style={styles.header_txt}>{this.year}年{this.month + 1}月</Text>
-                </View>
-                <View style={[
-                    styles.each_month,
-                    {
-                        paddingLeft: this.gutter,
-                        paddingRight: this.gutter
-                    }
-                ]}>
-                    {
-                        rowArr.map((item, index) => 
-                            <View style={styles.each_week} key={index}>
-                                {this._renderRow(index)}
-                            </View>
-                        )
-                    }
-                </View>
+                <CalendarMonthComponent onSelect={this.handleSelect} calendarData={this.calendar} />
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    'header': {
-        height: 30,
-        backgroundColor: '#f2f5f7',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    'header_txt': {
-        fontSize: 14,
-        color: '#000'
-    },
-    'each_month': {
-        backgroundColor: '#FFF'
-    },
-    'each_week': {
-        flexDirection: 'row'
-    },
-    'each_day': {
-        height: 35,
-        alignItems: 'center'
-    },
-    'each_day_inner': {
-        width: 28,
-        height: 28,
-        borderRadius: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    'active_background': {
-        backgroundColor: '#09bb07'
-    },
-    'active_txt': {
-        color: '#FFF'
-    },
-    'disable_txt': {
-        color: '#ccc'
-    },
-});

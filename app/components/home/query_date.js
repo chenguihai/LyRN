@@ -3,26 +3,44 @@ import PropTypes from 'prop-types';
 import {
     StyleSheet,
     View,
-    Text
+    Text,
+    TouchableOpacity
 } from 'react-native';
 
-export default class QueryDateComponent extends Component {
+import { connect } from 'react-redux';
+
+class QueryDateComponent extends Component {
 
     static propTypes = {
-        date: PropTypes.string,
-        description: PropTypes.string
+        tripTime: PropTypes.number,
+        tripTimeDes: PropTypes.string,
+        navigation: PropTypes.object
+    }
+
+    covertDate(time) {
+        const date = new Date(time);
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+
+        return `${month}月${day}日`;
+    }
+
+    handlePress = () => {
+        const { navigation } = this.props;
+
+        navigation.navigate('calendar');
     }
 
     render() {
-        const { date, description } = this.props;
+        const { tripTime, tripTimeDes } = this.props;
         
         return (
-            <View style={styles.query_date}>
+            <TouchableOpacity onPress={this.handlePress} style={styles.query_date}>
                 <View style={styles.query_date_inner}>
-                    <Text style={styles.date}>{date}</Text>
-                    <Text style={styles.date_txt}>{description}</Text>
+                    <Text style={styles.date}>{this.covertDate(tripTime)}</Text>
+                    <Text style={styles.date_txt}>{tripTimeDes}</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     }
 }
@@ -52,3 +70,10 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
 });
+
+const mapStateToProps = (state) => ({
+    tripTime: state.Date.tripTime,
+    tripTimeDes: state.Date.tripTimeDes
+});
+
+export default connect(mapStateToProps)(QueryDateComponent);
