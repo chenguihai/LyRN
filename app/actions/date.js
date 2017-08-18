@@ -2,7 +2,12 @@ import * as Types from '../constants/date';
 
 const SELECT_DATE = { type: Types.SELECT_DATE };
 
-export const selectDate = () => (dispatch) => {
-    
+const selectDate = (time) => (dispatch) => {
+    dispatch({ ...SELECT_DATE, 
+        tripTime: time });
+};
+
+export default {
+    selectDate
 };
 

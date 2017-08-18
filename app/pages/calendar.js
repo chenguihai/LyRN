@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { 
-    View
+    View,
+    InteractionManager
 } from 'react-native';
 import CalendarHeaderPage from './calendar_header';
 import CalendarMonthComponent from '../components/calendar/calendar_month';
 
-export default class CalenDarPage extends Component {
+import { NavigationActions } from 'react-navigation';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { DateAction } from '../actions';
+
+class CalenDarPage extends Component {
 
     static propTypes = {
         startDate: PropTypes.oneOfType([
@@ -18,12 +25,18 @@ export default class CalenDarPage extends Component {
             PropTypes.number, 
             PropTypes.string,
             PropTypes.date
-        ])
+        ]),
+        selectDate: PropTypes.func,
+        navigation: PropTypes.object
     }
 
     static defaultProps = {
         startDate: new Date(),
         endDate: ''
+    }
+
+    state = {
+        calendar: []
     }
 
     startDate = '';
@@ -32,11 +45,17 @@ export default class CalenDarPage extends Component {
     year = '';
     calendar = [];
 
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.init();
+        });
+    }
+
     init() {
         const { startDate, endDate } = this.props;
 
         this.startDate = startDate;
-        this.endDate = endDate !== '' ? endDate : new Date(Number(this.startDate) + 10368e6); // eslint-disable-line
+        this.endDate = endDate !== '' ? endDate : new Date(Number(this.startDate) + 2592e6); // eslint-disable-line
         this.year = this.startDate.getFullYear();
         this.month = this.startDate.getMonth() + 1;
         // debugger; // eslint-disable-line
@@ -63,6 +82,9 @@ export default class CalenDarPage extends Component {
             monthObj.dayList = this.createDayList(year, month);
             this.calendar.push(monthObj);
         }
+        this.setState({
+            calendar: this.calendar
+        });
     }
 
     /**
@@ -105,17 +127,34 @@ export default class CalenDarPage extends Component {
     }
 
     handleSelect = (time) => {
-        alert(time);
+        const { navigation, selectDate } = this.props;
+        const { navigate, state } = navigation;
+        const { params } = state;
+
+        navigate({
+            routeName: 'Main',
+            action: NavigationActions.navigate({ routeName: 'Home' })
+        });
+        selectDate(time);
     }
 
     render() {
-        this.init();
+        const { calendar } = this.state;
         
         return (
             <View style={{ flex: 1 }}>
                 <CalendarHeaderPage />
-                <CalendarMonthComponent onSelect={this.handleSelect} calendarData={this.calendar} />
+                <CalendarMonthComponent onSelect={this.handleSelect} calendarData={calendar} />
             </View>
         );
     }
 }
+
+const mapStateToProps = () => ({
+});
+
+const mapActionToProps = (dispatch) => ({
+    selectDate: bindActionCreators(DateAction.selectDate, dispatch)
+});
+
+export default connect(mapStateToProps, mapActionToProps)(CalenDarPage);

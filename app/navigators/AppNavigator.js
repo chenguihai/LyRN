@@ -140,6 +140,7 @@ const MainNavigator = StackNavigator({
             title: '选择日期'
         }
     },
+    
 }, {
 });
 

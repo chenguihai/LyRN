@@ -27,8 +27,9 @@ class QueryDateComponent extends Component {
 
     handlePress = () => {
         const { navigation } = this.props;
+        const { state, navigate } = navigation;
 
-        navigation.navigate('calendar');
+        navigate('calendar', { key: state.key });
     }
 
     render() {

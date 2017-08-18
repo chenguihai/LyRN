@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
 import _ from '../../util';
 
@@ -17,6 +18,18 @@ class CityLetterComponent extends Component {
 
     static propTypes = {
         getCityList: PropTypes.func
+    }
+
+    state = {
+        letterList: []
+    }
+
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            this.setState({
+                letterList: _.chunk(this._generateAllLetter(), 6)
+            });
+        });
     }
 
     _generateAllLetter() {
@@ -66,7 +79,7 @@ class CityLetterComponent extends Component {
     }
 
     render() {
-        const letterList = _.chunk(this._generateAllLetter(), 6);
+        const { letterList } = this.state;
         const { width } = Dimensions.get('window');
 
         this.gutter = width * 0.1 / 2;
