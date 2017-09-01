@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
     ScrollView,
     StyleSheet,
+    InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -13,14 +14,26 @@ import CityListBlock from '../components/city/city_list_block';
 import CityLetterComponent from '../components/city/city_letter';
 import CitySingleList from '../components/city/city_single_list.js';
 
-export default class CityPage extends Component {
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { CityAction } from '../actions';
+
+class CityPage extends Component {
 
     static propTypes = {
-        hotcities: PropTypes.array
+        hotcities: PropTypes.array,
+        getHotCities: PropTypes.func
     }
 
     static defaultProps = {
         hotcities: []
+    }
+
+    componentWillMount() {
+        InteractionManager.runAfterInteractions(() => {
+            // 获取热门城市
+            this.props.getHotCities();
+        });
     }
 
     render() {
@@ -67,3 +80,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#f3f4f8',
     },
 });
+
+const mapStateToProps = (state) => ({
+    hotcities: state.City.hotcities
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    getHotCities: bindActionCreators(CityAction.getHotCities, dispatch)
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CityPage);

@@ -20,6 +20,9 @@ class CityLetterComponent extends Component {
         getCityList: PropTypes.func
     }
 
+    blockList = [];
+    selectedBlockIndex = '';
+
     state = {
         letterList: []
     }
@@ -42,10 +45,13 @@ class CityLetterComponent extends Component {
         return letterList;
     }
 
-    _renderItem(rowData, blockData, index) {
+    _renderBlock(rowData, rowIndex, blockData, index) {
 
         return (
             <TouchableOpacity
+                ref={(ref) => {
+                    this.blockList[`${rowIndex}_${index}`] = ref;
+                }}
                 style={[
                     styles.item,
                     {
@@ -56,6 +62,20 @@ class CityLetterComponent extends Component {
                 ]}
                 key={index}
                 onPress={() => {
+                    if (this.selectedBlockIndex !== '') {
+                        this.blockList[this.selectedBlockIndex].setNativeProps({
+                            style: {
+                                backgroundColor: '#FFF'
+                            }
+                        });
+                    }
+                    this.blockList[`${rowIndex}_${index}`].setNativeProps({
+                        style: {
+                            backgroundColor: '#dedede'
+                        }
+                    });
+                    this.selectedBlockIndex = `${rowIndex}_${index}`;
+
                     this.props.getCityList(blockData);
                 }}
             >
@@ -74,7 +94,7 @@ class CityLetterComponent extends Component {
                 }
             ]} key={rowIndex}>
                 {
-                    rowData.map(this._renderItem.bind(this, rowData))
+                    rowData.map(this._renderBlock.bind(this, rowData, rowIndex))
                 }
             </View>
         );
@@ -127,8 +147,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state) => ({
-    City: state.City
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
