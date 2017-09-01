@@ -4,6 +4,7 @@ import {
     View,
     Text,
     StyleSheet,
+    TouchableOpacity,
     Dimensions
 } from 'react-native';
 import _ from '../../util';
@@ -15,7 +16,14 @@ export default class CityListBlock extends Component {
     }
 
     static propTypes = {
-        data: PropTypes.array
+        data: PropTypes.array,
+        handlePress: PropTypes.func
+    }
+
+    handlePress = (data) => {
+        const { handlePress } = this.props;
+
+        handlePress && handlePress(data); // eslint-disable-line
     }
 
     /**
@@ -26,15 +34,19 @@ export default class CityListBlock extends Component {
 
     _renderBlock = (data, index) => {
         return (
-            <View key={index} style={[
-                styles.block,
-                {
-                    width: this.innerWidth * 0.3,
-                    marginRight: this.innerWidth * .1 / 2 // eslint-disable-line
-                }
-            ]}>
+            <TouchableOpacity
+                key={index}
+                style={[
+                    styles.block,
+                    {
+                        width: this.innerWidth * 0.3,
+                        marginRight: this.innerWidth * .1 / 2 // eslint-disable-line
+                    }
+                ]}
+                onPress={() => { this.handlePress(data) }}
+            >
                 <Text style={styles.block_txt}>{data.Name}</Text>
-            </View>
+            </TouchableOpacity>
         );
     }
 

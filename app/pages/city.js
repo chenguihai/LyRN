@@ -16,13 +16,15 @@ import CitySingleList from '../components/city/city_single_list.js';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { CityAction } from '../actions';
+import { CityAction, TrainAction } from '../actions';
 
 class CityPage extends Component {
 
     static propTypes = {
+        navigation: PropTypes.object,
         hotcities: PropTypes.array,
-        getHotCities: PropTypes.func
+        getHotCities: PropTypes.func,
+        selectCity: PropTypes.func
     }
 
     static defaultProps = {
@@ -36,7 +38,17 @@ class CityPage extends Component {
         });
     }
 
+    selectCity = (data) => {
+        const { state, goBack } = this.props.navigation;
+        const { routeName, key } = state.params;
+
+        this.props.selectCity(`${routeName}${key}`, data);
+
+        goBack();
+    }
+
     render() {
+
         const city = {
             'ID': null,
             'Name': '北京',
@@ -63,12 +75,12 @@ class CityPage extends Component {
                 <CityListBlock data={history} />
 
                 {hotcities.length === 0 ? null : <CityListTitle title="热门" />}
-                {hotcities.length === 0 ? null : <CityListBlock data={hotcities} />}
+                {hotcities.length === 0 ? null : <CityListBlock handlePress={this.selectCity} data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent />
 
-                <CitySingleList />
+                <CitySingleList handlePress={this.selectCity} />
             </ScrollView>
         );
     }
@@ -86,7 +98,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getHotCities: bindActionCreators(CityAction.getHotCities, dispatch)
+    getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
+    selectCity: bindActionCreators(CityAction.selectCity, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityPage);

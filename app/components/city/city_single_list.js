@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -11,15 +12,26 @@ import { connect } from 'react-redux';
 class CityListComponent extends Component {
 
     static propTypes = {
-        cityList: PropTypes.array
+        cityList: PropTypes.array,
+        handlePress: PropTypes.func
+    }
+
+    handlePress = (data) => {
+        const { handlePress } = this.props;
+
+        handlePress && handlePress(data); // eslint-disable-line
     }
 
     _renderRow(data) {
         return (
             data.map((item, index) =>
-                <View style={styles.row} key={index}>
+                <TouchableOpacity
+                    style={styles.row}
+                    key={index}
+                    onPress={() => { this.handlePress(item) }}
+                >
                     <Text style={styles.txt}>{item.Name}</Text>
-                </View>
+                </TouchableOpacity>
             )
         );
     }

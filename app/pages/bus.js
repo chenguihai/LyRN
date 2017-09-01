@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { 
-    View, 
-    ScrollView, 
-    Text, 
+import {
+    View,
+    ScrollView,
+    Text,
     StyleSheet
 } from 'react-native';
 import _ from '../util';
@@ -26,7 +26,10 @@ class BusPage extends Component {
         getBanner: PropTypes.func,
         getNotice: PropTypes.func,
         Train: PropTypes.object,
-        Bus: PropTypes.object
+        Bus: PropTypes.object,
+        navigation: PropTypes.object,
+        BusfromCity: PropTypes.object,
+        BustoCity: PropTypes.object
     }
 
     state = {
@@ -40,16 +43,26 @@ class BusPage extends Component {
 
     handleCheckbox = (field, val) => {
         this.setState({
-            [field]: !val            
+            [field]: !val
+        });
+    }
+
+    selectCity(key) {
+        const { navigation } = this.props;
+
+        navigation.navigate('City', {
+            key,
+            routeName: navigation.state.routeName
         });
     }
 
     render() {
-        const { data, notice } = this.props.Bus;
-        const { data2 } = this.props.Train;
+        const { Bus, Train, BusfromCity, BustoCity } = this.props;
+        const { data, notice } = Bus;
+        const { data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data;
         const { OperationIcon = [] } = data2;
-        console.log(this.props);
+
         return (
             <ScrollView style={styles.wrap}>
                 <View style={styles.container}>
@@ -60,7 +73,12 @@ class BusPage extends Component {
                     {Adverts.List.length > 0 && <BannerComponent data={Adverts.List} />}
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
-                    <QueryCityComponent fromCity="上饶" toCity="上海" />
+                    <QueryCityComponent
+                        selectFromCity={() => this.selectCity('fromCity')}
+                        selectToCity={() => this.selectCity('toCity')}
+                        fromCity={BusfromCity.Name}
+                        toCity={BustoCity.Name}
+                    />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent date="8月15日" description="明日出发" />
@@ -76,9 +94,9 @@ class BusPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({ 
-    wrap: { 
-        flex: 1, 
+const styles = StyleSheet.create({
+    wrap: {
+        flex: 1,
         backgroundColor: '#f3f4f8',
     },
     container: {
@@ -88,7 +106,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     Bus: state.Bus,
-    Train: state.Train
+    Train: state.Train,
+    BusfromCity: state.City.BusfromCity,
+    BustoCity: state.City.BustoCity
 });
 
 const mapDispatchToProps = (dispatch) => ({

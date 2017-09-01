@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { 
-    View, 
-    ScrollView, 
-    Text, 
-    StyleSheet, 
+import {
+    View,
+    ScrollView,
+    Text,
+    StyleSheet,
     InteractionManager
 } from 'react-native';
 
@@ -28,7 +28,9 @@ class FlightPage extends Component {
         getNotice: PropTypes.func,
         Train: PropTypes.object,
         Flight: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        FlightfromCity: PropTypes.object,
+        FlighttoCity: PropTypes.object
     }
 
     state = {
@@ -47,8 +49,17 @@ class FlightPage extends Component {
         });
     }
 
+    selectCity(key) {
+        const { navigation } = this.props;
+
+        navigation.navigate('City', {
+            key,
+            routeName: navigation.state.routeName
+        });
+    }
+
     render() {
-        const { Flight, Train, navigation } = this.props;
+        const { Flight, Train, FlightfromCity, FlighttoCity } = this.props;
         const { data, notice } = Flight;
         const { data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data;
@@ -64,15 +75,20 @@ class FlightPage extends Component {
                     {Adverts.List.length > 0 && <BannerComponent data={Adverts.List} />}
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
-                    <QueryCityComponent navigation={navigation} fromCity="上海" toCity="广州" />
+                    <QueryCityComponent
+                        selectFromCity={() => this.selectCity('fromCity')}
+                        selectToCity={() => this.selectCity('toCity')}
+                        fromCity={FlightfromCity.Name}
+                        toCity={FlighttoCity.Name}
+                    />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent date="8月15日" description="明日出发" />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
-                        <CheckboxComponent 
-                            onChange={this.handleCheckboxChange} 
-                            title={<Text>携带儿童<Text style={{ color: '#999' }}>(2-12岁)</Text></Text>} 
+                        <CheckboxComponent
+                            onChange={this.handleCheckboxChange}
+                            title={<Text>携带儿童<Text style={{ color: '#999' }}>(2-12岁)</Text></Text>}
                             name="child"
                         />
                         <CheckboxComponent title={<Text>携带婴儿<Text style={{ color: '#999' }}>(14天-2岁)</Text></Text>} />
@@ -88,9 +104,9 @@ class FlightPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({ 
-    wrap: { 
-        flex: 1, 
+const styles = StyleSheet.create({
+    wrap: {
+        flex: 1,
         backgroundColor: '#f3f4f8',
     },
     container: {
@@ -109,7 +125,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     Flight: state.Flight,
-    Train: state.Train
+    Train: state.Train,
+    FlightfromCity: state.City.FlightfromCity,
+    FlighttoCity: state.City.FlighttoCity
 });
 
 const mapDispatchToProps = (dispatch) => ({

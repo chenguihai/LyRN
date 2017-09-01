@@ -1,8 +1,14 @@
-import { GET_HOT_CITY, GET_CITY_LIST } from '../constants/city';
+import { GET_HOT_CITY, GET_CITY_LIST, SELECT_CITY } from '../constants/city';
 
 const initialState = {
     hotcities: [], // 热门城市
-    cityList: []
+    cityList: [],
+    TrainfromCity: { Name: '上海' },
+    TraintoCity: { Name: '北京' },
+    FlightfromCity: { Name: '上海' },
+    FlighttoCity: { Name: '北京' },
+    BusfromCity: { Name: '上海' },
+    BustoCity: { Name: '北京' }
 };
 
 /**
@@ -30,6 +36,12 @@ export default function city(state = initialState, action) {
             nextState = {
                 ...state,
                 cityList: action.cityList
+            };
+            break;
+        case SELECT_CITY:
+            nextState = {
+                ...state,
+                ...action.obj
             };
             break;
         default:

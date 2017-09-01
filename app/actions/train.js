@@ -8,8 +8,10 @@ const getBanner = () => (dispatch) => {
     _.get('pubapi/home/Commercial.ashx')
         .then(({ data }) => {
             dispatch(
-                { ...GET_BANNER,
-                    data1: data || {} }
+                {
+                    ...GET_BANNER,
+                    data1: data || {}
+                }
             );
         });
 };
@@ -17,9 +19,10 @@ const getBanner = () => (dispatch) => {
 const getNotice = () => (dispatch) => {
     _.get('pubapi/home/notice.ashx?cardId=&cardCode=&openId=&projectId=10&type=')
         .then(({ data }) => {
-            dispatch({ 
-                ...GET_NOTICE, 
-                notice: data.Notice || {} }
+            dispatch({
+                ...GET_NOTICE,
+                notice: data.Notice || {}
+            }
             );
         });
 };
@@ -28,8 +31,10 @@ const getTab = () => (dispatch) => {
     _.get('pubapi/home/tabicon.ashx')
         .then(({ data }) => {
             dispatch(
-                { ...GET_TAB,
-                    data2: data || {} }
+                {
+                    ...GET_TAB,
+                    data2: data || {}
+                }
             );
         });
 };

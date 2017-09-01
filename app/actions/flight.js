@@ -7,8 +7,10 @@ const getBanner = () => (dispatch) => {
     _.get('pubapi/home/Commercial.ashx', { projectId: 20 })
         .then(({ data }) => {
             dispatch(
-                { ...GET_BANNER,
-                    data: data || {} }
+                {
+                    ...GET_BANNER,
+                    data: data || {}
+                }
             );
         });
 };
@@ -16,9 +18,10 @@ const getBanner = () => (dispatch) => {
 const getNotice = () => (dispatch) => {
     _.get('pubapi/home/notice.ashx?cardId=&cardCode=&openId=&projectId=20&type=')
         .then(({ data }) => {
-            dispatch({ 
-                ...GET_NOTICE, 
-                notice: data.Notice || {} }
+            dispatch({
+                ...GET_NOTICE,
+                notice: data.Notice || {}
+            }
             );
         });
 };

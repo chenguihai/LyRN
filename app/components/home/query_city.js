@@ -9,21 +9,26 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { connect } from 'react-redux';
-
 
 class QueryCityComponent extends Component {
 
     static propTypes = {
         fromCity: PropTypes.string,
         toCity: PropTypes.string,
-        navigation: PropTypes.object
+        selectFromCity: PropTypes.func,
+        selectToCity: PropTypes.func
     }
 
     selectFromCity = () => {
-        const { navigation } = this.props;
+        const { selectFromCity } = this.props;
 
-        navigation.navigate('City');
+        selectFromCity && selectFromCity(); // eslint-disable-line
+    }
+
+    selectToCity = () => {
+        const { selectToCity } = this.props;
+
+        selectToCity && selectToCity(); // eslint-disable-line
     }
 
     render() {
@@ -47,9 +52,13 @@ class QueryCityComponent extends Component {
                     { alignItems: 'flex-end' }
                 ]}>
                     <Text style={styles.city_txt}>到达城市</Text>
-                    <Text style={styles.city}>
-                        {toCity}
-                    </Text>
+                    <TouchableOpacity
+                        onPress={this.selectToCity}
+                    >
+                        <Text style={styles.city}>
+                            {toCity}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );

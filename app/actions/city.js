@@ -1,9 +1,11 @@
 import * as Types from '../constants/city';
 import _ from '../util';
-import axios from 'axios';
 
 const GET_HOT_CITY = { type: Types.GET_HOT_CITY };
 const GET_CITY_LIST = { type: Types.GET_CITY_LIST };
+
+// 选择城市
+const SELECT_CITY = { type: Types.SELECT_CITY };
 
 const getCityList = (cityName) => async (dispatch) => {
     const uri = 'uniontrain/trainapi/GetCityStationList';
@@ -54,7 +56,15 @@ const getHotCities = () => async (dispatch) => {
 
 };
 
+const selectCity = (key, data) => (dispatch) => {
+    dispatch({
+        ...SELECT_CITY,
+        obj: { [key]: data }
+    });
+};
+
 export default {
     getCityList,
-    getHotCities
+    getHotCities,
+    selectCity
 };

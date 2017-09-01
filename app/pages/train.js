@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { 
-    View, 
-    ScrollView, 
-    StyleSheet, 
+import {
+    View,
+    ScrollView,
+    StyleSheet,
 } from 'react-native';
 
 import BannerComponent from '../components/home/banner';
@@ -26,7 +26,9 @@ class TrainPage extends Component {
         getNotice: PropTypes.func,
         getTab: PropTypes.func,
         Train: PropTypes.object,
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        TrainfromCity: PropTypes.object,
+        TraintoCity: PropTypes.object
     }
 
     state = {
@@ -40,12 +42,21 @@ class TrainPage extends Component {
 
     handleCheckbox = (field, val) => {
         this.setState({
-            [field]: !val            
+            [field]: !val
+        });
+    }
+
+    selectCity(key) {
+        const { navigation } = this.props;
+
+        navigation.navigate('City', {
+            key,
+            routeName: navigation.state.routeName
         });
     }
 
     render() {
-        const { Train, navigation } = this.props;
+        const { Train, navigation, TrainfromCity, TraintoCity } = this.props;
         const { data1, notice, data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data1;
         const { OperationIcon = [] } = data2;
@@ -60,7 +71,12 @@ class TrainPage extends Component {
                     {Adverts.List.length > 0 && <BannerComponent data={Adverts.List} />}
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
-                    <QueryCityComponent navigation={navigation} fromCity="上饶" toCity="上海" />
+                    <QueryCityComponent
+                        selectFromCity={() => this.selectCity('fromCity')}
+                        selectToCity={() => this.selectCity('toCity')}
+                        fromCity={TrainfromCity.Name}
+                        toCity={TraintoCity.Name}
+                    />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent navigation={navigation} />
@@ -80,9 +96,9 @@ class TrainPage extends Component {
     }
 }
 
-const styles = StyleSheet.create({ 
-    wrap: { 
-        flex: 1, 
+const styles = StyleSheet.create({
+    wrap: {
+        flex: 1,
         backgroundColor: '#f3f4f8',
     },
     container: {
@@ -100,7 +116,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    Train: state.Train
+    Train: state.Train,
+    TrainfromCity: state.City.TrainfromCity,
+    TraintoCity: state.City.TraintoCity
 });
 
 const mapDispatchToProps = (dispatch) => ({
