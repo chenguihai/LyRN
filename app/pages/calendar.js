@@ -35,7 +35,7 @@ class CalenDarPage extends Component {
     handleSelect = (time) => {
         const { navigation, selectDate } = this.props;
 
-        selectDate(time);
+        selectDate(navigation.state.params.routeName, time);
         navigation.goBack();
     }
 

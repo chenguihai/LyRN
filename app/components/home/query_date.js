@@ -7,14 +7,12 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { connect } from 'react-redux';
-
-class QueryDateComponent extends Component {
+export default class QueryDateComponent extends Component {
 
     static propTypes = {
         tripTime: PropTypes.number,
         tripTimeDes: PropTypes.string,
-        navigation: PropTypes.object
+        handlePress: PropTypes.func
     }
 
     covertDate(time) {
@@ -26,9 +24,9 @@ class QueryDateComponent extends Component {
     }
 
     handlePress = () => {
-        const { navigation } = this.props;
+        const { handlePress } = this.props;
 
-        navigation.navigate('Calendar');
+        handlePress && handlePress(); // eslint-disable-line
     }
 
     render() {
@@ -70,10 +68,3 @@ const styles = StyleSheet.create({
         fontSize: 14
     },
 });
-
-const mapStateToProps = (state) => ({
-    tripTime: state.Date.tripTime,
-    tripTimeDes: state.Date.tripTimeDes
-});
-
-export default connect(mapStateToProps)(QueryDateComponent);

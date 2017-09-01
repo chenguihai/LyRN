@@ -28,7 +28,9 @@ class TrainPage extends Component {
         Train: PropTypes.object,
         navigation: PropTypes.object,
         TrainfromCity: PropTypes.object,
-        TraintoCity: PropTypes.object
+        TraintoCity: PropTypes.object,
+        TraintripTime: PropTypes.number,
+        TraintripTimeDes: PropTypes.string
     }
 
     state = {
@@ -55,8 +57,16 @@ class TrainPage extends Component {
         });
     }
 
+    selectDate = () => {
+        const { navigation } = this.props;
+
+        navigation.navigate('Calendar', {
+            routeName: navigation.state.routeName
+        });
+    }
+
     render() {
-        const { Train, navigation, TrainfromCity, TraintoCity } = this.props;
+        const { Train, TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
         const { data1, notice, data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data1;
         const { OperationIcon = [] } = data2;
@@ -79,7 +89,11 @@ class TrainPage extends Component {
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
-                    <QueryDateComponent navigation={navigation} />
+                    <QueryDateComponent
+                        handlePress={this.selectDate}
+                        tripTime={TraintripTime}
+                        tripTimeDesc={TraintripTimeDes}
+                    />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
                         <CheckboxComponent title="学生票" />
@@ -118,7 +132,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     Train: state.Train,
     TrainfromCity: state.City.TrainfromCity,
-    TraintoCity: state.City.TraintoCity
+    TraintoCity: state.City.TraintoCity,
+    TraintripTime: state.Date.TraintripTime,
+    TraintripTimeDes: state.Date.TraintripTimeDes
 });
 
 const mapDispatchToProps = (dispatch) => ({
