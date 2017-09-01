@@ -19,6 +19,7 @@ const HomeTabNavigator = TabNavigator(
             navigationOptions: {
                 tabBarLabel: '火车票'
             }
+<<<<<<< HEAD
         },
         Flight: {
             screen: FlightPage,
@@ -26,6 +27,15 @@ const HomeTabNavigator = TabNavigator(
                 tabBarLabel: '机票'
             }
         },
+=======
+        },
+        Flight: {
+            screen: FlightPage,
+            navigationOptions: {
+                tabBarLabel: '机票'
+            }
+        },
+>>>>>>> 7455f800a6723f06a2b767330943d08a3e72e7ef
         Bus: {
             screen: BusPage,
             navigationOptions: {
@@ -48,6 +58,11 @@ const HomeTabNavigator = TabNavigator(
                 height: 50,
                 backgroundColor: '#FFF'
             },
+<<<<<<< HEAD
+=======
+            tabStyle: {
+            },
+>>>>>>> 7455f800a6723f06a2b767330943d08a3e72e7ef
             labelStyle: {
                 fontSize: 14,
                 color: '#666'
