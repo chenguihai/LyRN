@@ -1,5 +1,6 @@
 import * as Types from '../constants/city';
 import _ from '../util';
+import axios from 'axios';
 
 const GET_HOT_CITY = { type: Types.GET_HOT_CITY };
 const GET_CITY_LIST = { type: Types.GET_CITY_LIST };
@@ -33,23 +34,22 @@ const getCityList = (cityName) => async (dispatch) => {
 
 const getHotCities = () => async (dispatch) => {
 
-    const uri = 'huochepiao/resource/station/GetHotCityListV1';
-
-    const response = await _.get(uri, {
-        para: {
-            length: 15,
-            callback: '_jsonp6p6ua4ts5m5poth30m6rms4i'
-        }
+    // Storage.remove({ key: 'trainhotcities' });
+    const localData = await Storage.load({
+        key: 'trainhotcities',
+        // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
+        autoSync: true,
+        // syncInBackground(默认为true)意味着如果数据过期，
+        // 在调用sync方法的同时先返回已经过期的数据。
+        // 设置为false的话，则等待sync方法提供的最新数据(当然会需要更多时间)。
+        syncInBackground: true
     });
 
-    const
-        { data = {} } = response || {},
-        { TrainStation = {} } = data,
-        { StationList = [] } = TrainStation;
+    const { list = [] } = localData;
 
     dispatch({
         ...GET_HOT_CITY,
-        hotcities: StationList
+        hotcities: list
     });
 
 };

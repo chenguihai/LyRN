@@ -22,8 +22,8 @@ const storage = new Storage({
     // 或是在任何时候，直接对storage.sync进行赋值修改
     // 或是写到另一个文件里，这里require引入
     // sync: require('你可以另外写一个文件专门处理sync')
-
+    sync: require('./storage_sync.js')
 });
 
 // 全局范围内创建一个（且只有一个）storage实例，方便直接调用
-global.storage = storage;
+global.Storage = storage;

@@ -41,7 +41,7 @@ Util.prototype.get = (uri, data) => {
                 resolve(response);
             })
             .catch((err) => {
-                console.log(err);
+                console.log(err.message);
             });
     });
     //     if (error.response) {
