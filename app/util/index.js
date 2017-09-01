@@ -32,6 +32,8 @@ Util.prototype.chunk = function (arr, num) {
     return ret;
 };
 
+// ===== ajax helpers
+
 Util.prototype.get = (uri, data) => {
     return new Promise((resolve, reject) => {
         axios.get(_.prefixUri + uri, {
@@ -62,6 +64,29 @@ Util.prototype.get = (uri, data) => {
     //     // console.log(error.config);
 
     //     return error;
+};
+
+// ===== date helpers
+
+Util.prototype.resetTime = function (date) {
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    return Number(date);
+};
+
+Util.prototype.getToday = function () {
+    return _.resetTime(new Date());
+};
+
+Util.prototype.getTomorrow = function () {
+    return _.resetTime(new Date(_.getToday() + 8.64e7));
+};
+
+Util.prototype.getAfterTomorrow = function () {
+    return _.resetTime(new Date(_.getTomorrow() + 8.64e7));
 };
 
 const _ = new Util();

@@ -38,10 +38,10 @@ export default class CalendarMonthComponent extends Component {
                 ref.setNativeProps({ style });
             });
         }
-                        
+
         this._refView[time].setNativeProps({
             style: { backgroundColor: themeColor }
-        }); 
+        });
         this._refText[time].setNativeProps({
             style: {
                 color: '#FFF'
@@ -67,43 +67,22 @@ export default class CalendarMonthComponent extends Component {
     }
 
     dayMap = {
-        [this._getToday()]: '今天',
-        [this._getTomorrow()]: '明天',
-        [this._getAfterTomorrow()]: '后天'
+        [_.getToday()]: '今天',
+        [_.getTomorrow()]: '明天',
+        [_.getAfterTomorrow()]: '后天'
     };
-
-    _resetTime(date) {
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        
-        return Number(date);
-    }
-
-    _getToday() {
-        return this._resetTime(new Date());
-    }
-
-    _getTomorrow() {
-        return this._resetTime(new Date(this._getToday() + 8.64e7));
-    }
-
-    _getAfterTomorrow() {
-        return this._resetTime(new Date(this._getTomorrow() + 8.64e7));
-    }
 
     _renderRow(rowData, monthData) {
         const { year, month } = monthData;
         const { length } = rowData;
-        
+
 
         return rowData.map((item, index) => {
             const time = _.isNull(item) ? null : Number(new Date(year, month - 1, item));
-            const bgColor = time === this._getToday() ? todayBgColor : '#FFF';
-            const txtColor = time < this._getToday() ? '#ccc' : index === 0 && !_.isNull(item) || index === length - 1 && length === 7 ? themeColor : '#000';
-            const handlePress = time < this._getToday() ? () => {} : this.handlePress;
-            
+            const bgColor = time === _.getToday() ? todayBgColor : '#FFF';
+            const txtColor = time < _.getToday() ? '#ccc' : index === 0 && !_.isNull(item) || index === length - 1 && length === 7 ? themeColor : '#000';
+            const handlePress = time < _.getToday() ? () => { } : this.handlePress;
+
             return (
                 <TouchableOpacity
                     onPress={() => handlePress(time, txtColor, bgColor)}
@@ -113,7 +92,7 @@ export default class CalendarMonthComponent extends Component {
                     ]} key={index}
                 >
                     <View ref={(ref) => this._refView[time] = ref} style={[
-                        styles.each_day_number, 
+                        styles.each_day_number,
                         {
                             backgroundColor: bgColor
                         }
@@ -137,13 +116,13 @@ export default class CalendarMonthComponent extends Component {
         this.innerWidth = width * 0.9;
         this.gutter = width * 0.05;
         const { calendarData } = this.props;
-        
+
         return (
             <ScrollView style={{ flex: 1 }}>
                 {
                     calendarData.map((monthData, index) => {
                         const { year, month, dayList } = monthData;
-                        
+
                         return (
                             <View key={index}>
                                 <View style={styles.month_header}>
@@ -157,10 +136,10 @@ export default class CalendarMonthComponent extends Component {
                                     }
                                 ]}>
                                     {
-                                        _.chunk(dayList, 7).map((rowData, rowIndex) => 
+                                        _.chunk(dayList, 7).map((rowData, rowIndex) =>
                                             <View style={styles.each_month_row} key={rowIndex}>
                                                 {this._renderRow(rowData, monthData)}
-                                            </View> 
+                                            </View>
                                         )
                                     }
                                 </View>

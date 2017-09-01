@@ -27,14 +27,13 @@ class QueryDateComponent extends Component {
 
     handlePress = () => {
         const { navigation } = this.props;
-        const { state, navigate } = navigation;
 
-        navigate('calendar', { key: state.key });
+        navigation.navigate('Calendar');
     }
 
     render() {
         const { tripTime, tripTimeDes } = this.props;
-        
+
         return (
             <TouchableOpacity onPress={this.handlePress} style={styles.query_date}>
                 <View style={styles.query_date_inner}>

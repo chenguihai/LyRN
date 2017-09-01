@@ -23,7 +23,7 @@ class QueryCityComponent extends Component {
     selectFromCity = () => {
         const { navigation } = this.props;
 
-        navigation.navigate('city');
+        navigation.navigate('City');
     }
 
     render() {
@@ -43,7 +43,7 @@ class QueryCityComponent extends Component {
                 </View>
                 <Image style={styles.change_city} source={require('../../images/change_city.png')} />
                 <View style={[
-                    styles.query_city_item, 
+                    styles.query_city_item,
                     { alignItems: 'flex-end' }
                 ]}>
                     <Text style={styles.city_txt}>到达城市</Text>
