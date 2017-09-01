@@ -4,6 +4,7 @@ import {
     ScrollView,
     StyleSheet,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 import SearchComponent from '../components/city/search';
 import CityLocationComponent from '../components/city/city_location'; // 当前城市
@@ -14,6 +15,14 @@ import CitySingleList from '../components/city/city_single_list.js';
 
 export default class CityPage extends Component {
 
+    static propTypes = {
+        hotcities: PropTypes.array
+    }
+
+    static defaultProps = {
+        hotcities: []
+    }
+
     render() {
         const city = {
             'ID': null,
@@ -23,15 +32,12 @@ export default class CityPage extends Component {
             'CityName': null
         };
         const history = [];
-        const hot = [];
 
         for (let i = 0; i < 1; i++) {
             history.push(city);
         }
 
-        for (let i = 0; i < 10; i++) {
-            hot.push(city);
-        }
+        const { hotcities } = this.props;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -43,8 +49,8 @@ export default class CityPage extends Component {
                 <CityListTitle title="历史选择" />
                 <CityListBlock data={history} />
 
-                <CityListTitle title="热门" />
-                <CityListBlock data={hot} />
+                {hotcities.length === 0 ? null : <CityListTitle title="热门" />}
+                {hotcities.length === 0 ? null : <CityListBlock data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent />
