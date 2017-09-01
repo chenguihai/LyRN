@@ -18,36 +18,51 @@ export default class CityListBlock extends Component {
         data: PropTypes.array
     }
 
-    _renderItem(item, index) {
+    /**
+     * 渲染每一块
+     * @param {array} data 
+     * @param {number} index 
+     */
+
+    _renderBlock = (data, index) => {
         return (
             <View key={index} style={[
-                styles.item, 
-                { 
-                    width: this.innerWidth * 0.3, 
+                styles.block,
+                {
+                    width: this.innerWidth * 0.3,
                     marginRight: this.innerWidth * .1 / 2 // eslint-disable-line
                 }
             ]}>
-                <Text style={styles.item_txt}>{item.Name}</Text>
+                <Text style={styles.block_txt}>{data.Name}</Text>
             </View>
         );
     }
 
+    /**
+     * 渲染每一行
+     * @param {array} data 
+     */
+
     _renderRow(data) {
-        return data.map((rowData, rowIndex) => 
-            <View 
-                key={rowIndex} 
+
+        return data.map((rowData, rowIndex) =>
+            <View
+                key={rowIndex}
                 style={[
                     styles.row,
-                    { 
+                    {
+                        // 如果是第一行不用设置marginTop
                         marginTop: rowIndex !== 0 ? this.innerWidth * .1 / 2 : 0 // eslint-disable-line
                     }
                 ]}
             >
                 {
-                    rowData.map(this._renderItem.bind(this)) // eslint-disable-line no-unused-vars
+                    // 渲染每个一个城市块
+                    rowData.map(this._renderBlock) // eslint-disable-line no-unused-vars
                 }
             </View>
         );
+
     }
 
     render() {
@@ -56,10 +71,10 @@ export default class CityListBlock extends Component {
 
         this.gutter = width * 0.1 / 2;
         this.innerWidth = width * 0.9;
-        
+
         return (
             <View style={[
-                styles.list_block,
+                styles.container,
                 {
                     paddingTop: this.gutter,
                     paddingBottom: this.gutter,
@@ -67,7 +82,7 @@ export default class CityListBlock extends Component {
                     paddingRight: this.gutter
                 }
             ]}>
-                <View style={styles.list}>
+                <View style={styles.inner}>
                     {this._renderRow(_.chunk(data, 3))}
                 </View>
             </View>
@@ -76,16 +91,15 @@ export default class CityListBlock extends Component {
 }
 
 const styles = StyleSheet.create({
-    'list_block': {
+    'container': {
         backgroundColor: '#FFF'
     },
-    list: {
-         
+    'inner': {
     },
-    row: {
+    'row': {
         flexDirection: 'row',
     },
-    item: {
+    'block': {
         height: 35,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#dedfe0',
@@ -93,7 +107,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5
     },
-    'item_txt': {
+    'block_txt': {
         fontSize: 14,
         color: '#2d2d2d'
     }

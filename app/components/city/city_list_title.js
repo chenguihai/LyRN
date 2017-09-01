@@ -21,7 +21,7 @@ export default class CityListTitle extends Component {
 
     render() {
         const { title } = this.props;
-        
+
         return (
             <View style={styles.title}>
                 <Text style={styles.title_txt}>{title}</Text>
@@ -31,7 +31,7 @@ export default class CityListTitle extends Component {
 }
 
 const styles = StyleSheet.create({
-    title: {
+    'title': {
         backgroundColor: '#e9ecf1',
         paddingLeft: 15,
         justifyContent: 'center',
