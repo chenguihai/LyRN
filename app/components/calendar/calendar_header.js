@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { 
+import {
     View,
     Text,
     StyleSheet,
@@ -9,25 +9,32 @@ import {
 export default class CalendarHeaderPage extends Component {
 
     weekList = [
-        '日', 
-        '一', 
-        '二', 
-        '三', 
-        '四', 
-        '五', 
+        '日',
+        '一',
+        '二',
+        '三',
+        '四',
+        '五',
         '六'
     ];
 
-    _renderWeekHeader(list, item, index) {
+    shouldComponentUpdate() {
+        return false;
+    }
+
+    _renderWeekHeader = (text, index, list) => {
         return (
-            <View style={[
-                styles.item,
-                { width: this.innerWidth / 7 }
-            ]} key={index}>
+            <View
+                style={[
+                    styles.header_item,
+                    { width: this.innerWidth / 7 }
+                ]}
+                key={index}
+            >
                 <Text style={[
-                    styles.item_txt,
+                    styles.header_item_txt,
                     { color: index === 0 || index === list.length - 1 ? '#04be02' : '#FFF' }
-                ]}>{item}</Text>
+                ]}>{text}</Text>
             </View>
         );
     }
@@ -36,30 +43,32 @@ export default class CalendarHeaderPage extends Component {
         const { width } = Dimensions.get('window');
 
         this.innerWidth = width * 0.9;
-        
+
         return (
             <View style={[
-                styles.list,
-                { paddingLeft: width * 0.05, 
-                    paddingRight: width * 0.05 }
+                styles.header,
+                {
+                    paddingLeft: width * 0.05,
+                    paddingRight: width * 0.05
+                }
             ]}>
-                {this.weekList.map(this._renderWeekHeader.bind(this, this.weekList))}
+                {this.weekList.map(this._renderWeekHeader)}
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    list: {
+    'header': {
         flexDirection: 'row',
         backgroundColor: '#556a72'
     },
-    item: {
+    'header_item': {
         height: 33,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    'item_txt': {
+    'header_item_txt': {
         fontSize: 14
     }
 });

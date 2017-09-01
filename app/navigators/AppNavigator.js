@@ -161,7 +161,7 @@ const AppNavigator = StackNavigator(
         }
     },
     {
-        initialRouteName: 'City'
+        initialRouteName: 'Calendar'
     }
 );
 

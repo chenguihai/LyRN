@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { 
+import {
     View,
     InteractionManager
 } from 'react-native';
-import CalendarHeaderPage from './calendar_header';
+import CalendarHeaderPage from '../components/calendar/calendar_header';
 import CalendarMonthComponent from '../components/calendar/calendar_month';
 
 import { NavigationActions } from 'react-navigation';
@@ -17,12 +17,12 @@ class CalenDarPage extends Component {
 
     static propTypes = {
         startDate: PropTypes.oneOfType([
-            PropTypes.number, 
+            PropTypes.number,
             PropTypes.string,
             PropTypes.date
         ]),
         endDate: PropTypes.oneOfType([
-            PropTypes.number, 
+            PropTypes.number,
             PropTypes.string,
             PropTypes.date
         ]),
@@ -105,9 +105,9 @@ class CalenDarPage extends Component {
         for (let i = 1; i <= dayNumofMonth; i++) {
             dayList.push(i);
         }
-        
+
         return dayList;
-    }   
+    }
 
     /**
      * 获取当月的总天数
@@ -117,12 +117,12 @@ class CalenDarPage extends Component {
      */
 
     getDayNum(year, month) {
-        let dayOfMonth = [31,28,31,30,31,30,31,31,30,31,30,31]; // eslint-disable-line
+        let dayOfMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // eslint-disable-line
         // 判断是否为闰年,闰年2月份有29天
-        if(year % 4 === 0 && year % 100 !== 0 || year % 400 === 0){  // eslint-disable-line
+        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {  // eslint-disable-line
             dayOfMonth[1] = 29;
         }
-        
+
         return dayOfMonth[month - 1];
     }
 
@@ -140,7 +140,7 @@ class CalenDarPage extends Component {
 
     render() {
         const { calendar } = this.state;
-        
+
         return (
             <View style={{ flex: 1 }}>
                 <CalendarHeaderPage />
