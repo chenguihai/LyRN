@@ -1,9 +1,9 @@
 /* eslint-disable no-debugger */
 import React, { Component } from 'react';
-import { 
+import {
     View,
     Text,
-    TextInput,  
+    TextInput,
     StyleSheet,
     Image,
     Dimensions,
@@ -38,7 +38,7 @@ export default class SearchComponent extends Component {
         });
     }
 
-    setHasContent = (field, val) => {
+    setContent = (field, val) => {
         this.setState({
             [field]: val
         });
@@ -49,17 +49,21 @@ export default class SearchComponent extends Component {
 
         text = text.trim();
         if (!hasContent && text.length > 0) {
-            this.setHasContent('hasContent', true);
+            this.setContent('hasContent', true);
         }
 
         if (hasContent && text.length === 0) {
-            this.setHasContent('hasContent', false);
+            this.setContent('hasContent', false);
         }
     }
 
     cleanInput = () => {
+
+        this.setContent('hasContent', false);
+
+        this.handleBlur();
+
         this._searchInput.clear();
-        this.setHasContent('hasContent', false);
     }
 
     cancelInput = () => {
@@ -67,53 +71,60 @@ export default class SearchComponent extends Component {
 
         if (hasContent) {
             this.cleanInput();
-        } 
-        this._searchInput.blur();
+        }
+
+        this.handleBlur();
     }
 
     render() {
-        const { offsetWidth, isFocus, hasContent } = this.state;
-        const { width } = Dimensions.get('window');
-        const innerWidth = width - offsetWidth;
+        const
+            { width } = Dimensions.get('window'),
+            { offsetWidth, isFocus, hasContent } = this.state,
+            innerWidth = width - offsetWidth;
 
-        
         return (
             <View style={[styles.search_wrap]}>
                 {/* 搜索输入框开始 */}
                 <View style={[
                     styles.search_inner,
-                    { width: innerWidth, 
-                        marginLeft: 8 }
+                    {
+                        width: innerWidth,
+                        marginLeft: 8
+                    }
                 ]}>
                     {/* 搜索图标开始 */}
                     <View style={[styles.search_icon]}>
-                        <View>
-                            <Image style={styles.search_image} source={require('../../images/search.png')} />
-                        </View>
+                        <Image
+                            style={styles.search_image}
+                            source={require('../../images/search.png')}
+                        />
                     </View>
                     {/* 搜索图标结束 */}
+                    {/* onBlur={this.handleBlur} */}
                     <TextInput
-                        ref={(ref) => { 
+                        ref={(ref) => {
                             this._searchInput = ref;
                         }}
                         underlineColorAndroid="transparent"
                         onFocus={this.handleFocus}
-                        onBlur={this.handleBlur}
                         placeholder="北京/beijing/bj"
                         maxLength={30}
                         onChangeText={_.debounce(this.handleChangeText.bind(this), 500)}
                         style={[
-                            styles.search_input, 
+                            styles.search_input,
                             { width: innerWidth - searchIconWidth }
                         ]}
                     />
                     {
-                        hasContent 
+                        hasContent
                             ? <TouchableOpacity
                                 style={styles.search_clear_wrap}
                                 onPress={this.cleanInput}
                             >
-                                <Image style={styles.search_clear} source={require('../../images/clear.png')} />
+                                <Image
+                                    style={styles.search_clear}
+                                    source={require('../../images/clear.png')}
+                                />
                             </TouchableOpacity>
                             : null
                     }
@@ -121,30 +132,26 @@ export default class SearchComponent extends Component {
                 {/* 搜索输入框结束 */}
                 {/* 取消按钮开始 */}
                 {
-                    isFocus 
+                    isFocus
                         ? <TouchableOpacity
-                            style={styles.search_cancel_wrap}
+                            style={styles.search_cancel}
                             onPress={this.cancelInput}
                         >
-                            <View
-                                style={[styles.search_cancel]}
-                            >
-                                <Text style={{ color: '#2d2d2d' }}>
-                                        取消
-                                </Text>
-                            </View>
+                            <Text style={{ color: '#2d2d2d' }}>
+                                取消
+                            </Text>
                         </TouchableOpacity>
-                            
+
                         : null
                 }
                 {/* 取消按钮结束 */}
-                    
+
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     'search_wrap': {
         height: 56,
         justifyContent: 'center',
@@ -182,15 +189,11 @@ const styles = StyleSheet.create({
         height: 20,
         top: 10
     },
-    'search_cancel_wrap': {
+    'search_cancel': {
         position: 'absolute',
         height: 40,
         width: searchCancelWidth,
-        right: 0
-    },
-    'search_cancel': {
-        width: searchCancelWidth,
-        height: 40,
+        right: 0,
         justifyContent: 'center',
         alignItems: 'center'
     }

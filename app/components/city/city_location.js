@@ -18,18 +18,23 @@ export default class CityLoctionComponent extends Component {
     }
 
     render() {
-        const { width } = Dimensions.get('window');
-        const { data } = this.props;
-        
+        const
+            { width } = Dimensions.get('window'),
+            { data } = this.props;
+
         return (
-            <View style={styles.list_location}>
+            <View style={styles.container}>
                 <View style={[
-                    styles.list_location_item,
+                    styles.city_item,
                     {
-                        width: (width - 30) * 0.43 
+                        width: (width - 30) * 0.43
                     }
                 ]}>
-                    <Text style={styles.list_location_txt}>{data[0] ? data[0].Name : ''}</Text>
+                    <Text
+                        style={styles.city_txt}
+                    >
+                        {data[0] ? data[0].Name : ''}
+                    </Text>
                 </View>
             </View>
         );
@@ -37,14 +42,14 @@ export default class CityLoctionComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-    'list_location': {
+    'container': {
         paddingTop: 6,
         paddingBottom: 6,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#FFF'
     },
-    'list_location_item': {
+    'city_item': {
         height: 35,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#dedfe0',
@@ -52,7 +57,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5
     },
-    'list_location_txt': {
+    'city_txt': {
         fontSize: 14,
         color: '#2d2d2d'
     }

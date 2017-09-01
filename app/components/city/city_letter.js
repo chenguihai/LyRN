@@ -42,33 +42,35 @@ class CityLetterComponent extends Component {
         return letterList;
     }
 
-    _renderItem(rowData, item, index) {
-        
+    _renderItem(rowData, blockData, index) {
+
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={[
                     styles.item,
                     {
-                        width: this.rowWidth * 0.12,
-                        marginRight: index != rowData.length - 1 ? this.rowWidth * 0.28 / 5 : 0 // eslint-disable-line
+                        width: this.innerWidth * 0.12,
+                        // 如果为每一行的最后一个块,将marginRight设置为0
+                        marginRight: index != rowData.length - 1 ? this.innerWidth * 0.28 / 5 : 0 // eslint-disable-line
                     }
-                ]} 
+                ]}
                 key={index}
-                onPress={() => { 
-                    this.props.getCityList(item);
+                onPress={() => {
+                    this.props.getCityList(blockData);
                 }}
             >
-                <Text style={styles.item_txt}>{item}</Text>
+                <Text style={styles.item_txt}>{blockData}</Text>
             </TouchableOpacity>
         );
     }
 
-    _renderRow(rowData, rowIndex) {
+    _renderRow = (rowData, rowIndex) => {
         return (
             <View style={[
                 styles.row,
                 {
-                    marginTop: rowIndex !== 0 ? this.rowWidth * 0.25 / 5 : 0 // eslint-disable-line
+                    // 如果不是第一行设置marginTop为0
+                    marginTop: rowIndex !== 0 ? this.innerWidth * 0.25 / 5 : 0 // eslint-disable-line
                 }
             ]} key={rowIndex}>
                 {
@@ -83,11 +85,11 @@ class CityLetterComponent extends Component {
         const { width } = Dimensions.get('window');
 
         this.gutter = width * 0.1 / 2;
-        this.rowWidth = width * 0.9;
-        
+        this.innerWidth = width * 0.9;
+
         return (
             <View style={[
-                styles.list,
+                styles.container,
                 {
                     paddingTop: this.gutter,
                     paddingBottom: this.gutter,
@@ -96,7 +98,7 @@ class CityLetterComponent extends Component {
                 }
             ]}>
                 {
-                    letterList.map(this._renderRow.bind(this))
+                    letterList.map(this._renderRow)
                 }
             </View>
         );
@@ -104,7 +106,7 @@ class CityLetterComponent extends Component {
 }
 
 const styles = StyleSheet.create({
-    list: {
+    'container': {
         backgroundColor: '#FFF',
         marginBottom: 15
     },
