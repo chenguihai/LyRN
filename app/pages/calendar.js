@@ -44,7 +44,10 @@ class CalenDarPage extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <CalendarHeaderPage />
-                <CalendarMonthComponent onSelect={this.handleSelect} calendarData={this.state.calendar} />
+                <CalendarMonthComponent 
+                    onSelect={this.handleSelect} 
+                    data={this.state.calendar} 
+                />
             </View>
         );
     }

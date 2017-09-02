@@ -6,7 +6,8 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    InteractionManager
 } from 'react-native';
 import _ from '../../util';
 
@@ -16,11 +17,11 @@ const todayBgColor = '#e7e7e7';
 export default class CalendarMonthComponent extends Component {
 
     static defaultProps = {
-        calendarData: []
+        data: []
     }
 
     static propTypes = {
-        calendarData: PropTypes.array,
+        data: PropTypes.array,
         onSelect: PropTypes.func
     }
 
@@ -62,7 +63,9 @@ export default class CalendarMonthComponent extends Component {
         const { onSelect } = this.props;
 
         if (onSelect) {
-            onSelect(time);
+            InteractionManager.runAfterInteractions(() => {
+                onSelect(time);
+            });
         }
     }
 
@@ -72,55 +75,62 @@ export default class CalendarMonthComponent extends Component {
         [_.getAfterTomorrow()]: '后天'
     };
 
-    _renderRow(rowData, monthData) {
-        const { year, month } = monthData;
-        const { length } = rowData;
+    _renderRow(item, index, year, month) {
 
+        const time = _.isNull(item) ? '' : Number(new Date(year, month - 1, item));
+        const bgColor = time === _.getToday() ? todayBgColor : '#FFF';
+        // const txtColor = time < _.getToday()
+        // ? '#ccc' 
+        // : index === 0 && time !== '' || index === length - 1 && length === 7 ? themeColor : '#000';
+        const handlePress = time < _.getToday() ? null : this.handlePress;
 
-        return rowData.map((item, index) => {
-            const time = _.isNull(item) ? null : Number(new Date(year, month - 1, item));
-            const bgColor = time === _.getToday() ? todayBgColor : '#FFF';
-            const txtColor = time < _.getToday() ? '#ccc' : index === 0 && !_.isNull(item) || index === length - 1 && length === 7 ? themeColor : '#000';
-            const handlePress = time < _.getToday() ? () => { } : this.handlePress;
-
-            return (
-                <TouchableOpacity
-                    onPress={() => handlePress(time, txtColor, bgColor)}
-                    style={[
-                        styles.each_day,
-                        { width: this.innerWidth / 7 }
-                    ]} key={index}
-                >
-                    <View ref={(ref) => this._refView[time] = ref} style={[
+        return (
+            <TouchableOpacity
+                onPress={() => handlePress(time, txtColor, bgColor)}
+                style={[
+                    styles.each_day,
+                    { width: this.innerWidth / 7 }
+                ]} key={index}
+            >
+                <View 
+                    ref={(ref) => { 
+                        this._refView[time] = ref;
+                    }} style={[
                         styles.each_day_number,
                         {
                             backgroundColor: bgColor
                         }
-                    ]}>
-                        <Text ref={(ref) => this._refText[time] = ref} style={{
-                            color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
-                        }}>{_.isNull(item) ? '' : item}</Text>
-                    </View>
-                    <Text style={[
-                        styles.recent,
+                    ]}
+                >
+                    <Text 
+                        ref={(ref) => { 
+                            this._refText[time] = ref;
+                        }} 
+                        style={{
+                            // color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
+                        }}
+                    >{item}</Text>
+                </View>
+                <Text 
+                    style={[
+                        styles.each_day_txt,
                         { color: themeColor }
-                    ]}>{this.dayMap[time]}</Text>
-                </TouchableOpacity>
-            );
-        });
+                    ]}
+                >{this.dayMap[time]}</Text>
+            </TouchableOpacity>
+        );
     }
 
     render() {
         const { width } = Dimensions.get('window');
+        const { data } = this.props;
 
         this.innerWidth = width * 0.9;
-        this.gutter = width * 0.05;
-        const { calendarData } = this.props;
 
         return (
             <ScrollView style={{ flex: 1 }}>
                 {
-                    calendarData.map((monthData, index) => {
+                    data.map((monthData, index) => {
                         const { year, month, dayList } = monthData;
 
                         return (
@@ -128,18 +138,10 @@ export default class CalendarMonthComponent extends Component {
                                 <View style={styles.month_header}>
                                     <Text style={styles.month_header_txt}>{year}年{month}月</Text>
                                 </View>
-                                <View style={[
-                                    styles.each_month,
+                                <View style={styles.month_body}>
                                     {
-                                        paddingLeft: this.gutter,
-                                        paddingRight: this.gutter
-                                    }
-                                ]}>
-                                    {
-                                        _.chunk(dayList, 7).map((rowData, rowIndex) =>
-                                            <View style={styles.each_month_row} key={rowIndex}>
-                                                {this._renderRow(rowData, monthData)}
-                                            </View>
+                                        dayList.map(
+                                            (day, dayIndex) => this._renderRow(day, dayIndex, year, month)
                                         )
                                     }
                                 </View>
@@ -163,11 +165,11 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#000'
     },
-    'each_month': {
-        backgroundColor: '#FFF'
-    },
-    'each_month_row': {
-        flexDirection: 'row'
+    'month_body': {
+        backgroundColor: '#FFF',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
     },
     'each_day': {
         height: 50,
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    recent: {
+    'each_day_txt': {
         fontSize: 11,
         lineHeight: 11
     }

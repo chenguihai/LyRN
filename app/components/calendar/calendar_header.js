@@ -45,13 +45,7 @@ export default class CalendarHeaderPage extends Component {
         this.innerWidth = width * 0.9;
 
         return (
-            <View style={[
-                styles.header,
-                {
-                    paddingLeft: width * 0.05,
-                    paddingRight: width * 0.05
-                }
-            ]}>
+            <View style={styles.header}>
                 {this.weekList.map(this._renderWeekHeader)}
             </View>
         );
@@ -61,7 +55,8 @@ export default class CalendarHeaderPage extends Component {
 const styles = StyleSheet.create({
     'header': {
         flexDirection: 'row',
-        backgroundColor: '#556a72'
+        backgroundColor: '#556a72',
+        justifyContent: 'center'
     },
     'header_item': {
         height: 33,

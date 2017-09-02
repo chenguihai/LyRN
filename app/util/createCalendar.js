@@ -38,7 +38,6 @@ module.exports = {
             monthObj.dayList = this.createDayList(year, month);
             this.calendar.push(monthObj);
         }
-        console.log(this.calendar);
     },
 
     /**
@@ -52,12 +51,18 @@ module.exports = {
         const dayList = [];
         const dayNumofMonth = this.getDayNum(year, month); // 获取当前月份的总天数
         const weekofFirstDay = new Date(year, month - 1, 1).getDay(); // 获取当前月的第一天是星期几
+        const total = dayNumofMonth + weekofFirstDay;
+        const rest = 7 * Math.ceil(total / 7) - total;
 
         for (let i = 0; i < weekofFirstDay; i++) {
             dayList.push(null);
         }
         for (let i = 1; i <= dayNumofMonth; i++) {
             dayList.push(i);
+        }
+
+        for (let i = 0; i < rest; i++) {
+            dayList.push(null);
         }
 
         return dayList;
