@@ -58,14 +58,18 @@ const getHotCities = () => async (dispatch) => {
 };
 
 const getHistoryCities = () => async (dispatch) => {
-
-    const data = await Storage.getAllDataForKey('trainhistorycities');
-
-    console.log(data);
-    dispatch({
-        ...GET_HISTORY_CITY,
-        historycities: data
-    });
+    try {
+        const data = await Storage.getAllDataForKey('trainhistorycities');
+        
+        console.log(data);
+        dispatch({
+            ...GET_HISTORY_CITY,
+            historycities: data
+        });
+    } catch (err) {
+        console.log(err);
+    }
+    
 };
 
 const selectCity = (key, data) => (dispatch) => {
