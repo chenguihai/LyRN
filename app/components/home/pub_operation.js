@@ -10,6 +10,10 @@ export default class PubOperationComponent extends Component {
         data: PropTypes.array
     }
 
+    shouldComponentUpdate(nextProps) {
+        return this.props.data !== nextProps.data;
+    }
+
     _render(data) {
         return data.map((slideData, index) => 
             <View style={styles.slide} key={index}>

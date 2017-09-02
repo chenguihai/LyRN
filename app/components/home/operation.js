@@ -9,6 +9,10 @@ export default class OperationComponent extends Component {
         data: PropTypes.array
     }
 
+    shouldComponentUpdate(nextProps) {
+        return this.props.data !== nextProps.data;
+    }
+
     _render(data) {
         return data.map((rowData, index) => 
             <View style={styles.row} key={index}>

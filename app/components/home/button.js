@@ -13,6 +13,10 @@ export default class ButtonComponent extends Component {
         title: PropTypes.string
     }
 
+    shouldComponentUpdate() {
+        return false;
+    }
+
     render() {
         const { width } = Dimensions.get('window');
         const { title } = this.props;

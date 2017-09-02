@@ -14,6 +14,7 @@ export default class BannerComponent extends Component {
     static propTypes = {
         data: PropTypes.array
     }
+
     render() {
         const { data } = this.props;
         
