@@ -17,7 +17,7 @@ class QueryCityComponent extends Component {
         toCity: PropTypes.string,
         selectFromCity: PropTypes.func,
         selectToCity: PropTypes.func,
-        changeCityPosition: PropTypes.func
+        switchCity: PropTypes.func
     }
 
     selectFromCity = () => {
@@ -33,9 +33,9 @@ class QueryCityComponent extends Component {
     }
 
     handlePress = () => {
-        const { changeCityPosition } = this.props;
+        const { switchCity } = this.props;
 
-        changeCityPosition && changeCityPosition();
+        switchCity && switchCity();
     }
 
     render() {

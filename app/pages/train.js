@@ -65,7 +65,7 @@ class TrainPage extends Component {
         });
     }
 
-    changeCityPosition = () => {
+    switchCity = () => {
         const { TrainfromCity, TraintoCity, selectCity } = this.props;
 
         InteractionManager.runAfterInteractions(() => {
@@ -97,7 +97,7 @@ class TrainPage extends Component {
                         selectToCity={() => this.selectCity('toCity')}
                         fromCity={TrainfromCity.Name}
                         toCity={TraintoCity.Name}
-                        changeCityPosition={this.changeCityPosition}
+                        switchCity={this.switchCity}
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
