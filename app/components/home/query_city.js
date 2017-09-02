@@ -4,8 +4,8 @@ import {
     StyleSheet,
     View,
     Text,
-    Image,
     Animated,
+    Image,
     TouchableOpacity
 } from 'react-native';
 
@@ -16,49 +16,84 @@ class QueryCityComponent extends Component {
         fromCity: PropTypes.string,
         toCity: PropTypes.string,
         selectFromCity: PropTypes.func,
-        selectToCity: PropTypes.func
+        selectToCity: PropTypes.func,
+        changeCityPosition: PropTypes.func
     }
 
     selectFromCity = () => {
         const { selectFromCity } = this.props;
 
-        selectFromCity && selectFromCity(); // eslint-disable-line
+        selectFromCity && selectFromCity();
     }
 
     selectToCity = () => {
         const { selectToCity } = this.props;
 
-        selectToCity && selectToCity(); // eslint-disable-line
+        selectToCity && selectToCity();
+    }
+
+    handlePress = () => {
+        const { changeCityPosition } = this.props;
+
+        changeCityPosition && changeCityPosition();
     }
 
     render() {
         const { fromCity, toCity } = this.props;
 
+        
         return (
             <View style={styles.query_city}>
                 <View style={styles.query_city_item}>
-                    <Text style={styles.city_txt}>出发城市</Text>
-                    <TouchableOpacity
-                        onPress={this.selectFromCity}
+                    <Text style={styles.city_desc}>出发城市</Text>
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            top: 40
+                        }}
                     >
-                        <Animated.Text style={[styles.city]}>
-                            {fromCity}
-                        </Animated.Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                        
+                            onPress={this.selectFromCity}
+                        >
+                            <Text 
+                                ref={(ref) => { 
+                                    this.fromCityRef = ref;
+                                }}
+                                style={styles.city_txt}
+                            >
+                                {fromCity}
+                            </Text>
+                        </TouchableOpacity>
+                    </Animated.View>
                 </View>
-                <Image style={styles.change_city} source={require('../../images/change_city.png')} />
+                <TouchableOpacity
+                    onPress={this.handlePress}
+                >
+                    <Image 
+                        style={styles.image} 
+                        source={require('../../images/change_city.png')} 
+                    />
+                </TouchableOpacity>
                 <View style={[
                     styles.query_city_item,
                     { alignItems: 'flex-end' }
                 ]}>
-                    <Text style={styles.city_txt}>到达城市</Text>
-                    <TouchableOpacity
-                        onPress={this.selectToCity}
+                    <Text style={styles.city_desc}>到达城市</Text>
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            top: 40
+                        }}
                     >
-                        <Text style={styles.city}>
-                            {toCity}
-                        </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={this.selectToCity}
+                        >
+                            <Text style={styles.city_txt}>
+                                {toCity}
+                            </Text>
+                        </TouchableOpacity>
+                    </Animated.View>
                 </View>
             </View>
         );
@@ -77,19 +112,21 @@ const styles = StyleSheet.create({
     'query_city_item': {
         flex: 1
     },
-    'city_txt': {
+    'city_desc': {
         fontSize: 12,
         lineHeight: 12,
         color: '#999',
         paddingTop: 15,
         paddingBottom: 14
     },
-    city: {
+    'city_txt': {
         fontSize: 28,
         color: '#333',
-        lineHeight: 28
+        lineHeight: 28,
+        // borderWidth: 1,
+        // borderColor: '#000',
     },
-    'change_city': {
+    'image': {
         width: 30,
         height: 30,
         position: 'relative',

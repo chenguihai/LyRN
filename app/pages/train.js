@@ -18,7 +18,7 @@ import PubOperationComponent from '../components/home/pub_operation';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TrainAction } from '../actions';
+import { TrainAction, CityAction } from '../actions';
 
 class TrainPage extends Component {
 
@@ -31,7 +31,8 @@ class TrainPage extends Component {
         TrainfromCity: PropTypes.object,
         TraintoCity: PropTypes.object,
         TraintripTime: PropTypes.number,
-        TraintripTimeDes: PropTypes.string
+        TraintripTimeDes: PropTypes.string,
+        selectCity: PropTypes.func
     }
 
     state = {
@@ -41,12 +42,6 @@ class TrainPage extends Component {
         this.props.getBanner();
         this.props.getNotice();
         this.props.getTab();
-    }
-
-    handleCheckbox = (field, val) => {
-        this.setState({
-            [field]: !val
-        });
     }
 
     selectCity(key) {
@@ -66,6 +61,17 @@ class TrainPage extends Component {
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('Calendar', {
                 routeName: navigation.state.routeName
+            });
+        });
+    }
+
+    changeCityPosition = () => {
+        const { TrainfromCity, TraintoCity, selectCity } = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            selectCity({
+                TrainfromCity: TraintoCity,
+                TraintoCity: TrainfromCity
             });
         });
     }
@@ -91,6 +97,7 @@ class TrainPage extends Component {
                         selectToCity={() => this.selectCity('toCity')}
                         fromCity={TrainfromCity.Name}
                         toCity={TraintoCity.Name}
+                        changeCityPosition={this.changeCityPosition}
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
@@ -145,7 +152,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     getBanner: bindActionCreators(TrainAction.getBanner, dispatch),
     getNotice: bindActionCreators(TrainAction.getNotice, dispatch),
-    getTab: bindActionCreators(TrainAction.getTab, dispatch)
+    getTab: bindActionCreators(TrainAction.getTab, dispatch),
+    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);

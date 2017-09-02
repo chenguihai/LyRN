@@ -72,10 +72,10 @@ const getHistoryCities = () => async (dispatch) => {
     
 };
 
-const selectCity = (key, data) => (dispatch) => {
+const selectCity = (data) => (dispatch) => {
     dispatch({
         ...SELECT_CITY,
-        obj: { [key]: data }
+        obj: data
     });
 };
 

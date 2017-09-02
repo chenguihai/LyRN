@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import {
     ScrollView,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -34,11 +35,13 @@ class CityPage extends Component {
     }
 
     componentWillMount() {
-        // Storage.clearMapForKey('trainhistorycities');
-        // 获取历史选择
-        this.props.getHistoryCities();
-        // 获取热门城市
-        this.props.getHotCities();
+        InteractionManager.runAfterInteractions(() => {
+            // Storage.clearMapForKey('trainhistorycities');
+            // 获取历史选择
+            this.props.getHistoryCities();
+            // 获取热门城市
+            this.props.getHotCities();
+        });
     }
 
     addToHistoryCities(data, index) {
@@ -60,8 +63,9 @@ class CityPage extends Component {
         const { state, goBack } = navigation;
         const { routeName, key } = state.params;
         
-        this.props.selectCity(`${routeName}${key}`, data);
-
+        this.props.selectCity({
+            [`${routeName}${key}`]: data
+        });
         goBack();
 
         if (isAddToHistoryCities) {
