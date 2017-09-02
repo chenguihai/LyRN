@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import {
     ScrollView,
-    StyleSheet,
-    InteractionManager
+    StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -16,7 +15,7 @@ import CitySingleList from '../components/city/city_single_list.js';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { CityAction, TrainAction } from '../actions';
+import { CityAction } from '../actions';
 
 class CityPage extends Component {
 
@@ -24,7 +23,8 @@ class CityPage extends Component {
         navigation: PropTypes.object,
         hotcities: PropTypes.array,
         getHotCities: PropTypes.func,
-        selectCity: PropTypes.func
+        selectCity: PropTypes.func,
+        getCityList: PropTypes.func
     }
 
     static defaultProps = {
@@ -37,9 +37,15 @@ class CityPage extends Component {
     }
 
     selectCity = (data) => {
+
+        /**
+         * routeName {String} 上一个页面的routeName
+         * key {String} fromCity或者toCity
+         */
+
         const { state, goBack } = this.props.navigation;
         const { routeName, key } = state.params;
-
+        
         this.props.selectCity(`${routeName}${key}`, data);
 
         goBack();
@@ -59,7 +65,7 @@ class CityPage extends Component {
         for (let i = 0; i < 1; i++) {
             history.push(city);
         }
-        const { hotcities } = this.props;
+        const { hotcities, getCityList } = this.props;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -75,7 +81,9 @@ class CityPage extends Component {
                 {hotcities.length === 0 ? null : <CityListBlock handlePress={this.selectCity} data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
-                <CityLetterComponent />
+                <CityLetterComponent
+                    handlePress={getCityList}
+                />
 
                 <CitySingleList handlePress={this.selectCity} />
             </ScrollView>
@@ -96,7 +104,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
-    selectCity: bindActionCreators(CityAction.selectCity, dispatch)
+    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
+    getCityList: bindActionCreators(CityAction.getCityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityPage);
