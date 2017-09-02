@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import {
     View,
     ScrollView,
-    Text,
+    InteractionManager,
     StyleSheet
 } from 'react-native';
-import _ from '../util';
 
 import BannerComponent from '../components/home/banner';
 import NoticeComponent from '../components/home/notice';
@@ -58,6 +57,16 @@ class BusPage extends Component {
         });
     }
 
+    selectDate = () => {
+        const { navigation } = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('Calendar', {
+                routeName: navigation.state.routeName
+            });
+        });
+    }
+
     render() {
         const { Bus, Train, BusfromCity, BustoCity, BustripTime, BustripTimeDes } = this.props;
         const { data, notice } = Bus;
@@ -84,6 +93,7 @@ class BusPage extends Component {
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent 
+                        handlePress={this.selectDate}
                         tripTime={BustripTime}
                         tripTimeDes={BustripTimeDes}
                     />

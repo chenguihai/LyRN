@@ -60,6 +60,16 @@ class FlightPage extends Component {
         });
     }
 
+    selectDate = () => {
+        const { navigation } = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('Calendar', {
+                routeName: navigation.state.routeName
+            });
+        });
+    }
+
     render() {
         const { Flight, Train, FlightfromCity, FlighttoCity, FlighttripTime, FlighttripTimeDes } = this.props;
         const { data, notice } = Flight;
@@ -86,6 +96,7 @@ class FlightPage extends Component {
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent 
+                        handlePress={this.selectDate}
                         tripTime={FlighttripTime}
                         tripTimeDes={FlighttripTimeDes}
                     />

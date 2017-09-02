@@ -32,10 +32,8 @@ class CityPage extends Component {
     }
 
     componentWillMount() {
-        InteractionManager.runAfterInteractions(() => {
-            // 获取热门城市
-            this.props.getHotCities();
-        });
+        // 获取热门城市
+        this.props.getHotCities();
     }
 
     selectCity = (data) => {

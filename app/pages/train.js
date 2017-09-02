@@ -63,8 +63,10 @@ class TrainPage extends Component {
     selectDate = () => {
         const { navigation } = this.props;
 
-        navigation.navigate('Calendar', {
-            routeName: navigation.state.routeName
+        InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('Calendar', {
+                routeName: navigation.state.routeName
+            });
         });
     }
 

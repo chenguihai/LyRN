@@ -25,10 +25,8 @@ class CalenDarPage extends Component {
     }
 
     componentDidMount() {
-        InteractionManager.runAfterInteractions(() => {
-            this.setState({
-                calendar: createCalendar.init()
-            });
+        this.setState({
+            calendar: createCalendar.init()
         });
     }
 
