@@ -3,7 +3,7 @@ import axios from 'axios';
 module.exports = {
     // 热门城市
     trainhotcities(params) {
-        const { resolve, reject, syncParams } = params;
+        const { resolve } = params;
         const uri = 'http://www.ly.com/huochepiao/resource/station/GetHotCityListV1';
 
         axios.get(uri, {
@@ -16,7 +16,7 @@ module.exports = {
         })
             .then((response) => {
 
-                alert('从远程获取');
+                console.log('从远程获取');
 
                 const
                     { data = {}, headers } = response || {},

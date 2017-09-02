@@ -1,6 +1,7 @@
-import { GET_HOT_CITY, GET_CITY_LIST, SELECT_CITY } from '../constants/city';
+import { GET_HISTORY_CITY, GET_HOT_CITY, GET_CITY_LIST, SELECT_CITY } from '../constants/city';
 
 const initialState = {
+    historycities: [], // 历史选择
     hotcities: [], // 热门城市
     cityList: [],
     TrainfromCity: { Name: '上海' },
@@ -26,6 +27,12 @@ export default function city(state = initialState, action) {
     let nextState;
 
     switch (action.type) {
+    case GET_HISTORY_CITY:
+        nextState = {
+            ...state,
+            historycities: action.historycities
+        };
+        break;
     case GET_HOT_CITY:
         nextState = {
             ...state,

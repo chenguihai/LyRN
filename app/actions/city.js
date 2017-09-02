@@ -1,6 +1,7 @@
 import * as Types from '../constants/city';
 import _ from '../util';
 
+const GET_HISTORY_CITY = { type: Types.GET_HISTORY_CITY };
 const GET_HOT_CITY = { type: Types.GET_HOT_CITY };
 const GET_CITY_LIST = { type: Types.GET_CITY_LIST };
 
@@ -37,7 +38,7 @@ const getCityList = (cityName) => async (dispatch) => {
 const getHotCities = () => async (dispatch) => {
 
     // Storage.remove({ key: 'trainhotcities' });
-    const localData = await Storage.load({
+    const data = await Storage.load({
         key: 'trainhotcities',
         // autoSync(默认为true)意味着在没有找到数据或数据过期时自动调用相应的sync方法
         autoSync: true,
@@ -47,13 +48,24 @@ const getHotCities = () => async (dispatch) => {
         syncInBackground: true
     });
 
-    const { list = [] } = localData;
+    const { list = [] } = data;
 
     dispatch({
         ...GET_HOT_CITY,
         hotcities: list
     });
 
+};
+
+const getHistoryCities = () => async (dispatch) => {
+
+    const data = await Storage.getAllDataForKey('trainhistorycities');
+
+    console.log(data);
+    dispatch({
+        ...GET_HISTORY_CITY,
+        historycities: data
+    });
 };
 
 const selectCity = (key, data) => (dispatch) => {
@@ -65,6 +77,7 @@ const selectCity = (key, data) => (dispatch) => {
 
 export default {
     getCityList,
+    getHistoryCities,
     getHotCities,
     selectCity
 };

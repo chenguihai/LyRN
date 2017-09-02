@@ -21,7 +21,9 @@ class CityPage extends Component {
 
     static propTypes = {
         navigation: PropTypes.object,
+        historycities: PropTypes.array,
         hotcities: PropTypes.array,
+        getHistoryCities: PropTypes.func,
         getHotCities: PropTypes.func,
         selectCity: PropTypes.func,
         getCityList: PropTypes.func
@@ -32,40 +34,47 @@ class CityPage extends Component {
     }
 
     componentWillMount() {
+        // Storage.clearMapForKey('trainhistorycities');
+        // 获取历史选择
+        this.props.getHistoryCities();
         // 获取热门城市
         this.props.getHotCities();
     }
 
-    selectCity = (data) => {
+    addToHistoryCities(data, index) {
+        Storage.save({
+            key: 'trainhistorycities',
+            id: `${index}`,
+            data,
+            expires: 1000 * 60 * 60 * 2
+        });
+    }
+
+    selectCity = (isAddToHistoryCities, data) => {
 
         /**
          * routeName {String} 上一个页面的routeName
          * key {String} fromCity或者toCity
          */
-
-        const { state, goBack } = this.props.navigation;
+        const { historycities, navigation } = this.props;
+        const { state, goBack } = navigation;
         const { routeName, key } = state.params;
         
         this.props.selectCity(`${routeName}${key}`, data);
 
         goBack();
+
+        if (isAddToHistoryCities) {
+            const isHas = historycities.some((item) => {
+                return item.Name === data.Name;
+            });
+    
+            !isHas && this.addToHistoryCities(data, historycities.length);
+        }
     }
 
     render() {
-
-        const city = {
-            'ID': null,
-            'Name': '北京',
-            'QPY': 'beijing',
-            'JPY': 'bj',
-            'CityName': null
-        };
-        const history = [];
-
-        for (let i = 0; i < 1; i++) {
-            history.push(city);
-        }
-        const { hotcities, getCityList } = this.props;
+        const { historycities, hotcities, getCityList } = this.props;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -74,18 +83,22 @@ class CityPage extends Component {
                 <CityListTitle title="当前城市" />
                 <CityLocationComponent data={[{ Name: '北京' }]} />
 
-                <CityListTitle title="历史选择" />
-                <CityListBlock data={history} />
+                {historycities.length === 0 ? null 
+                    : <CityListTitle title="历史选择" />}
+                {historycities.length === 0 ? null 
+                    : <CityListBlock handlePress={this.selectCity.bind(this, false)} data={historycities} />}  
 
-                {hotcities.length === 0 ? null : <CityListTitle title="热门" />}
-                {hotcities.length === 0 ? null : <CityListBlock handlePress={this.selectCity} data={hotcities} />}
+                {hotcities.length === 0 ? null 
+                    : <CityListTitle title="热门" />}
+                {hotcities.length === 0 ? null 
+                    : <CityListBlock handlePress={this.selectCity.bind(this, true)} data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent
                     handlePress={getCityList}
                 />
 
-                <CitySingleList handlePress={this.selectCity} />
+                <CitySingleList handlePress={this.selectCity.bind(this, true)} />
             </ScrollView>
         );
     }
@@ -99,10 +112,12 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+    historycities: state.City.historycities,
     hotcities: state.City.hotcities
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    getHistoryCities: bindActionCreators(CityAction.getHistoryCities, dispatch),
     getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
     selectCity: bindActionCreators(CityAction.selectCity, dispatch),
     getCityList: bindActionCreators(CityAction.getCityList, dispatch)
