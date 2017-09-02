@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     Dimensions
 } from 'react-native';
-import _ from '../../util';
 
 export default class CityListBlock extends Component {
 
@@ -32,49 +31,25 @@ export default class CityListBlock extends Component {
      * @param {number} index 
      */
 
-    _renderBlock = (data, index) => {
+    _renderItem = (data, index) => {
         return (
             <TouchableOpacity
                 key={index}
                 style={[
-                    styles.block,
+                    styles.item,
                     {
-                        width: this.innerWidth * 0.3,
-                        marginRight: this.innerWidth * .1 / 2 // eslint-disable-line
+                        marginTop: index < 3 ? 0 : this.itemGutter,
+                        marginLeft: index % 3 === 0 ? this.gutter : this.itemGutter,
+                        width: this.itemWidth
                     }
                 ]}
-                onPress={() => { this.handlePress(data) }}
+                onPress={() => {
+                    this.handlePress(data); 
+                }}
             >
-                <Text style={styles.block_txt}>{data.Name}</Text>
+                <Text style={styles.txt}>{data.Name}</Text>
             </TouchableOpacity>
         );
-    }
-
-    /**
-     * 渲染每一行
-     * @param {array} data 
-     */
-
-    _renderRow(data) {
-
-        return data.map((rowData, rowIndex) =>
-            <View
-                key={rowIndex}
-                style={[
-                    styles.row,
-                    {
-                        // 如果是第一行不用设置marginTop
-                        marginTop: rowIndex !== 0 ? this.innerWidth * .1 / 2 : 0 // eslint-disable-line
-                    }
-                ]}
-            >
-                {
-                    // 渲染每个一个城市块
-                    rowData.map(this._renderBlock) // eslint-disable-line no-unused-vars
-                }
-            </View>
-        );
-
     }
 
     render() {
@@ -83,20 +58,18 @@ export default class CityListBlock extends Component {
 
         this.gutter = width * 0.1 / 2;
         this.innerWidth = width * 0.9;
+        this.itemWidth = this.innerWidth * 0.3;
+        this.itemGutter = this.innerWidth * 0.05;
 
         return (
             <View style={[
                 styles.container,
                 {
                     paddingTop: this.gutter,
-                    paddingBottom: this.gutter,
-                    paddingLeft: this.gutter,
-                    paddingRight: this.gutter
+                    paddingBottom: this.gutter
                 }
             ]}>
-                <View style={styles.inner}>
-                    {this._renderRow(_.chunk(data, 3))}
-                </View>
+                {data.map(this._renderItem)}
             </View>
         );
     }
@@ -104,14 +77,11 @@ export default class CityListBlock extends Component {
 
 const styles = StyleSheet.create({
     'container': {
-        backgroundColor: '#FFF'
-    },
-    'inner': {
-    },
-    'row': {
+        backgroundColor: '#FFF',
         flexDirection: 'row',
+        flexWrap: 'wrap'
     },
-    'block': {
+    'item': {
         height: 35,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#dedfe0',
@@ -119,7 +89,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 5
     },
-    'block_txt': {
+    'txt': {
         fontSize: 14,
         color: '#2d2d2d'
     }
