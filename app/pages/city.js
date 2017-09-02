@@ -61,7 +61,6 @@ class CityPage extends Component {
         for (let i = 0; i < 1; i++) {
             history.push(city);
         }
-
         const { hotcities } = this.props;
 
         return (

@@ -36,7 +36,9 @@ class CalenDarPage extends Component {
         const { navigation, selectDate } = this.props;
 
         selectDate(navigation.state.params.routeName, time);
-        navigation.goBack();
+        InteractionManager.runAfterInteractions(() => {
+            navigation.goBack();
+        });
     }
 
     render() {

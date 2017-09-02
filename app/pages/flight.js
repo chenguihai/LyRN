@@ -30,7 +30,9 @@ class FlightPage extends Component {
         Flight: PropTypes.object,
         navigation: PropTypes.object,
         FlightfromCity: PropTypes.object,
-        FlighttoCity: PropTypes.object
+        FlighttoCity: PropTypes.object,
+        FlighttripTime: PropTypes.number,
+        FlighttripTimeDes: PropTypes.string
     }
 
     state = {
@@ -59,7 +61,7 @@ class FlightPage extends Component {
     }
 
     render() {
-        const { Flight, Train, FlightfromCity, FlighttoCity } = this.props;
+        const { Flight, Train, FlightfromCity, FlighttoCity, FlighttripTime, FlighttripTimeDes } = this.props;
         const { data, notice } = Flight;
         const { data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data;
@@ -83,7 +85,10 @@ class FlightPage extends Component {
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
-                    <QueryDateComponent date="8月15日" description="明日出发" />
+                    <QueryDateComponent 
+                        tripTime={FlighttripTime}
+                        tripTimeDes={FlighttripTimeDes}
+                    />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
                         <CheckboxComponent
@@ -127,7 +132,9 @@ const mapStateToProps = (state) => ({
     Flight: state.Flight,
     Train: state.Train,
     FlightfromCity: state.City.FlightfromCity,
-    FlighttoCity: state.City.FlighttoCity
+    FlighttoCity: state.City.FlighttoCity,
+    FlighttripTime: state.Date.FlighttripTime,
+    FlighttripTimeDes: state.Date.FlighttripTimeDes
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,6 +4,7 @@ import {
     View,
     ScrollView,
     StyleSheet,
+    InteractionManager
 } from 'react-native';
 
 import BannerComponent from '../components/home/banner';
@@ -51,9 +52,11 @@ class TrainPage extends Component {
     selectCity(key) {
         const { navigation } = this.props;
 
-        navigation.navigate('City', {
-            key,
-            routeName: navigation.state.routeName
+        InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('City', {
+                key,
+                routeName: navigation.state.routeName
+            });
         });
     }
 
@@ -92,7 +95,7 @@ class TrainPage extends Component {
                     <QueryDateComponent
                         handlePress={this.selectDate}
                         tripTime={TraintripTime}
-                        tripTimeDesc={TraintripTimeDes}
+                        tripTimeDes={TraintripTimeDes}
                     />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>

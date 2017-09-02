@@ -29,7 +29,9 @@ class BusPage extends Component {
         Bus: PropTypes.object,
         navigation: PropTypes.object,
         BusfromCity: PropTypes.object,
-        BustoCity: PropTypes.object
+        BustoCity: PropTypes.object,
+        BustripTime: PropTypes.number,
+        BustripTimeDes: PropTypes.string
     }
 
     state = {
@@ -57,7 +59,7 @@ class BusPage extends Component {
     }
 
     render() {
-        const { Bus, Train, BusfromCity, BustoCity } = this.props;
+        const { Bus, Train, BusfromCity, BustoCity, BustripTime, BustripTimeDes } = this.props;
         const { data, notice } = Bus;
         const { data2 } = Train;
         const { Adverts = { List: [] }, Icons = { List: [] } } = data;
@@ -81,7 +83,10 @@ class BusPage extends Component {
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
-                    <QueryDateComponent date="8月15日" description="明日出发" />
+                    <QueryDateComponent 
+                        tripTime={BustripTime}
+                        tripTimeDes={BustripTimeDes}
+                    />
                     {/* 查询日期结束  */}
                     {/* 查询按钮开始  */}
                     <ButtonComponent title="汽车票查询" />
@@ -108,7 +113,9 @@ const mapStateToProps = (state) => ({
     Bus: state.Bus,
     Train: state.Train,
     BusfromCity: state.City.BusfromCity,
-    BustoCity: state.City.BustoCity
+    BustoCity: state.City.BustoCity,
+    BustripTime: state.Date.BustripTime,
+    BustripTimeDes: state.Date.BustripTimeDes
 });
 
 const mapDispatchToProps = (dispatch) => ({

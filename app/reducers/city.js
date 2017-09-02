@@ -26,26 +26,26 @@ export default function city(state = initialState, action) {
     let nextState;
 
     switch (action.type) {
-        case GET_HOT_CITY:
-            nextState = {
-                ...state,
-                hotcities: action.hotcities
-            };
-            break;
-        case GET_CITY_LIST:
-            nextState = {
-                ...state,
-                cityList: action.cityList
-            };
-            break;
-        case SELECT_CITY:
-            nextState = {
-                ...state,
-                ...action.obj
-            };
-            break;
-        default:
-            nextState = { ...state };
+    case GET_HOT_CITY:
+        nextState = {
+            ...state,
+            hotcities: action.hotcities
+        };
+        break;
+    case GET_CITY_LIST:
+        nextState = {
+            ...state,
+            cityList: action.cityList
+        };
+        break;
+    case SELECT_CITY:
+        nextState = {
+            ...state,
+            ...action.obj
+        };
+        break;
+    default:
+        nextState = { ...state };
     }
 
     return nextState || state;
