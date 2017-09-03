@@ -31,14 +31,14 @@ export default class CalendarMonthComponent extends Component {
 
     _recentList = [];
 
-    handlePress = (time, txtColor, bgColor) => {
-        if (this._recentList.length > 0) {
-            this._recentList.forEach((item) => {
-                const { ref, style } = item;
+    handlePress = (time) => {
+        // if (this._recentList.length > 0) {
+        //     this._recentList.forEach((item) => {
+        //         const { ref, style } = item;
 
-                ref.setNativeProps({ style });
-            });
-        }
+        //         ref.setNativeProps({ style });
+        //     });
+        // }
 
         this._refView[time].setNativeProps({
             style: { backgroundColor: themeColor }
@@ -48,18 +48,18 @@ export default class CalendarMonthComponent extends Component {
                 color: '#FFF'
             }
         });
-        this._recentList[0] = {
-            ref: this._refView[time],
-            style: {
-                backgroundColor: bgColor
-            }
-        };
-        this._recentList[1] = {
-            ref: this._refText[time],
-            style: {
-                color: txtColor
-            }
-        };
+        // this._recentList[0] = {
+        //     ref: this._refView[time],
+        //     style: {
+        //         backgroundColor: bgColor
+        //     }
+        // };
+        // this._recentList[1] = {
+        //     ref: this._refText[time],
+        //     style: {
+        //         color: txtColor
+        //     }
+        // };
         const { onSelect } = this.props;
 
         if (onSelect) {
@@ -83,10 +83,11 @@ export default class CalendarMonthComponent extends Component {
         // ? '#ccc' 
         // : index === 0 && time !== '' || index === length - 1 && length === 7 ? themeColor : '#000';
         const handlePress = time < _.getToday() ? null : this.handlePress;
-
+        const txtColor = time < _.getToday() ? '#ccc' : '#000';
+        
         return (
             <TouchableOpacity
-                onPress={() => handlePress(time, txtColor, bgColor)}
+                onPress={() => handlePress(time)}
                 style={[
                     styles.each_day,
                     { width: this.innerWidth / 7 }
@@ -94,7 +95,7 @@ export default class CalendarMonthComponent extends Component {
             >
                 <View 
                     ref={(ref) => { 
-                        this._refView[time] = ref;
+                        time !== '' && (this._refView[time] = ref);
                     }} style={[
                         styles.each_day_number,
                         {
@@ -104,10 +105,10 @@ export default class CalendarMonthComponent extends Component {
                 >
                     <Text 
                         ref={(ref) => { 
-                            this._refText[time] = ref;
+                            time !== '' && (this._refText[time] = ref);
                         }} 
                         style={{
-                            // color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
+                            color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
                         }}
                     >{item}</Text>
                 </View>
