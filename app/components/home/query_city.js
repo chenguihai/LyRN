@@ -38,7 +38,7 @@ class QueryCityComponent extends Component {
         selectCity: PropTypes.func
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentDidUpdate(nextProps, nextState) {
         if (this.isSwitch) {
             InteractionManager.runAfterInteractions(() => {
                 Animated.parallel([
@@ -78,16 +78,16 @@ class QueryCityComponent extends Component {
 
         Animated.parallel([
             Animated.timing(this.state.left, {
-                toValue: this.innerWidth - fromLayout.width / 2 - fromLayout.width,
-                duration: 150
+                toValue: this.innerWidth - fromLayout.width,
+                duration: 100
             }),
             Animated.timing(this.state.right, {
-                toValue: this.innerWidth - toLayout.width / 2 - toLayout.width,
-                duration: 150
+                toValue: this.innerWidth - toLayout.width,
+                duration: 100
             }),
             Animated.timing(this.state.opacity, {
                 toValue: 0,
-                duration: 150
+                duration: 100
             })
         ]).start();
         this.isSwitch = true;
@@ -97,11 +97,9 @@ class QueryCityComponent extends Component {
     switchCity = () => {
         const { fromKey, toKey, fromCity, toCity, selectCity } = this.props;
 
-        InteractionManager.runAfterInteractions(() => {
-            selectCity({
-                [fromKey]: toCity,
-                [toKey]: fromCity
-            });
+        selectCity({
+            [fromKey]: toCity,
+            [toKey]: fromCity
         });
     }
 
