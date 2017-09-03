@@ -21,7 +21,7 @@ export default class BannerComponent extends Component {
         return (
             <Swiper 
                 height={bannerHeight} 
-                autoplay={true} 
+                autoplay={false} 
                 dotStyle={{
                     width: 6,
                     height: 6
