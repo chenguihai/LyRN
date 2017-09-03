@@ -8,14 +8,14 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
-    findNodeHandle,
-    UIManager,
     InteractionManager
 } from 'react-native';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CityAction } from '../../actions';
+
+import _ from '../../util';
 
 class QueryCityComponent extends Component {
 
@@ -36,35 +36,6 @@ class QueryCityComponent extends Component {
         fromKey: PropTypes.string,
         toKey: PropTypes.string,
         selectCity: PropTypes.func
-    }
-
-    selectFromCity = () => {
-        const { selectFromCity } = this.props;
-
-        selectFromCity && selectFromCity();
-    }
-
-    selectToCity = () => {
-        const { selectToCity } = this.props;
-
-        selectToCity && selectToCity();
-    }
-
-    layout(ref) {
-        const handle = findNodeHandle(ref);
-        
-        return new Promise((resolve) => {
-            UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
-                resolve({
-                    x,
-                    y,
-                    width,
-                    height,
-                    pageX,
-                    pageY
-                });
-            });
-        });
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -89,9 +60,21 @@ class QueryCityComponent extends Component {
         }
     }
 
+    selectFromCity = () => {
+        const { selectFromCity } = this.props;
+
+        selectFromCity && selectFromCity();
+    }
+
+    selectToCity = () => {
+        const { selectToCity } = this.props;
+
+        selectToCity && selectToCity();
+    }
+
     handlePress = async () => {
-        const fromLayout = await this.layout(this.fromRef);
-        const toLayout = await this.layout(this.toRef);
+        const fromLayout = await _.getLayout(this.fromRef);
+        const toLayout = await _.getLayout(this.toRef);
 
         Animated.parallel([
             Animated.timing(this.state.left, {

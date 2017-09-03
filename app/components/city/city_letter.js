@@ -14,6 +14,7 @@ export default class CityLetterComponent extends Component {
 
     static propTypes = {
         handlePress: PropTypes.func,
+        layout: PropTypes.func,
     }
 
     blockList = [];
@@ -71,13 +72,18 @@ export default class CityLetterComponent extends Component {
         this.innerWidth = width * 0.9;
 
         return (
-            <View style={[
-                styles.container,
-                {
-                    paddingTop: this.gutter,
-                    paddingBottom: this.gutter
-                }
-            ]}>
+            <View 
+                style={[
+                    styles.container,
+                    {
+                        paddingTop: this.gutter,
+                        paddingBottom: this.gutter
+                    }
+                ]}
+                onLayout={({ nativeEvent: e }) => {
+                    this.props.layout(e);
+                }}
+            >
                 {
                     letter.map(this._renderItem)
                 }

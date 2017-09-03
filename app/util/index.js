@@ -1,6 +1,10 @@
 /* eslint-disable no-multi-assign,id-length,no-empty-function */
 
-import { StyleSheet, Platform } from 'react-native';
+import { 
+    StyleSheet,
+    findNodeHandle,
+    UIManager
+} from 'react-native';
 import axios from 'axios';
 import lodash from './lodash.custom.min.js';
 
@@ -14,9 +18,20 @@ Util.prototype = {
 
 Util.prototype.debounce = lodash.debounce;
 
+/**
+ * @description 判断元素是否为null
+ * @param {*} 要判断的元素
+ */
+
 Util.prototype.isNull = function (value) {
     return value === null;
 };
+
+/**
+ * @description 将数组分割成相等数量的块
+ * @param {array} arr 要切割的数组
+ * @param {number} num 块的数量 
+ */
 
 Util.prototype.chunk = function (arr, num) {
     num = Number(num) || 1;
@@ -32,10 +47,33 @@ Util.prototype.chunk = function (arr, num) {
     return ret;
 };
 
+/** 
+ * @description 获取组件的宽度和高度及位置信息
+ * @param {ReactElement} ref 组件实例
+ * @returns {promise} x,y组件的相对坐标,width组件的宽度,height组件的高度,pageX,pageY组件相对于屏幕的绝对坐标
+ */
+
+Util.prototype.getLayout = function(ref) {
+    const handle = findNodeHandle(ref);
+    
+    return new Promise((resolve) => {
+        UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+            resolve({
+                x, 
+                y, 
+                width, 
+                height, 
+                pageX, 
+                pageY
+            });
+        });
+    });
+};
+
 // ===== ajax helpers
 
 Util.prototype.get = (uri, data) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         axios.get(_.prefixUri + uri, {
             params: data
         })
@@ -68,6 +106,12 @@ Util.prototype.get = (uri, data) => {
 
 // ===== date helpers
 
+/**
+ * @description 重置时间
+ * @param {date} date 需要重置的时间
+ * @returns {date}
+ */
+
 Util.prototype.resetTime = function (date) {
     date.setHours(0);
     date.setMinutes(0);
@@ -77,13 +121,25 @@ Util.prototype.resetTime = function (date) {
     return Number(date);
 };
 
+/**
+ * @description 获取今天凌晨0点0时0分的时间戳(毫秒为单位)
+ */
+
 Util.prototype.getToday = function () {
     return _.resetTime(new Date());
 };
 
+/**
+ * @description 获取明天凌晨0点0时0分的时间戳(毫秒为单位)
+ */
+
 Util.prototype.getTomorrow = function () {
     return _.resetTime(new Date(_.getToday() + 8.64e7));
 };
+
+/**
+ * @description 获取后天凌晨0点0时0分的时间戳(毫秒为单位)
+ */
 
 Util.prototype.getAfterTomorrow = function () {
     return _.resetTime(new Date(_.getTomorrow() + 8.64e7));

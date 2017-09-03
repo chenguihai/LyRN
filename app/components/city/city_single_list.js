@@ -4,7 +4,8 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    InteractionManager
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -13,13 +14,16 @@ class CityListComponent extends Component {
 
     static propTypes = {
         cityList: PropTypes.array,
-        handlePress: PropTypes.func
+        handlePress: PropTypes.func,
+        cityListUpdate: PropTypes.func
     }
 
     handlePress = (data) => {
         const { handlePress } = this.props;
 
-        handlePress && handlePress(data); // eslint-disable-line
+        InteractionManager.runAfterInteractions(() => {
+            handlePress && handlePress(data);
+        });
     }
 
     _renderRow(data) {
@@ -28,12 +32,18 @@ class CityListComponent extends Component {
                 <TouchableOpacity
                     style={styles.row}
                     key={index}
-                    onPress={() => { this.handlePress(item) }}
+                    onPress={() => {
+                        this.handlePress(item); 
+                    }}
                 >
                     <Text style={styles.txt}>{item.Name}</Text>
                 </TouchableOpacity>
             )
         );
+    }
+
+    componentDidUpdate() {
+        this.props.cityList.length > 0 && this.props.cityListUpdate();
     }
 
     render() {

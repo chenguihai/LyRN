@@ -34,6 +34,9 @@ class CityPage extends Component {
         hotcities: []
     }
 
+    scrollViewRef = null;
+    letterScrollTop = 0;
+
     componentWillMount() {
         InteractionManager.runAfterInteractions(() => {
             // Storage.clearMapForKey('trainhistorycities');
@@ -77,11 +80,34 @@ class CityPage extends Component {
         }
     }
 
+    getLetterScrollTop = (e) => {
+        this.letterScrollTop = e.layout.y;
+    }
+
+    sleep() {
+        return new Promise((resolve) => setTimeout(resolve, 50));
+    }
+
+    cityListUpdate = async () => {
+        // 首次获取更多城市后,scrollView高度并不会马上更新
+        await this.sleep();
+        this.scrollViewRef && this.scrollViewRef.scrollTo({ 
+            x: 0, 
+            y: this.letterScrollTop, 
+            animated: true 
+        });
+    }
+
     render() {
         const { historycities, hotcities, getCityList } = this.props;
 
         return (
-            <ScrollView style={styles.wrap}>
+            <ScrollView 
+                ref={(ref) => { 
+                    this.scrollViewRef = ref;
+                }}
+                style={styles.wrap}
+            >
                 <SearchComponent />
 
                 <CityListTitle title="当前城市" />
@@ -99,10 +125,14 @@ class CityPage extends Component {
 
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent
+                    layout={this.getLetterScrollTop}
                     handlePress={getCityList}
                 />
 
-                <CitySingleList handlePress={this.selectCity.bind(this, true)} />
+                <CitySingleList 
+                    handlePress={this.selectCity.bind(this, true)} 
+                    cityListUpdate={this.cityListUpdate}
+                />
             </ScrollView>
         );
     }
