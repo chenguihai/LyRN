@@ -69,7 +69,9 @@ class QueryCityComponent extends Component {
     selectToCity = () => {
         const { selectToCity } = this.props;
 
-        selectToCity && selectToCity();
+        InteractionManager.runAfterInteractions(() => {
+            selectToCity && selectToCity();
+        });
     }
 
     handlePress = async () => {
