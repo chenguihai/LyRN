@@ -87,8 +87,10 @@ class BusPage extends Component {
                     <QueryCityComponent
                         selectFromCity={() => this.selectCity('fromCity')}
                         selectToCity={() => this.selectCity('toCity')}
-                        fromCity={BusfromCity.Name}
-                        toCity={BustoCity.Name}
+                        fromCity={BusfromCity}
+                        toCity={BustoCity}
+                        fromKey="BusfromCity"
+                        toKey="BustoCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}

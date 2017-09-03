@@ -13,6 +13,9 @@ import {
     InteractionManager
 } from 'react-native';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { CityAction } from '../../actions';
 
 class QueryCityComponent extends Component {
 
@@ -26,11 +29,13 @@ class QueryCityComponent extends Component {
     isSwitch = false;
 
     static propTypes = {
-        fromCity: PropTypes.string,
-        toCity: PropTypes.string,
+        fromCity: PropTypes.object,
+        toCity: PropTypes.object,
         selectFromCity: PropTypes.func,
         selectToCity: PropTypes.func,
-        switchCity: PropTypes.func
+        fromKey: PropTypes.string,
+        toKey: PropTypes.string,
+        selectCity: PropTypes.func
     }
 
     selectFromCity = () => {
@@ -68,15 +73,15 @@ class QueryCityComponent extends Component {
                 Animated.parallel([
                     Animated.timing(nextState.left, {
                         toValue: 0,
-                        duration: 500
+                        duration: 150
                     }),
                     Animated.timing(nextState.right, {
                         toValue: 0,
-                        duration: 500
+                        duration: 150
                     }),
                     Animated.timing(nextState.opacity, {
                         toValue: 1,
-                        duration: 500
+                        duration: 150
                     })
                 ]).start();
                 this.isSwitch = false;
@@ -85,27 +90,35 @@ class QueryCityComponent extends Component {
     }
 
     handlePress = async () => {
-        const { switchCity } = this.props;
         const fromLayout = await this.layout(this.fromRef);
         const toLayout = await this.layout(this.toRef);
 
         Animated.parallel([
             Animated.timing(this.state.left, {
-                toValue: this.innerWidth - fromLayout.width,
-                duration: 500
+                toValue: this.innerWidth - fromLayout.width / 2 - fromLayout.width,
+                duration: 150
             }),
             Animated.timing(this.state.right, {
-                toValue: this.innerWidth - toLayout.width,
-                duration: 500
+                toValue: this.innerWidth - toLayout.width / 2 - toLayout.width,
+                duration: 150
             }),
             Animated.timing(this.state.opacity, {
                 toValue: 0,
-                duration: 500
+                duration: 150
             })
         ]).start();
         this.isSwitch = true;
+        this.switchCity();
+    }
+
+    switchCity = () => {
+        const { fromKey, toKey, fromCity, toCity, selectCity } = this.props;
+
         InteractionManager.runAfterInteractions(() => {
-            switchCity && switchCity();
+            selectCity({
+                [fromKey]: toCity,
+                [toKey]: fromCity
+            });
         });
     }
 
@@ -137,7 +150,7 @@ class QueryCityComponent extends Component {
                                 }}
                                 style={styles.city_txt}
                             >
-                                {fromCity}
+                                {fromCity.Name}
                             </Text>
                         </TouchableOpacity>
                     </Animated.View>
@@ -172,7 +185,7 @@ class QueryCityComponent extends Component {
                                 }}
                                 style={styles.city_txt}
                             >
-                                {toCity}
+                                {toCity.Name}
                             </Text>
                         </TouchableOpacity>
                     </Animated.View>
@@ -216,4 +229,8 @@ const styles = StyleSheet.create({
     }
 });
 
-export default QueryCityComponent;
+const mapDispatchToProps = (dispatch) => ({
+    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
+});
+
+export default connect(() => ({}), mapDispatchToProps)(QueryCityComponent);

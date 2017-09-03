@@ -90,8 +90,10 @@ class FlightPage extends Component {
                     <QueryCityComponent
                         selectFromCity={() => this.selectCity('fromCity')}
                         selectToCity={() => this.selectCity('toCity')}
-                        fromCity={FlightfromCity.Name}
-                        toCity={FlighttoCity.Name}
+                        fromCity={FlightfromCity}
+                        toCity={FlighttoCity}
+                        fromKey="FlightfromCity"
+                        toKey="FlighttoCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}

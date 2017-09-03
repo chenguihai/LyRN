@@ -18,7 +18,7 @@ import PubOperationComponent from '../components/home/pub_operation';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TrainAction, CityAction } from '../actions';
+import { TrainAction } from '../actions';
 
 class TrainPage extends Component {
 
@@ -31,17 +31,16 @@ class TrainPage extends Component {
         TrainfromCity: PropTypes.object,
         TraintoCity: PropTypes.object,
         TraintripTime: PropTypes.number,
-        TraintripTimeDes: PropTypes.string,
-        selectCity: PropTypes.func
+        TraintripTimeDes: PropTypes.string
     }
 
     state = {
     }
 
     componentWillMount() {
-        // this.props.getBanner();
-        // this.props.getNotice();
-        // this.props.getTab();
+        this.props.getBanner();
+        this.props.getNotice();
+        this.props.getTab();
     }
 
     selectCity(key) {
@@ -64,17 +63,7 @@ class TrainPage extends Component {
             });
         });
     }
-
-    switchCity = () => {
-        const { TrainfromCity, TraintoCity, selectCity } = this.props;
-
-        InteractionManager.runAfterInteractions(() => {
-            selectCity({
-                TrainfromCity: TraintoCity,
-                TraintoCity: TrainfromCity
-            });
-        });
-    }
+   
 
     render() {
         const { Train, TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
@@ -95,9 +84,10 @@ class TrainPage extends Component {
                     <QueryCityComponent
                         selectFromCity={() => this.selectCity('fromCity')}
                         selectToCity={() => this.selectCity('toCity')}
-                        fromCity={TrainfromCity.Name}
-                        toCity={TraintoCity.Name}
-                        switchCity={this.switchCity}
+                        fromCity={TrainfromCity}
+                        toCity={TraintoCity}
+                        fromKey="TrainfromCity"
+                        toKey="TraintoCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
@@ -152,8 +142,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     getBanner: bindActionCreators(TrainAction.getBanner, dispatch),
     getNotice: bindActionCreators(TrainAction.getNotice, dispatch),
-    getTab: bindActionCreators(TrainAction.getTab, dispatch),
-    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
+    getTab: bindActionCreators(TrainAction.getTab, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);
