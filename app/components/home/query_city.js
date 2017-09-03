@@ -6,11 +6,24 @@ import {
     Text,
     Animated,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions,
+    findNodeHandle,
+    UIManager,
+    InteractionManager
 } from 'react-native';
 
 
 class QueryCityComponent extends Component {
+
+    state = {
+        left: new Animated.Value(0),
+        right: new Animated.Value(0),
+        opacity: new Animated.Value(1)
+    }
+
+    innerWidth = 0;
+    isSwitch = false;
 
     static propTypes = {
         fromCity: PropTypes.string,
@@ -32,15 +45,76 @@ class QueryCityComponent extends Component {
         selectToCity && selectToCity();
     }
 
-    handlePress = () => {
-        const { switchCity } = this.props;
+    layout(ref) {
+        const handle = findNodeHandle(ref);
+        
+        return new Promise((resolve) => {
+            UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
+                resolve({
+                    x,
+                    y,
+                    width,
+                    height,
+                    pageX,
+                    pageY
+                });
+            });
+        });
+    }
 
-        switchCity && switchCity();
+    componentWillUpdate(nextProps, nextState) {
+        if (this.isSwitch) {
+            InteractionManager.runAfterInteractions(() => {
+                Animated.parallel([
+                    Animated.timing(nextState.left, {
+                        toValue: 0,
+                        duration: 500
+                    }),
+                    Animated.timing(nextState.right, {
+                        toValue: 0,
+                        duration: 500
+                    }),
+                    Animated.timing(nextState.opacity, {
+                        toValue: 1,
+                        duration: 500
+                    })
+                ]).start();
+                this.isSwitch = false;
+            });
+        }
+    }
+
+    handlePress = async () => {
+        const { switchCity } = this.props;
+        const fromLayout = await this.layout(this.fromRef);
+        const toLayout = await this.layout(this.toRef);
+
+        Animated.parallel([
+            Animated.timing(this.state.left, {
+                toValue: this.innerWidth - fromLayout.width,
+                duration: 500
+            }),
+            Animated.timing(this.state.right, {
+                toValue: this.innerWidth - toLayout.width,
+                duration: 500
+            }),
+            Animated.timing(this.state.opacity, {
+                toValue: 0,
+                duration: 500
+            })
+        ]).start();
+        this.isSwitch = true;
+        InteractionManager.runAfterInteractions(() => {
+            switchCity && switchCity();
+        });
     }
 
     render() {
+        const { width } = Dimensions.get('window');
         const { fromCity, toCity } = this.props;
+        const { left, right, opacity } = this.state;        
 
+        this.innerWidth = (width - 30) / 2;
         
         return (
             <View style={styles.query_city}>
@@ -49,16 +123,17 @@ class QueryCityComponent extends Component {
                     <Animated.View
                         style={{
                             position: 'absolute',
-                            top: 40
+                            top: 40,
+                            left,
+                            opacity
                         }}
                     >
                         <TouchableOpacity
-                        
                             onPress={this.selectFromCity}
                         >
                             <Text 
                                 ref={(ref) => { 
-                                    this.fromCityRef = ref;
+                                    this.fromRef = ref;
                                 }}
                                 style={styles.city_txt}
                             >
@@ -83,13 +158,20 @@ class QueryCityComponent extends Component {
                     <Animated.View
                         style={{
                             position: 'absolute',
-                            top: 40
+                            top: 40,
+                            right,
+                            opacity
                         }}
                     >
                         <TouchableOpacity
                             onPress={this.selectToCity}
                         >
-                            <Text style={styles.city_txt}>
+                            <Text 
+                                ref={(ref) => { 
+                                    this.toRef = ref;
+                                }}
+                                style={styles.city_txt}
+                            >
                                 {toCity}
                             </Text>
                         </TouchableOpacity>

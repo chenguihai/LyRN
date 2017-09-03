@@ -39,9 +39,9 @@ class TrainPage extends Component {
     }
 
     componentWillMount() {
-        this.props.getBanner();
-        this.props.getNotice();
-        this.props.getTab();
+        // this.props.getBanner();
+        // this.props.getNotice();
+        // this.props.getTab();
     }
 
     selectCity(key) {
