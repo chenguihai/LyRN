@@ -73,15 +73,15 @@ class QueryCityComponent extends Component {
                 Animated.parallel([
                     Animated.timing(nextState.left, {
                         toValue: 0,
-                        duration: 150
+                        duration: 100
                     }),
                     Animated.timing(nextState.right, {
                         toValue: 0,
-                        duration: 150
+                        duration: 100
                     }),
                     Animated.timing(nextState.opacity, {
                         toValue: 1,
-                        duration: 150
+                        duration: 100
                     })
                 ]).start();
                 this.isSwitch = false;
