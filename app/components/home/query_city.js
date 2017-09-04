@@ -5,7 +5,7 @@ import {
     View,
     Text,
     Animated,
-    Image,
+    Easing,
     TouchableOpacity,
     Dimensions,
     InteractionManager
@@ -22,11 +22,13 @@ class QueryCityComponent extends Component {
     state = {
         left: new Animated.Value(0),
         right: new Animated.Value(0),
-        opacity: new Animated.Value(1)
+        opacity: new Animated.Value(1),
+        rotate: new Animated.Value(0)
     }
 
     innerWidth = 0;
     isSwitch = false;
+    animationEnd = false;
 
     static propTypes = {
         fromCity: PropTypes.object,
@@ -44,20 +46,66 @@ class QueryCityComponent extends Component {
                 Animated.parallel([
                     Animated.timing(nextState.left, {
                         toValue: 0,
-                        duration: 150
+                        duration: 200,
+                        easing: Easing.in(Easing.linear)
                     }),
                     Animated.timing(nextState.right, {
                         toValue: 0,
-                        duration: 150
+                        duration: 200,
+                        easing: Easing.in(Easing.linear)
                     }),
                     Animated.timing(nextState.opacity, {
                         toValue: 1,
-                        duration: 150
+                        duration: 200,
+                        easing: Easing.in(Easing.linear)
                     })
                 ]).start();
                 this.isSwitch = false;
             });
         }
+    }
+
+    shouldComponentUpdate() {
+        if (this.isSwitch && !this.animationEnd) {
+            const async = async () => {
+                const fromLayout = await _.getLayout(this.fromRef);
+                const toLayout = await _.getLayout(this.toRef);
+
+                Animated.parallel([
+                    Animated.timing(this.state.left, {
+                        toValue: this.innerWidth - fromLayout.width,
+                        duration: 200,
+                        easing: Easing.out(Easing.linear)
+                    }),
+                    Animated.timing(this.state.right, {
+                        toValue: this.innerWidth - toLayout.width,
+                        duration: 200,
+                        easing: Easing.out(Easing.linear)
+                    }),
+                    Animated.timing(this.state.opacity, {
+                        toValue: 0,
+                        duration: 200,
+                        easing: Easing.out(Easing.linear)
+                    }),
+                    Animated.timing(this.state.rotate, {
+                        toValue: this.state.rotate._value === 0 ? 1 : 0,
+                        duration: 300
+                    }),
+                ]).start(() => {
+                    this.animationEnd = true;
+                    // 这个setState并没有什么实际意义,只是为了触发重新update
+                    this.setState({
+                        reupdate: true
+                    });
+                });
+            };
+
+            async();
+
+            return false;
+        }
+
+        return true;
     }
 
     selectFromCity = () => {
@@ -74,25 +122,10 @@ class QueryCityComponent extends Component {
         });
     }
 
-    handlePress = async () => {
-        const fromLayout = await _.getLayout(this.fromRef);
-        const toLayout = await _.getLayout(this.toRef);
-
-        Animated.parallel([
-            Animated.timing(this.state.left, {
-                toValue: this.innerWidth - fromLayout.width,
-                duration: 150
-            }),
-            Animated.timing(this.state.right, {
-                toValue: this.innerWidth - toLayout.width,
-                duration: 150
-            }),
-            Animated.timing(this.state.opacity, {
-                toValue: 0,
-                duration: 150
-            })
-        ]).start();
+    handlePress = () => {
         this.isSwitch = true;
+        this.animationEnd = false;
+
         this.switchCity();
     }
 
@@ -108,9 +141,11 @@ class QueryCityComponent extends Component {
     render() {
         const { width } = Dimensions.get('window');
         const { fromCity, toCity } = this.props;
-        const { left, right, opacity } = this.state;
+        const { left, right, opacity, rotate } = this.state;
 
         this.innerWidth = (width - 30) / 2;
+
+        console.log(Animated);
 
         return (
             <View style={styles.query_city}>
@@ -141,8 +176,20 @@ class QueryCityComponent extends Component {
                 <TouchableOpacity
                     onPress={this.handlePress}
                 >
-                    <Image
-                        style={styles.image}
+                    <Animated.Image
+                        style={[
+                            styles.image,
+                            {
+                                transform: [
+                                    {
+                                        rotate: rotate.interpolate({
+                                            inputRange: [0, 1],
+                                            outputRange: ['0deg', '180deg']
+                                        })
+                                    }
+                                ]
+                            }
+                        ]}
                         source={require('../../images/change_city.png')}
                     />
                 </TouchableOpacity>
