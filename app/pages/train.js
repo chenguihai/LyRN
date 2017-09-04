@@ -38,9 +38,9 @@ class TrainPage extends Component {
     }
 
     componentWillMount() {
-        this.props.getBanner();
-        this.props.getNotice();
-        this.props.getTab();
+        // this.props.getBanner();
+        // this.props.getNotice();
+        // this.props.getTab();
     }
 
     selectCity(key) {
@@ -63,7 +63,18 @@ class TrainPage extends Component {
             });
         });
     }
-   
+
+    searchTrainList = () => {
+        const { TrainfromCity, TraintoCity, TraintripTime, navigation } = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            navigation.navigate('TrainList', {
+                from: TrainfromCity,
+                to: TraintoCity,
+                tripTime: TraintripTime
+            });
+        });
+    }
 
     render() {
         const { Train, TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
@@ -102,7 +113,10 @@ class TrainPage extends Component {
                         <CheckboxComponent title="高铁/动车" />
                     </View>
                     {/* 查询按钮开始  */}
-                    <ButtonComponent title="火车票查询" />
+                    <ButtonComponent
+                        handlePress={this.searchTrainList}
+                        title="火车票查询"
+                    />
                     {/* 查询按钮结束  */}
                     {Icons.List.length > 0 && <OperationComponent data={Icons.List} />}
                 </View>
@@ -140,8 +154,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getBanner: bindActionCreators(TrainAction.getBanner, dispatch),
-    getNotice: bindActionCreators(TrainAction.getNotice, dispatch),
+    getBanner: bindActionCreators(TrainAction.getBanner, dispatch), // 获取banner
+    getNotice: bindActionCreators(TrainAction.getNotice, dispatch), // 获取顶部通知消息
     getTab: bindActionCreators(TrainAction.getTab, dispatch)
 });
 

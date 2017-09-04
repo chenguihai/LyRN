@@ -156,7 +156,7 @@
         "no-multi-str": "error",
         "no-multiple-empty-lines": "error",
         "no-native-reassign": "error",
-        "no-negated-condition": "error",
+        "no-negated-condition": "off",
         "no-negated-in-lhs": "error",
         "no-nested-ternary": "off",
         "no-new": "error",
@@ -196,7 +196,13 @@
         "no-underscore-dangle": "off",
         "no-unmodified-loop-condition": "error",
         "no-unneeded-ternary": "error",
-        "no-unused-expressions": ["error",{ "allowShortCircuit": true, "allowTernary": true }],
+        "no-unused-expressions": [
+            "error",
+            {
+                "allowShortCircuit": true,
+                "allowTernary": true
+            }
+        ],
         "no-use-before-define": "off",
         "no-useless-call": "error",
         "no-useless-computed-key": "error",
@@ -249,7 +255,7 @@
         ],
         "sort-imports": "off",
         "sort-keys": "off",
-        "sort-vars": "error",
+        "sort-vars": "off",
         "space-before-blocks": "error",
         "space-before-function-paren": "off",
         "space-in-parens": [

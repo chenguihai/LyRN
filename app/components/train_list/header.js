@@ -7,6 +7,8 @@ import {
     StyleSheet
 } from 'react-native';
 
+const themeColor = "#3C6";
+
 export default class HeaderComponent extends Component {
 
     layout(e) {
@@ -33,8 +35,9 @@ export default class HeaderComponent extends Component {
                         onLayout={({ nativeEvent: e }) => this.layout(e)}
                         style={
                             {
-                                width: 8,
-                                height: 8 / imageScale
+                                width: 6,
+                                height: 6 / imageScale,
+                                marginRight: 6
                             }
                         }
                     />
@@ -55,7 +58,16 @@ export default class HeaderComponent extends Component {
                     <Text style={styles.btn_txt}>
                         后一天
                     </Text>
-                    <Image source={require('../../images/arrow_right.png')} />
+                    <Image
+                        style={
+                            {
+                                width: 6,
+                                height: 6 / imageScale,
+                                marginLeft: 6
+                            }
+                        }
+                        source={require('../../images/arrow_right.png')}
+                    />
                 </View>
             </View>
         );
@@ -79,6 +91,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     'btn_txt': {
-        fontSize: 14
+        fontSize: 14,
+        color: themeColor
     }
 });

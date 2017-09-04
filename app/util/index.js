@@ -1,6 +1,6 @@
 /* eslint-disable no-multi-assign,id-length,no-empty-function */
 
-import { 
+import {
     StyleSheet,
     findNodeHandle,
     UIManager
@@ -53,17 +53,17 @@ Util.prototype.chunk = function (arr, num) {
  * @returns {promise} x,y组件的相对坐标,width组件的宽度,height组件的高度,pageX,pageY组件相对于屏幕的绝对坐标
  */
 
-Util.prototype.getLayout = function(ref) {
+Util.prototype.getLayout = function (ref) {
     const handle = findNodeHandle(ref);
-    
+
     return new Promise((resolve) => {
         UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
             resolve({
-                x, 
-                y, 
-                width, 
-                height, 
-                pageX, 
+                x,
+                y,
+                width,
+                height,
+                pageX,
                 pageY
             });
         });
@@ -74,7 +74,9 @@ Util.prototype.getLayout = function(ref) {
 
 Util.prototype.get = (uri, data) => {
     return new Promise((resolve) => {
-        axios.get(_.prefixUri + uri, {
+        const url = uri.indexOf('http') !== -1 ? uri : _.prefixUri + uri;
+
+        axios.get(url, {
             params: data
         })
             .then((response) => {
@@ -143,6 +145,16 @@ Util.prototype.getTomorrow = function () {
 
 Util.prototype.getAfterTomorrow = function () {
     return _.resetTime(new Date(_.getTomorrow() + 8.64e7));
+};
+
+Util.prototype.format = function (timeStamp) {
+    const
+        date = new Date(timeStamp),
+        year = date.getFullYear(),
+        month = date.getMonth() + 1,
+        day = date.getDate();
+
+    return `${year}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`;
 };
 
 const _ = new Util();

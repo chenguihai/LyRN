@@ -1,8 +1,11 @@
 import * as Types from '../constants/train';
 import _ from '../util';
+
 const GET_BANNER = { type: Types.GET_TRAIN_BANNER };
 const GET_NOTICE = { type: Types.GET_TRAIN_NOTICE };
 const GET_TAB = { type: Types.GET_TAB };
+
+const GET_TRAIN_LIST = { type: Types.GET_TRAIN_LIST };
 
 const getBanner = () => (dispatch) => {
     _.get('pubapi/home/Commercial.ashx')
@@ -39,9 +42,35 @@ const getTab = () => (dispatch) => {
         });
 };
 
+// 获取火车时刻列表
+const getTrainList = (fromCity, toCity, date) => (dispatch) => {
+    const para = {
+        'from': fromCity,
+        'to': toCity,
+        'oby': '0',
+        date,
+        'platId': 501,
+        'requestType': 4,
+        'headct': 1,
+        'headus': 1,
+        'headver': '2.14.0.2',
+        'isstu': false,
+        'headtime': new Date().getTime()
+    };
+
+    _.get('uniontrain/trainapi/searchno.html', { para })
+        .then(({ data }) => {
+            dispatch({
+                ...GET_TRAIN_LIST,
+                trainList: data
+            });
+        });
+};
+
 export default {
     getBanner,
     getNotice,
-    getTab
+    getTab,
+    getTrainList
 };
 

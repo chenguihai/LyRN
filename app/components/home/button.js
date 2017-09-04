@@ -4,41 +4,59 @@ import {
     StyleSheet,
     View,
     Text,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 export default class ButtonComponent extends Component {
 
     static propTypes = {
-        title: PropTypes.string
+        title: PropTypes.string,
+        handlePress: PropTypes.func
     }
 
     shouldComponentUpdate() {
         return false;
     }
 
+    handlePress = () => {
+        const { handlePress } = this.props;
+
+        handlePress && handlePress();
+    }
+
     render() {
         const { width } = Dimensions.get('window');
         const { title } = this.props;
-        
+
         return (
-            <View style={{ alignItems: 'center', 
-                marginTop: 13, 
-                marginBottom: 13 }}>
-                <View style={[
-                    styles.search_button, 
-                    { width: width * 0.86, 
-                        position: 'relative' }
-                ]}>
-                    <Text style={styles.button_txt}>{title}</Text>
-                </View>
+            <View style={{
+                alignItems: 'center',
+                marginTop: 13,
+                marginBottom: 13
+            }}>
+                <TouchableOpacity
+                    onPress={this.handlePress}
+                >
+                    <View
+                        style={[
+                            styles.button,
+                            {
+                                width: width * 0.86,
+                                position: 'relative'
+                            }
+                        ]}
+                    >
+                        <Text style={styles.txt}>{title}</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    'search_button': {
+    'button': {
         justifyContent: 'center',
         alignItems: 'center',
         height: 45,
@@ -47,7 +65,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#28c54d',
         borderRadius: 22.5
     },
-    'button_txt': {
+    'txt': {
         color: '#FFF',
         fontSize: 18,
         fontWeight: '700'

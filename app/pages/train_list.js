@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 
 import HeaderComponent from '../components/train_list/header';
+import ListComponent from '../components/train_list/list';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,16 +24,20 @@ class TrainListPage extends Component {
 
     componentWillMount() {
         const { navigation, getTrainList } = this.props;
-        // const { from, to, tripTime } = navigation.state.params;
+        const { from, to, tripTime } = navigation.state.params;
 
-        // getTrainList(from.Name, to.Name, _.format(tripTime));
+        getTrainList(from.Name, to.Name, _.format(tripTime));
     }
 
     render() {
+        const { trainList } = this.props;
+        const { data = {} } = trainList;
+        const { tcount = 0, trainlist } = data;
 
         return (
             <View style={styles.container}>
                 <HeaderComponent />
+                {tcount > 0 ? <ListComponent data={trainlist} /> : null}
             </View>
         );
     }
