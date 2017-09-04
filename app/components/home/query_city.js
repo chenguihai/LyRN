@@ -44,15 +44,15 @@ class QueryCityComponent extends Component {
                 Animated.parallel([
                     Animated.timing(nextState.left, {
                         toValue: 0,
-                        duration: 100
+                        duration: 150
                     }),
                     Animated.timing(nextState.right, {
                         toValue: 0,
-                        duration: 100
+                        duration: 150
                     }),
                     Animated.timing(nextState.opacity, {
                         toValue: 1,
-                        duration: 100
+                        duration: 150
                     })
                 ]).start();
                 this.isSwitch = false;
@@ -81,15 +81,15 @@ class QueryCityComponent extends Component {
         Animated.parallel([
             Animated.timing(this.state.left, {
                 toValue: this.innerWidth - fromLayout.width,
-                duration: 100
+                duration: 150
             }),
             Animated.timing(this.state.right, {
                 toValue: this.innerWidth - toLayout.width,
-                duration: 100
+                duration: 150
             }),
             Animated.timing(this.state.opacity, {
                 toValue: 0,
-                duration: 100
+                duration: 150
             })
         ]).start();
         this.isSwitch = true;
@@ -108,10 +108,10 @@ class QueryCityComponent extends Component {
     render() {
         const { width } = Dimensions.get('window');
         const { fromCity, toCity } = this.props;
-        const { left, right, opacity } = this.state;        
+        const { left, right, opacity } = this.state;
 
         this.innerWidth = (width - 30) / 2;
-        
+
         return (
             <View style={styles.query_city}>
                 <View style={styles.query_city_item}>
@@ -127,8 +127,8 @@ class QueryCityComponent extends Component {
                         <TouchableOpacity
                             onPress={this.selectFromCity}
                         >
-                            <Text 
-                                ref={(ref) => { 
+                            <Text
+                                ref={(ref) => {
                                     this.fromRef = ref;
                                 }}
                                 style={styles.city_txt}
@@ -141,9 +141,9 @@ class QueryCityComponent extends Component {
                 <TouchableOpacity
                     onPress={this.handlePress}
                 >
-                    <Image 
-                        style={styles.image} 
-                        source={require('../../images/change_city.png')} 
+                    <Image
+                        style={styles.image}
+                        source={require('../../images/change_city.png')}
                     />
                 </TouchableOpacity>
                 <View style={[
@@ -162,8 +162,8 @@ class QueryCityComponent extends Component {
                         <TouchableOpacity
                             onPress={this.selectToCity}
                         >
-                            <Text 
-                                ref={(ref) => { 
+                            <Text
+                                ref={(ref) => {
                                     this.toRef = ref;
                                 }}
                                 style={styles.city_txt}

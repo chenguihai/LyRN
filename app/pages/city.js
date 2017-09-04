@@ -27,7 +27,8 @@ class CityPage extends Component {
         getHistoryCities: PropTypes.func,
         getHotCities: PropTypes.func,
         selectCity: PropTypes.func,
-        getCityList: PropTypes.func
+        getCityList: PropTypes.func,
+        currentCity: PropTypes.object
     }
 
     static defaultProps = {
@@ -65,7 +66,7 @@ class CityPage extends Component {
         const { historycities, navigation } = this.props;
         const { state, goBack } = navigation;
         const { routeName, key } = state.params;
-        
+
         this.props.selectCity({
             [`${routeName}${key}`]: data
         });
@@ -75,7 +76,7 @@ class CityPage extends Component {
             const isHas = historycities.some((item) => {
                 return item.Name === data.Name;
             });
-    
+
             !isHas && this.addToHistoryCities(data, historycities.length);
         }
     }
@@ -91,36 +92,41 @@ class CityPage extends Component {
     cityListUpdate = async () => {
         // 首次获取更多城市后,scrollView高度并不会马上更新
         await this.sleep();
-        this.scrollViewRef && this.scrollViewRef.scrollTo({ 
-            x: 0, 
-            y: this.letterScrollTop, 
-            animated: true 
+        this.scrollViewRef && this.scrollViewRef.scrollTo({
+            x: 0,
+            y: this.letterScrollTop,
+            animated: true
         });
     }
 
     render() {
-        const { historycities, hotcities, getCityList } = this.props;
+        const { historycities, hotcities, getCityList, currentCity } = this.props;
+
+        const { info } = currentCity;
 
         return (
-            <ScrollView 
-                ref={(ref) => { 
+            <ScrollView
+                ref={(ref) => {
                     this.scrollViewRef = ref;
                 }}
                 style={styles.wrap}
             >
                 <SearchComponent />
 
-                <CityListTitle title="当前城市" />
-                <CityLocationComponent data={[{ Name: '北京' }]} />
+                {info ? <CityListTitle title="当前城市" /> : null}
+                <CityLocationComponent
+                    data={currentCity}
+                    handlePress={this.selectCity.bind(this, true)}
+                />
 
-                {historycities.length === 0 ? null 
+                {historycities.length === 0 ? null
                     : <CityListTitle title="历史选择" />}
-                {historycities.length === 0 ? null 
-                    : <CityListBlock handlePress={this.selectCity.bind(this, false)} data={historycities} />}  
+                {historycities.length === 0 ? null
+                    : <CityListBlock handlePress={this.selectCity.bind(this, false)} data={historycities} />}
 
-                {hotcities.length === 0 ? null 
+                {hotcities.length === 0 ? null
                     : <CityListTitle title="热门" />}
-                {hotcities.length === 0 ? null 
+                {hotcities.length === 0 ? null
                     : <CityListBlock handlePress={this.selectCity.bind(this, true)} data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
@@ -129,8 +135,8 @@ class CityPage extends Component {
                     handlePress={getCityList}
                 />
 
-                <CitySingleList 
-                    handlePress={this.selectCity.bind(this, true)} 
+                <CitySingleList
+                    handlePress={this.selectCity.bind(this, true)}
                     cityListUpdate={this.cityListUpdate}
                 />
             </ScrollView>
@@ -146,6 +152,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
+    currentCity: state.City.currentCity,
     historycities: state.City.historycities,
     hotcities: state.City.hotcities
 });

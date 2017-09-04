@@ -7,3 +7,5 @@ export const GET_CITY_LIST = 'GET_CITY_LIST';
 
 // 选择城市
 export const SELECT_CITY = 'SELECT_CITY';
+// 获取当前城市
+export const GET_CURRENT_CITY = 'GET_CURRENT_CITY';

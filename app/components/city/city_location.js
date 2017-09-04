@@ -4,17 +4,38 @@ import {
     View,
     Text,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
-export default class CityLoctionComponent extends Component {
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { CityAction } from '../../actions';
 
-    static defaultProps = {
-        data: []
-    }
+class CityLoctionComponent extends Component {
 
     static propTypes = {
-        data: PropTypes.array
+        getCurrentLocation: PropTypes.func,
+        data: PropTypes.object,
+        handlePress: PropTypes.func
+    }
+
+    componentWillMount() {
+        this.getCurrentPosition();
+    }
+
+    getCurrentPosition() {
+        navigator.geolocation.getCurrentPosition((location) => {
+            const { longitude, latitude } = location.coords;
+
+            this.props.getCurrentLocation(`${longitude},${latitude}`);
+        });
+    }
+
+    handlePress(Name) {
+        const { handlePress } = this.props;
+
+        handlePress && handlePress({ Name });
     }
 
     render() {
@@ -22,20 +43,34 @@ export default class CityLoctionComponent extends Component {
             { width } = Dimensions.get('window'),
             { data } = this.props;
 
+        const { info, regeocode = {} } = data;
+
+        if (!info) {
+            return null;
+        }
+
+        const { addressComponent = {} } = regeocode;
+        const { province } = addressComponent;
+        const cityName = province.replace(/市/g, '');
+
         return (
             <View style={styles.container}>
-                <View style={[
-                    styles.city_item,
-                    {
-                        width: (width - 30) * 0.43
-                    }
-                ]}>
-                    <Text
-                        style={styles.city_txt}
-                    >
-                        {data[0] ? data[0].Name : ''}
-                    </Text>
-                </View>
+                <TouchableOpacity
+                    onPress={() => this.handlePress(cityName)}
+                >
+                    <View style={[
+                        styles.city_item,
+                        {
+                            width: (width - 30) * 0.43
+                        }
+                    ]}>
+                        <Text
+                            style={styles.city_txt}
+                        >
+                            {cityName}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -62,3 +97,9 @@ const styles = StyleSheet.create({
         color: '#2d2d2d'
     }
 });
+
+const mapDispatchToProps = (dispatch) => ({
+    getCurrentLocation: bindActionCreators(CityAction.getCurrentLocation, dispatch)
+});
+
+export default connect(() => ({}), mapDispatchToProps)(CityLoctionComponent);

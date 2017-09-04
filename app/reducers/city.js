@@ -1,6 +1,7 @@
-import { GET_HISTORY_CITY, GET_HOT_CITY, GET_CITY_LIST, SELECT_CITY } from '../constants/city';
+import { GET_HISTORY_CITY, GET_HOT_CITY, GET_CITY_LIST, SELECT_CITY, GET_CURRENT_CITY } from '../constants/city';
 
 const initialState = {
+    currentCity: { info: false },
     historycities: [], // 历史选择
     hotcities: [], // 热门城市
     cityList: [],
@@ -27,32 +28,38 @@ export default function city(state = initialState, action) {
     let nextState;
 
     switch (action.type) {
-    case GET_HISTORY_CITY:
-        nextState = {
-            ...state,
-            historycities: action.historycities
-        };
-        break;
-    case GET_HOT_CITY:
-        nextState = {
-            ...state,
-            hotcities: action.hotcities
-        };
-        break;
-    case GET_CITY_LIST:
-        nextState = {
-            ...state,
-            cityList: action.cityList
-        };
-        break;
-    case SELECT_CITY:
-        nextState = {
-            ...state,
-            ...action.obj
-        };
-        break;
-    default:
-        nextState = { ...state };
+        case GET_HISTORY_CITY:
+            nextState = {
+                ...state,
+                historycities: action.historycities
+            };
+            break;
+        case GET_HOT_CITY:
+            nextState = {
+                ...state,
+                hotcities: action.hotcities
+            };
+            break;
+        case GET_CITY_LIST:
+            nextState = {
+                ...state,
+                cityList: action.cityList
+            };
+            break;
+        case SELECT_CITY:
+            nextState = {
+                ...state,
+                ...action.obj
+            };
+            break;
+        case GET_CURRENT_CITY:
+            nextState = {
+                ...state,
+                currentCity: action.currentCity
+            };
+            break;
+        default:
+            nextState = { ...state };
     }
 
     return nextState || state;
