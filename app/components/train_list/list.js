@@ -26,10 +26,15 @@ export default class ListComponent extends Component {
         return (
             <FlatList
                 refreshing={true}
-                initialNumToRender={10}
+                initialNumToRender={6}
                 data={data}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
+                getItemLayout={(data, index) => ({ 
+                    length: 103,
+                    offset: 103 * index,
+                    index 
+                })}
             />
         );
     }

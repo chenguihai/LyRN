@@ -22,6 +22,10 @@ export default class ListComponent extends Component {
         cardScale: PropTypes.number
     }
 
+    layout(e) {
+        console.log(e);
+    }
+
     handlePress() {
         if (this.state.expand) {
             this.setState({
@@ -67,7 +71,7 @@ export default class ListComponent extends Component {
         const seatsMap = [];
         const priceMap = [];
 
-        for (let i in ticketstatus) {
+        for (const i in ticketstatus) {
             if (!_.isNull(ticketstatus[i])) {
                 seatsMap.push(ticketstatus[i]);
                 priceMap.push(ticketstatus[i].price);
@@ -75,9 +79,13 @@ export default class ListComponent extends Component {
         }
 
         return (
-            <View style={styles.box_container}>
+            <View style={styles.box_container}
+                onLayout={({ nativeEvent: e }) => { 
+                    this.layout(e);
+                }}
+            >
                 <TouchableOpacity
-                    activeOpacity={.8}
+                    activeOpacity={0.8}
                     onPress={() => this.handlePress(index)}
                 >
                     <View style={styles.trainbox}>
@@ -124,13 +132,22 @@ export default class ListComponent extends Component {
                             <Text style={styles.big_txt}>{totime}</Text>
                             <Text style={styles.normal_txt}>{tocity}</Text>
                         </View>
-                        <View style={[styles.box, styles.leaseMoney]}>
+                        <View style={[
+                            styles.box,
+                            styles.leaseMoney
+                        ]}>
                             <View style={{
                                 flexDirection: 'row',
                                 alignItems: 'baseline'
                             }}>
-                                <Text style={[styles.orange, styles.money_small_txt]}>¥</Text>
-                                <Text style={[styles.orange, styles.money_big_txt]}>{Math.min.apply({}, priceMap)}</Text>
+                                <Text style={[
+                                    styles.orange,
+                                    styles.money_small_txt
+                                ]}>¥</Text>
+                                <Text style={[
+                                    styles.orange,
+                                    styles.money_big_txt
+                                ]}>{Math.min.apply({}, priceMap)}</Text>
                                 <Text style={[
                                     styles.money_small_txt,
                                     { color: 'rgb(153, 153, 153)' }
