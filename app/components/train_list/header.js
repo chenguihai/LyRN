@@ -7,7 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-const themeColor = "#3C6";
+const themeColor = '#3C6';
 
 export default class HeaderComponent extends Component {
 
