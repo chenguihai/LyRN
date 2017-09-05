@@ -55,19 +55,18 @@ class ListComponent extends Component {
             return null;
         }
 
-        console.log(length);
         this.cardScale = 31 / 21;
         this.lineScale = 100 / 7;
         
         return (
             <FlatList
-                ref={(ref) => { 
-                    this._ref = ref;
-                }}
-                onScroll={this.handleScroll}
+                // ref={(ref) => { 
+                //    this._ref = ref;
+                // }}
+                // onScroll={this.handleScroll}
                 onEndReached={this.onEndReached}
-                onEndReachedThreshold={0.5}
-                refreshing={true}
+                onEndReachedThreshold={0.9}
+                // refreshing={true}
                 initialNumToRender={6}
                 data={trainlist.slice(0, length)}
                 keyExtractor={this.keyExtractor}
