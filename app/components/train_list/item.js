@@ -8,6 +8,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import CardView from 'react-native-cardview';
+
 import _ from '../../util';
 
 export default class ListComponent extends Component {
@@ -20,10 +22,6 @@ export default class ListComponent extends Component {
         data: PropTypes.object,
         lineScale: PropTypes.number,
         cardScale: PropTypes.number
-    }
-
-    layout(e) {
-        console.log(e);
     }
 
     handlePress() {
@@ -47,6 +45,67 @@ export default class ListComponent extends Component {
             }
 
             return <Text key={index} style={styles.no_seats_txt}>{cn} (无)</Text>;
+        });
+    }
+
+    layout(e) {
+        // alert(JSON.stringify(e));
+    }
+
+    _renderSeatsList(data) {
+        return data.map((item, index) => {
+            const { cn, seats, price } = item;
+
+            return (
+                <View key={index} style={[
+                    styles.seats_list
+                ]}>
+                    <View style={styles.seats_box}>
+                        <Text style={{
+                            fontSize: 14,
+                            color: '#333'
+                        }}>{cn}</Text>
+                    </View>
+                    <View style={styles.seats_box}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'baseline'
+                        }}>
+                            <Text style={{
+                                fontSize: 12,
+                                lineHeight: 12,
+                                color: '#FF6540'
+                            }}>¥</Text>
+                            <Text style={{
+                                fontSize: 16,
+                                lineHeight: 16,
+                                color: '#FF6540'
+                            }}>{price}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.seats_box}>
+                        <Text style={{
+                            fontSize: 14,
+                            color: 'rgb(170, 170, 170)'
+                        }}>{seats} 张</Text>
+                    </View>
+                    <View style={styles.seats_box}>
+                        <View style={{
+                            paddingTop: 4,
+                            paddingBottom: 4,
+                            paddingLeft: 8,
+                            paddingRight: 8,
+                            borderRadius: 3,
+                            backgroundColor: '#3c6'
+                        }}>
+                            <Text style={{
+                                fontSize: 12,
+                                color: '#FFF'
+                            }}>预定</Text>
+                        </View>
+                    </View>
+                </View>
+            );
         });
     }
 
@@ -77,118 +136,117 @@ export default class ListComponent extends Component {
                 priceMap.push(ticketstatus[i].price);
             }
         }
+        // onLayout={({ nativeEvent: e }) => this.layout(e)}
 
         return (
-            <View style={styles.box_container}
-                onLayout={({ nativeEvent: e }) => { 
-                    this.layout(e);
-                }}
+            <CardView
+                cornerRadius={4}
+                style={styles.container}
             >
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => this.handlePress(index)}
+                    style={styles.top}
                 >
-                    <View style={styles.trainbox}>
-                        <View style={styles.box}>
-                            <Text style={styles.big_txt}>{fmtime}</Text>
-                            <Text style={styles.normal_txt}>{fmcity}</Text>
-                        </View>
-                        <View style={[
+                    <View style={styles.box} >
+                        <Text style={styles.big_txt}>{fmtime}</Text>
+                        <Text style={styles.normal_txt}>{fmcity}</Text>
+                    </View>
+                    <View
+                        style={[
                             styles.box,
                             {
                                 justifyContent: 'center'
                             }
-                        ]}>
-                            <View style={styles.trainno}>
-                                <Text style={styles.trainno_txt}>{trainno}</Text>
-                                {accbyidcard ? <View style={{
-                                    width: 4
-                                }}></View> : null}
-                                {accbyidcard ? <Image
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 18,
-                                        height: 18 / cardScale
-                                    }}
-                                    source={require('../../images/idcard.png')}
-                                /> : null}
-                            </View>
-                            <Image
+                        ]}
+                    >
+                        <View style={styles.trainno}>
+                            <Text style={styles.trainno_txt}>{trainno}</Text>
+                            {accbyidcard ? <View style={{
+                                width: 4
+                            }}></View> : null}
+                            {accbyidcard ? <Image
                                 resizeMode="cover"
                                 style={{
-                                    width: 61,
-                                    height: 61 / lineScale
+                                    width: 18,
+                                    height: 18 / cardScale
                                 }}
-                                source={require('../../images/right_line.png')}
-                            />
-                            <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
-                                color: '#999',
-                                marginTop: 5
-                            }}>{usedtime}</Text>
+                                source={require('../../images/idcard.png')}
+                            /> : null}
                         </View>
-                        <View style={styles.box}>
-                            <Text style={styles.big_txt}>{totime}</Text>
-                            <Text style={styles.normal_txt}>{tocity}</Text>
-                        </View>
-                        <View style={[
-                            styles.box,
-                            styles.leaseMoney
-                        ]}>
-                            <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'baseline'
-                            }}>
-                                <Text style={[
-                                    styles.orange,
-                                    styles.money_small_txt
-                                ]}>¥</Text>
-                                <Text style={[
-                                    styles.orange,
-                                    styles.money_big_txt
-                                ]}>{Math.min.apply({}, priceMap)}</Text>
-                                <Text style={[
-                                    styles.money_small_txt,
-                                    { color: 'rgb(153, 153, 153)' }
-                                ]}>起</Text>
-                            </View>
+                        <Image
+                            resizeMode="cover"
+                            style={{
+                                width: 61,
+                                height: 61 / lineScale
+                            }}
+                            source={require('../../images/right_line.png')}
+                        />
+                        <Text style={{
+                            fontSize: 12,
+                            lineHeight: 12,
+                            color: '#999',
+                            marginTop: 5
+                        }}>{usedtime}</Text>
+                    </View>
+                    <View style={styles.box}>
+                        <Text style={styles.big_txt}>{totime}</Text>
+                        <Text style={styles.normal_txt}>{tocity}</Text>
+                    </View>
+                    <View style={[
+                        styles.box,
+                        styles.leaseMoney
+                    ]}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'baseline'
+                        }}>
+                            <Text style={[
+                                styles.orange,
+                                styles.money_small_txt
+                            ]}>¥</Text>
+                            <Text style={[
+                                styles.orange,
+                                styles.money_big_txt
+                            ]}>{Math.min.apply({}, priceMap)}</Text>
+                            <Text style={[
+                                styles.money_small_txt,
+                                { color: 'rgb(153, 153, 153)' }
+                            ]}>起</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
                 {!expand
-                    ? <View style={styles.seats}>
+                    ? <View style={styles.bottom} >
                         {this._renderSeats(seatsMap)}
                     </View>
                     : null
                 }
-                {expand
-                    ? <View
-                        style={{
-                            height: 40,
-                            backgroundColor: '#ccc',
-                        }}
-                    >
-                        <View>
-                            <Text>特种票</Text>
+                {
+                    expand
+                        ? <View style={{
+                            backgroundColor: '#f9f9f9'
+                        }}>
+                            {this._renderSeatsList(seatsMap)}
                         </View>
-                    </View>
-                    : null
+                        : null
                 }
-            </View >
+            </CardView >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    'box_container': {
+    'container': {
         margin: 5
     },
-    trainbox: {
+    'top': {
         flexDirection: 'row',
         paddingTop: 12,
         paddingBottom: 10,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#dcdcdc',
     },
     box: {
         flex: 1,
@@ -218,7 +276,7 @@ const styles = StyleSheet.create({
         lineHeight: 12,
         color: '#2d2d2d'
     },
-    seats: {
+    'bottom': {
         flexDirection: 'row',
         paddingLeft: 8,
         backgroundColor: '#f9f9f9',
@@ -228,12 +286,18 @@ const styles = StyleSheet.create({
     'seats_txt': {
         fontSize: 12,
         color: '#666',
-        marginLeft: 8
+        marginLeft: 8,
+        lineHeight: 12,
+        position: 'relative',
+        top: -4
     },
     'no_seats_txt': {
         fontSize: 12,
         color: '#ccc',
-        marginLeft: 8
+        marginLeft: 8,
+        lineHeight: 12,
+        position: 'relative',
+        top: -4
     },
     leaseMoney: {
         flexDirection: 'row',
@@ -250,5 +314,16 @@ const styles = StyleSheet.create({
     'money_small_txt': {
         fontSize: 12,
         lineHeight: 12
+    },
+    'seats_list': {
+        flexDirection: 'row',
+        height: 51,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#dcdcdc',
+    },
+    'seats_box': {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

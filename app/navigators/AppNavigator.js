@@ -169,7 +169,7 @@ const AppNavigator = StackNavigator(
     },
     {
         initialRouteName: 'TrainList',
-        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: new Date(2017, 8, 5) * 1 } // eslint-disable-line
+        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: new Date(2017, 8, 6) * 1 } // eslint-disable-line
     }
 );
 
