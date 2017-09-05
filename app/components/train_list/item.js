@@ -5,15 +5,20 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Animated
 } from 'react-native';
+
+import CardView from 'react-native-cardview';
+import SeatsListComponent from './seats_list';
 
 import _ from '../../util';
 
 export default class ListComponent extends Component {
 
     state = {
-        expand: false
+        expand: false,
+        height: new Animated.Value(0)
     }
 
     static propTypes = {
@@ -22,18 +27,24 @@ export default class ListComponent extends Component {
         cardScale: PropTypes.number
     }
 
-    layout(e) {
-        console.log(e);
-    }
-
     handlePress() {
         if (this.state.expand) {
-            this.setState({
-                expand: false
+            Animated.timing(this.state.height, {
+                duration: 300,
+                toValue: 0
+            }).start(() => {
+                this.setState({
+                    expand: false
+                });
             });
         } else {
             this.setState({
                 expand: true
+            }, () => {
+                Animated.spring(this.state.height, {
+                    duration: 300,
+                    toValue: 153
+                }).start();
             });
         }
     }
@@ -50,8 +61,12 @@ export default class ListComponent extends Component {
         });
     }
 
+    layout(e) {
+        // alert(JSON.stringify(e));
+    }
+
     render() {
-        const { expand } = this.state;
+        const { expand, height } = this.state;
 
         const { data, cardScale, lineScale } = this.props;
 
@@ -77,118 +92,111 @@ export default class ListComponent extends Component {
                 priceMap.push(ticketstatus[i].price);
             }
         }
+        // onLayout={({ nativeEvent: e }) => this.layout(e)}
 
         return (
-            <View style={styles.box_container}
-                onLayout={({ nativeEvent: e }) => { 
-                    this.layout(e);
-                }}
+            <CardView
+                cornerRadius={4}
+                style={styles.container}
             >
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => this.handlePress(index)}
+                    style={styles.top}
                 >
-                    <View style={styles.trainbox}>
-                        <View style={styles.box}>
-                            <Text style={styles.big_txt}>{fmtime}</Text>
-                            <Text style={styles.normal_txt}>{fmcity}</Text>
-                        </View>
-                        <View style={[
+                    <View style={styles.box} >
+                        <Text style={styles.big_txt}>{fmtime}</Text>
+                        <Text style={styles.normal_txt}>{fmcity}</Text>
+                    </View>
+                    <View
+                        style={[
                             styles.box,
                             {
                                 justifyContent: 'center'
                             }
-                        ]}>
-                            <View style={styles.trainno}>
-                                <Text style={styles.trainno_txt}>{trainno}</Text>
-                                {accbyidcard ? <View style={{
-                                    width: 4
-                                }}></View> : null}
-                                {accbyidcard ? <Image
-                                    resizeMode="cover"
-                                    style={{
-                                        width: 18,
-                                        height: 18 / cardScale
-                                    }}
-                                    source={require('../../images/idcard.png')}
-                                /> : null}
-                            </View>
-                            <Image
+                        ]}
+                    >
+                        <View style={styles.trainno}>
+                            <Text style={styles.trainno_txt}>{trainno}</Text>
+                            {accbyidcard ? <View style={{
+                                width: 4
+                            }}></View> : null}
+                            {accbyidcard ? <Image
                                 resizeMode="cover"
                                 style={{
-                                    width: 61,
-                                    height: 61 / lineScale
+                                    width: 18,
+                                    height: 18 / cardScale
                                 }}
-                                source={require('../../images/right_line.png')}
-                            />
-                            <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
-                                color: '#999',
-                                marginTop: 5
-                            }}>{usedtime}</Text>
+                                source={require('../../images/idcard.png')}
+                            /> : null}
                         </View>
-                        <View style={styles.box}>
-                            <Text style={styles.big_txt}>{totime}</Text>
-                            <Text style={styles.normal_txt}>{tocity}</Text>
-                        </View>
-                        <View style={[
-                            styles.box,
-                            styles.leaseMoney
-                        ]}>
-                            <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'baseline'
-                            }}>
-                                <Text style={[
-                                    styles.orange,
-                                    styles.money_small_txt
-                                ]}>¥</Text>
-                                <Text style={[
-                                    styles.orange,
-                                    styles.money_big_txt
-                                ]}>{Math.min.apply({}, priceMap)}</Text>
-                                <Text style={[
-                                    styles.money_small_txt,
-                                    { color: 'rgb(153, 153, 153)' }
-                                ]}>起</Text>
-                            </View>
+                        <Image
+                            resizeMode="cover"
+                            style={{
+                                width: 61,
+                                height: 61 / lineScale
+                            }}
+                            source={require('../../images/right_line.png')}
+                        />
+                        <Text style={{
+                            fontSize: 12,
+                            lineHeight: 12,
+                            color: '#999',
+                            marginTop: 5
+                        }}>{usedtime}</Text>
+                    </View>
+                    <View style={styles.box}>
+                        <Text style={styles.big_txt}>{totime}</Text>
+                        <Text style={styles.normal_txt}>{tocity}</Text>
+                    </View>
+                    <View style={[
+                        styles.box,
+                        styles.leaseMoney
+                    ]}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'baseline'
+                        }}>
+                            <Text style={[
+                                styles.orange,
+                                styles.money_small_txt
+                            ]}>¥</Text>
+                            <Text style={[
+                                styles.orange,
+                                styles.money_big_txt
+                            ]}>{Math.min.apply({}, priceMap)}</Text>
+                            <Text style={[
+                                styles.money_small_txt,
+                                { color: 'rgb(153, 153, 153)' }
+                            ]}>起</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
                 {!expand
-                    ? <View style={styles.seats}>
+                    ? <View style={styles.bottom} >
                         {this._renderSeats(seatsMap)}
                     </View>
                     : null
                 }
-                {expand
-                    ? <View
-                        style={{
-                            height: 40,
-                            backgroundColor: '#ccc',
-                        }}
-                    >
-                        <View>
-                            <Text>特种票</Text>
-                        </View>
-                    </View>
-                    : null
+                {
+                    expand ? <SeatsListComponent height={height} data={seatsMap} /> : null
                 }
-            </View >
+            </CardView >
         );
     }
 }
 
 const styles = StyleSheet.create({
-    'box_container': {
+    'container': {
         margin: 5
     },
-    trainbox: {
+    'top': {
         flexDirection: 'row',
         paddingTop: 12,
         paddingBottom: 10,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#dcdcdc',
     },
     box: {
         flex: 1,
@@ -218,7 +226,7 @@ const styles = StyleSheet.create({
         lineHeight: 12,
         color: '#2d2d2d'
     },
-    seats: {
+    'bottom': {
         flexDirection: 'row',
         paddingLeft: 8,
         backgroundColor: '#f9f9f9',
@@ -228,12 +236,18 @@ const styles = StyleSheet.create({
     'seats_txt': {
         fontSize: 12,
         color: '#666',
-        marginLeft: 8
+        marginLeft: 8,
+        lineHeight: 12,
+        position: 'relative',
+        top: -4
     },
     'no_seats_txt': {
         fontSize: 12,
         color: '#ccc',
-        marginLeft: 8
+        marginLeft: 8,
+        lineHeight: 12,
+        position: 'relative',
+        top: -4
     },
     leaseMoney: {
         flexDirection: 'row',

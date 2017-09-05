@@ -23,6 +23,9 @@ export default class ListComponent extends Component {
     render() {
         const { data } = this.props;
 
+        this.cardScale = 31 / 21;
+        this.lineScale = 100 / 7;
+
         return (
             <FlatList
                 refreshing={true}
@@ -30,10 +33,10 @@ export default class ListComponent extends Component {
                 data={data}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
-                getItemLayout={(data, index) => ({ 
+                getItemLayout={(data, index) => ({
                     length: 103,
                     offset: 103 * index,
-                    index 
+                    index
                 })}
             />
         );

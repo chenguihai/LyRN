@@ -25,11 +25,15 @@ class CityLoctionComponent extends Component {
     }
 
     getCurrentPosition() {
-        navigator.geolocation.getCurrentPosition((location) => {
-            const { longitude, latitude } = location.coords;
+        // try {
+        //     navigator.geolocation.getCurrentPosition((location) => {
+        //         const { longitude, latitude } = location.coords;
 
-            this.props.getCurrentLocation(`${longitude},${latitude}`);
-        });
+        //         this.props.getCurrentLocation(`${longitude},${latitude}`);
+        //     });
+        // } catch (e) {
+        //     console.log(e);
+        // }
     }
 
     handlePress(Name) {
