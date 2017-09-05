@@ -24,9 +24,11 @@ export default class QueryDateComponent extends Component {
     }
 
     handlePress = () => {
-        const { handlePress } = this.props;
+        requestAnimationFrame(() => {
+            const { handlePress } = this.props;
 
-        handlePress && handlePress(); // eslint-disable-line
+            handlePress && handlePress(); // eslint-disable-line
+        });
     }
 
     render() {

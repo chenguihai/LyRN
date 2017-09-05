@@ -109,16 +109,20 @@ class QueryCityComponent extends Component {
     }
 
     selectFromCity = () => {
-        const { selectFromCity } = this.props;
+        requestAnimationFrame(() => {
+            const { selectFromCity } = this.props;
 
-        selectFromCity && selectFromCity();
+            selectFromCity && selectFromCity();
+        });
     }
 
     selectToCity = () => {
-        const { selectToCity } = this.props;
+        requestAnimationFrame(() => {
+            const { selectToCity } = this.props;
 
-        InteractionManager.runAfterInteractions(() => {
-            selectToCity && selectToCity();
+            InteractionManager.runAfterInteractions(() => {
+                selectToCity && selectToCity();
+            });
         });
     }
 
@@ -144,8 +148,6 @@ class QueryCityComponent extends Component {
         const { left, right, opacity, rotate } = this.state;
 
         this.innerWidth = (width - 30) / 2;
-
-        console.log(Animated);
 
         return (
             <View style={styles.query_city}>
@@ -184,9 +186,9 @@ class QueryCityComponent extends Component {
                                     {
                                         rotate: rotate.interpolate({
                                             inputRange: [0,
-1],
+                                                1],
                                             outputRange: ['0deg',
-'180deg']
+                                                '180deg']
                                         })
                                     }
                                 ]

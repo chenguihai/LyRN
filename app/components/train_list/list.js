@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    FlatList,
-    Dimensions
+    FlatList
 } from 'react-native';
 
 import ItemComponent from './item';

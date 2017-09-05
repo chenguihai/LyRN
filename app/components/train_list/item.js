@@ -5,17 +5,20 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Animated
 } from 'react-native';
 
 import CardView from 'react-native-cardview';
+import SeatsListComponent from './seats_list';
 
 import _ from '../../util';
 
 export default class ListComponent extends Component {
 
     state = {
-        expand: false
+        expand: false,
+        height: new Animated.Value(0)
     }
 
     static propTypes = {
@@ -26,12 +29,22 @@ export default class ListComponent extends Component {
 
     handlePress() {
         if (this.state.expand) {
-            this.setState({
-                expand: false
+            Animated.timing(this.state.height, {
+                duration: 300,
+                toValue: 0
+            }).start(() => {
+                this.setState({
+                    expand: false
+                });
             });
         } else {
             this.setState({
                 expand: true
+            }, () => {
+                Animated.spring(this.state.height, {
+                    duration: 300,
+                    toValue: 153
+                }).start();
             });
         }
     }
@@ -52,65 +65,8 @@ export default class ListComponent extends Component {
         // alert(JSON.stringify(e));
     }
 
-    _renderSeatsList(data) {
-        return data.map((item, index) => {
-            const { cn, seats, price } = item;
-
-            return (
-                <View key={index} style={[
-                    styles.seats_list
-                ]}>
-                    <View style={styles.seats_box}>
-                        <Text style={{
-                            fontSize: 14,
-                            color: '#333'
-                        }}>{cn}</Text>
-                    </View>
-                    <View style={styles.seats_box}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'baseline'
-                        }}>
-                            <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
-                                color: '#FF6540'
-                            }}>¥</Text>
-                            <Text style={{
-                                fontSize: 16,
-                                lineHeight: 16,
-                                color: '#FF6540'
-                            }}>{price}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.seats_box}>
-                        <Text style={{
-                            fontSize: 14,
-                            color: 'rgb(170, 170, 170)'
-                        }}>{seats} 张</Text>
-                    </View>
-                    <View style={styles.seats_box}>
-                        <View style={{
-                            paddingTop: 4,
-                            paddingBottom: 4,
-                            paddingLeft: 8,
-                            paddingRight: 8,
-                            borderRadius: 3,
-                            backgroundColor: '#3c6'
-                        }}>
-                            <Text style={{
-                                fontSize: 12,
-                                color: '#FFF'
-                            }}>预定</Text>
-                        </View>
-                    </View>
-                </View>
-            );
-        });
-    }
-
     render() {
-        const { expand } = this.state;
+        const { expand, height } = this.state;
 
         const { data, cardScale, lineScale } = this.props;
 
@@ -223,13 +179,7 @@ export default class ListComponent extends Component {
                     : null
                 }
                 {
-                    expand
-                        ? <View style={{
-                            backgroundColor: '#f9f9f9'
-                        }}>
-                            {this._renderSeatsList(seatsMap)}
-                        </View>
-                        : null
+                    expand ? <SeatsListComponent height={height} data={seatsMap} /> : null
                 }
             </CardView >
         );
@@ -314,16 +264,5 @@ const styles = StyleSheet.create({
     'money_small_txt': {
         fontSize: 12,
         lineHeight: 12
-    },
-    'seats_list': {
-        flexDirection: 'row',
-        height: 51,
-        borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#dcdcdc',
-    },
-    'seats_box': {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
     }
 });
