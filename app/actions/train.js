@@ -6,6 +6,7 @@ const GET_NOTICE = { type: Types.GET_TRAIN_NOTICE };
 const GET_TAB = { type: Types.GET_TAB };
 
 const GET_TRAIN_LIST = { type: Types.GET_TRAIN_LIST };
+const CHANGE_TRAIN_LIST_LENGTH = { type: Types.CHANGE_TRAIN_LIST_LENGTH };
 
 const getBanner = () => (dispatch) => {
     _.get('pubapi/home/Commercial.ashx')
@@ -62,15 +63,26 @@ const getTrainList = (fromCity, toCity, date) => (dispatch) => {
         .then(({ data }) => {
             dispatch({
                 ...GET_TRAIN_LIST,
-                trainList: data
+                trainList: data,
+                length: 6
             });
         });
+};
+
+const changeLength = () => (dispatch, getState) => {
+    const originalLength = getState().Train.length;
+
+    dispatch({
+        ...CHANGE_TRAIN_LIST_LENGTH,
+        length: originalLength + 6
+    });
 };
 
 export default {
     getBanner,
     getNotice,
     getTab,
-    getTrainList
+    getTrainList,
+    changeLength
 };
 

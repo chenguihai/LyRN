@@ -18,7 +18,6 @@ class TrainListPage extends Component {
 
     static propTypes = {
         navigation: PropTypes.object,
-        trainList: PropTypes.object,
         getTrainList: PropTypes.func
     }
 
@@ -30,28 +29,21 @@ class TrainListPage extends Component {
     }
 
     render() {
-        const { trainList } = this.props;
-        const { data = {} } = trainList;
-        const { tcount = 0, trainlist } = data;
 
         return (
             <View style={styles.container}>
                 <HeaderComponent />
-                {tcount > 0 ? <ListComponent data={trainlist} /> : null}
+                <ListComponent /> 
             </View>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
-    trainList: state.Train.trainList
-});
-
 const mapDispatchToProps = (dispatch) => ({
     getTrainList: bindActionCreators(TrainAction.getTrainList, dispatch) // 获取站点时刻表
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TrainListPage);
+export default connect(() => ({}), mapDispatchToProps)(TrainListPage);
 
 const styles = StyleSheet.create({
     container: {

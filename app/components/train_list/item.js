@@ -41,7 +41,7 @@ export default class ListComponent extends Component {
             this.setState({
                 expand: true
             }, () => {
-                Animated.spring(this.state.height, {
+                Animated.timing(this.state.height, {
                     duration: 300,
                     toValue: 153
                 }).start();

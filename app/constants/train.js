@@ -4,3 +4,4 @@ export const GET_TAB = 'GET_TAB';
 
 // 获取火车时刻表
 export const GET_TRAIN_LIST = 'GET_TRAIN_LIST';
+export const CHANGE_TRAIN_LIST_LENGTH = 'CHANGE_TRAIN_LIST_LENGTH';
