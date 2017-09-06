@@ -9,10 +9,27 @@ import {
     Animated
 } from 'react-native';
 
-import CardView from 'react-native-cardview';
 import SeatsListComponent from './seats_list';
 
 import _ from '../../util';
+
+import { BoxShadow } from 'react-native-shadow';
+
+const shadowOpt = {
+    height: 98.5,
+    color: '#C8CECB',
+    border: 1.3,
+    radius: 3,
+    opacity: 0.2,
+    x: 0,
+    y: 0,
+    style: {
+        marginVertical: 5,
+        marginTop: 5,
+        marginBottom: 5,
+        marginLeft: 5
+    }
+};
 
 export default class ListComponent extends Component {
 
@@ -24,10 +41,12 @@ export default class ListComponent extends Component {
     static propTypes = {
         data: PropTypes.object,
         lineScale: PropTypes.number,
-        cardScale: PropTypes.number
+        cardScale: PropTypes.number,
+        viewWidth: PropTypes.number
     }
 
     handlePress() {
+        this.layout();
         if (this.state.expand) {
             Animated.timing(this.state.height, {
                 duration: 300,
@@ -54,23 +73,31 @@ export default class ListComponent extends Component {
             const { cn, seats } = item;
 
             if (seats > 0) {
-                return <Text key={index} style={styles.seats_txt}>{cn} ({seats})</Text>;
+                return <Text key={index} style={{
+                    fontSize: 11,
+                    lineHeight: 11,
+                    marginLeft: 8,
+                    color: '#333'
+                }}>{cn} ({seats})</Text>;
             }
 
-            return <Text key={index} style={styles.no_seats_txt}>{cn} (无)</Text>;
+            return <Text key={index} style={{
+                fontSize: 11,
+                lineHeight: 11,
+                marginLeft: 8,
+                color: '#ccc'
+            }}>{cn} (无)</Text>;
         });
-    }
-
-    layout(e) {
-        // alert(JSON.stringify(e));
     }
 
     render() {
         const { expand, height } = this.state;
 
-        const { data, cardScale, lineScale } = this.props;
+        const { data, cardScale, lineScale, viewWidth } = this.props;
 
         const { index, item } = data;
+
+        shadowOpt.width = viewWidth - 10;
 
         // accbyidcard 是否可以通过刷身份证进站
         // fmcity 起始站
@@ -92,177 +119,183 @@ export default class ListComponent extends Component {
                 priceMap.push(ticketstatus[i].price);
             }
         }
-        // onLayout={({ nativeEvent: e }) => this.layout(e)}
 
         return (
-            <CardView
-                cornerRadius={4}
-                style={styles.container}
-            >
-                <TouchableOpacity
-                    activeOpacity={0.8}
-                    onPress={() => this.handlePress(index)}
-                    style={styles.top}
+            <BoxShadow setting={shadowOpt}>
+                <View
+                    cornerRadius={0}
+                    style={styles.container}
+                    onLayout={({ nativeEvent: e }) => {
+                        // alert(JSON.stringify(e));
+                    }}
                 >
-                    <View style={styles.box} >
-                        <Text style={styles.big_txt}>{fmtime}</Text>
-                        <Text style={styles.normal_txt}>{fmcity}</Text>
-                    </View>
-                    <View
-                        style={[
-                            styles.box,
-                            {
-                                justifyContent: 'center'
-                            }
-                        ]}
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => this.handlePress(index)}
+                        style={styles.train_info}
                     >
-                        <View style={styles.trainno}>
-                            <Text style={styles.trainno_txt}>{trainno}</Text>
-                            {accbyidcard ? <View style={{
-                                width: 4
-                            }}></View> : null}
-                            {accbyidcard ? <Image
-                                resizeMode="cover"
-                                style={{
-                                    width: 18,
-                                    height: 18 / cardScale
-                                }}
-                                source={require('../../images/idcard.png')}
-                            /> : null}
+                        <View style={styles.info_row}>
+                            {/* 始发时间 */}
+                            <View style={styles.info_item}>
+                                <Text style={{
+                                    fontSize: 20,
+                                    lineHeight: 20,
+                                    color: '#333'
+                                }}>{fmtime}</Text>
+                            </View>
+                            {/* 列车编号 */}
+                            <View style={[
+                                styles.info_item,
+                                {
+                                    flexDirection: 'column',
+                                    alignItems: 'center'
+                                }
+                            ]}>
+                                <View style={styles.trainno}>
+                                    <Text style={{
+                                        fontSize: 12,
+                                        lineHeight: 12,
+                                        color: '#333'
+                                    }}>{trainno}</Text>
+                                    {accbyidcard ? <View style={{
+                                        width: 4
+                                    }}></View> : null}
+                                    {accbyidcard ? <Image
+                                        resizeMode="cover"
+                                        style={{
+                                            width: cardScale * 12,
+                                            height: 12
+                                        }}
+                                        source={require('../../images/idcard.png')}
+                                    /> : null}
+                                </View>
+                                <Image
+                                    resizeMode="cover"
+                                    style={{
+                                        width: 61,
+                                        height: 61 / lineScale,
+                                        marginTop: 3
+                                    }}
+                                    source={require('../../images/right_line.png')}
+                                />
+                            </View>
+                            {/* 达到时间 */}
+                            <View style={styles.info_item}>
+                                <Text style={{
+                                    fontSize: 20,
+                                    lineHeight: 20,
+                                    color: '#333'
+                                }}>{totime}</Text>
+                            </View>
+                            {/* 空占位符 */}
+                            <View style={styles.info_item}>
+                            </View>
                         </View>
-                        <Image
-                            resizeMode="cover"
-                            style={{
-                                width: 61,
-                                height: 61 / lineScale
-                            }}
-                            source={require('../../images/right_line.png')}
-                        />
-                        <Text style={{
-                            fontSize: 12,
-                            lineHeight: 12,
-                            color: '#999',
-                            marginTop: 5
-                        }}>{usedtime}</Text>
-                    </View>
-                    <View style={styles.box}>
-                        <Text style={styles.big_txt}>{totime}</Text>
-                        <Text style={styles.normal_txt}>{tocity}</Text>
-                    </View>
-                    <View style={[
-                        styles.box,
-                        styles.leaseMoney
-                    ]}>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'baseline'
-                        }}>
-                            <Text style={[
-                                styles.orange,
-                                styles.money_small_txt
-                            ]}>¥</Text>
-                            <Text style={[
-                                styles.orange,
-                                styles.money_big_txt
-                            ]}>{Math.min.apply({}, priceMap)}</Text>
-                            <Text style={[
-                                styles.money_small_txt,
-                                { color: 'rgb(153, 153, 153)' }
-                            ]}>起</Text>
+                        <View style={[
+                            styles.info_row,
+                            {
+                                alignItems: 'baseline'
+                            }
+                        ]}>
+                            {/* 始发站点 */}
+                            <View style={styles.info_item}>
+                                <Text style={{
+                                    fontSize: 14,
+                                    lineHeight: 14,
+                                    color: '#333'
+                                }}>{fmcity}</Text>
+                            </View>
+                            {/* 行程总时间 */}
+                            <View style={styles.info_item}>
+                                <Text style={{
+                                    fontSize: 12,
+                                    lineHeight: 12,
+                                    color: '#999',
+                                }}>{usedtime}</Text>
+                            </View>
+                            {/* 到达站点 */}
+                            <View style={styles.info_item}>
+                                <Text style={{
+                                    fontSize: 14,
+                                    lineHeight: 14,
+                                    color: '#333'
+                                }}>{tocity}</Text>
+                            </View>
+                            {/* 票价 */}
+                            <View style={styles.info_item}>
+                                <View style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'baseline'
+                                }}>
+                                    <Text style={{
+                                        fontSize: 12,
+                                        lineHeight: 12,
+                                        color: '#ff5346'
+                                    }}>¥</Text>
+                                    <Text style={{
+                                        fontSize: 18,
+                                        lineHeight: 18,
+                                        color: '#ff5346'
+                                    }}>{Math.min.apply({}, priceMap)}</Text>
+                                    <Text style={{
+                                        fontSize: 12,
+                                        lineHeight: 12,
+                                        color: '#ff5346'
+                                    }}>起</Text>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                </TouchableOpacity>
-                {!expand
-                    ? <View style={styles.bottom} >
-                        {this._renderSeats(seatsMap)}
-                    </View>
-                    : null
-                }
-                {
-                    expand ? <SeatsListComponent height={height} data={seatsMap} /> : null
-                }
-            </CardView >
+                    </TouchableOpacity>
+                    {!expand
+                        ? <View style={styles.train_seats} >
+                            {this._renderSeats(seatsMap)}
+                        </View>
+                        : null
+                    }
+                    {
+                        expand ? <SeatsListComponent height={height} data={seatsMap} /> : null
+                    }
+                </View >
+            </BoxShadow >
         );
     }
 }
 
 const styles = StyleSheet.create({
     'container': {
-        margin: 5
+        borderRadius: 4,
+        backgroundColor: '#FFF'
     },
-    'top': {
-        flexDirection: 'row',
-        paddingTop: 12,
-        paddingBottom: 10,
-        backgroundColor: '#FFF',
+    'train_info': {
+        paddingTop: 15,
+        paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#dcdcdc',
+        borderBottomColor: '#e4e4e4',
+        borderStyle: 'dashed'
     },
-    box: {
+    'info_row': {
+        flexDirection: 'row',
+        // borderBottomWidth: 1,
+        // borderColor: '#ccc'
+    },
+    'info_item': {
         flex: 1,
-        alignItems: 'center',
-    },
-    'big_txt': {
-        fontSize: 20,
-        color: '#333',
-        lineHeight: 30,
-        justifyContent: 'center'
-    },
-    'normal_txt': {
-        fontSize: 14,
-        color: '#2d2d2d',
-        lineHeight: 21,
-        justifyContent: 'center'
-    },
-    trainno: {
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'baseline',
-        marginTop: 5,
-        marginBottom: 3
+        alignItems: 'center'
     },
-    'trainno_txt': {
-        fontSize: 12,
-        lineHeight: 12,
-        color: '#2d2d2d'
-    },
-    'bottom': {
+    'trainno': {
         flexDirection: 'row',
-        paddingLeft: 8,
-        backgroundColor: '#f9f9f9',
+        alignItems: 'baseline'
+    },
+
+    'train_seats': {
+        flexDirection: 'row',
         height: 30,
-        alignItems: 'center'
-    },
-    'seats_txt': {
-        fontSize: 12,
-        color: '#666',
-        marginLeft: 8,
-        lineHeight: 12,
-        position: 'relative',
-        top: -4
-    },
-    'no_seats_txt': {
-        fontSize: 12,
-        color: '#ccc',
-        marginLeft: 8,
-        lineHeight: 12,
-        position: 'relative',
-        top: -4
-    },
-    leaseMoney: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    orange: {
-        color: 'rgb(255, 101, 64)'
-    },
-    'money_big_txt': {
-        fontSize: 20,
-        lineHeight: 20
-    },
-    'money_small_txt': {
-        fontSize: 12,
-        lineHeight: 12
+        alignItems: 'center',
+        paddingLeft: 15
+        // paddingLeft: 8,
+        // height: 30,
+        // alignItems: 'center'
     }
 });

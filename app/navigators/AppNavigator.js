@@ -12,6 +12,7 @@ import BusPage from '../pages/bus'; // 汽车/船票
 import CityPage from '../pages/city'; // 选择城市
 import CalendarPage from '../pages/calendar'; // 选择日历
 import TrainListPage from '../pages/train_list'; // 火车时刻表页面
+import SvgPage from '../pages/svg';
 
 const HomeTabNavigator = TabNavigator(
     {
@@ -163,13 +164,12 @@ const AppNavigator = StackNavigator(
         'TrainList': {
             screen: TrainListPage,
             navigationOptions: {
-                header: null
             }
         }
     },
     {
-        initialRouteName: 'Main',
-        // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: new Date(2017, 8, 6) * 1 } // eslint-disable-line
+        initialRouteName: 'TrainList',
+        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: new Date(2017, 8, 6) * 1 } // eslint-disable-line
     }
 );
 

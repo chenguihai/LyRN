@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
+    Text,
+    Image,
     StyleSheet
 } from 'react-native';
 
@@ -14,7 +16,43 @@ import { TrainAction } from '../actions';
 
 import _ from '../util';
 
+class Header extends Component {
+
+    static propTypes = {
+        from: PropTypes.object,
+        to: PropTypes.object
+    }
+
+    render() {
+        const { from, to } = this.props;
+
+        return (
+            <View style={styles.header}>
+                <View>
+                </View>
+                <Text>{from.Name}</Text>
+                <Image
+                    source={require('../images/title_1.png')}
+                    style={{
+                        width: 10,
+                        height: 10
+                    }}
+                />
+                <Text>{to.Name}</Text>
+            </View>
+        );
+    }
+}
+
 class TrainListPage extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+        const { from, to } = navigation.state.params;
+
+        return {
+            headerTitle: <Header from={from} to={to} />
+        };
+    }
 
     static propTypes = {
         navigation: PropTypes.object,
@@ -33,7 +71,7 @@ class TrainListPage extends Component {
         return (
             <View style={styles.container}>
                 <HeaderComponent />
-                <ListComponent /> 
+                <ListComponent />
             </View>
         );
     }

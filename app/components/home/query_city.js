@@ -93,7 +93,7 @@ class QueryCityComponent extends Component {
                     }),
                 ]).start(() => {
                     this.animationEnd = true;
-                    // 这个setState并没有什么实际意义,只是为了触发重新update
+                    // 这个setState并没有什么实际意义,只是为了触发重新rerender
                     this.setState({
                         reupdate: true
                     });

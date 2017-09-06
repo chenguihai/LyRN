@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    FlatList
+    FlatList,
+    Dimensions
 } from 'react-native';
 
 import ItemComponent from './item';
@@ -18,35 +19,20 @@ class ListComponent extends Component {
         changeLength: PropTypes.func
     }
 
-    // loadMore = false;
-
     _renderItem = (data) => {
-        return <ItemComponent cardScale={this.cardScale} lineScale={this.lineScale} data={data} />;
+        return <ItemComponent cardScale={this.cardScale} viewWidth={this.width} lineScale={this.lineScale} data={data} />;
     }
 
     keyExtractor(item) {
         return item.trainno + item.usedtimeps;
     }
 
-    componentDidUpdate() {
-        // this.loadMore = false;
-    }
-
     onEndReached = () => {
-        // console.log(this._ref);
         this.props.changeLength();
     }
 
-    handleScroll = ({ nativeEvent: e }) => {
-        // const { contentOffset, contentSize, layoutMeasurement } = e;
-
-        // if (!this.loadMore && contentOffset.y + layoutMeasurement.height + 50 > contentSize.height) {
-        //     this.props.changeLength();
-        //     this.loadMore = true;
-        // }
-    }
-
     render() {
+        const { width } = Dimensions.get('window');
         const { trainList, length } = this.props;
         const { data = {} } = trainList;
         const { tcount = 0, trainlist = [] } = data;
@@ -55,25 +41,21 @@ class ListComponent extends Component {
             return null;
         }
 
+        this.width = width;
         this.cardScale = 31 / 21;
         this.lineScale = 100 / 7;
-        
+
         return (
             <FlatList
-                // ref={(ref) => { 
-                //    this._ref = ref;
-                // }}
-                // onScroll={this.handleScroll}
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
-                // refreshing={true}
                 initialNumToRender={6}
                 data={trainlist.slice(0, length)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({
-                    length: 103,
-                    offset: 103 * index,
+                    length: 103.5,
+                    offset: 103.5 * index,
                     index
                 })}
             />
