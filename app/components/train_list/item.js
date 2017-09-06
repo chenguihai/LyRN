@@ -17,7 +17,7 @@ const shadowOpt = {
     height: 98.5,
     color: '#C8CECB',
     border: 1.3,
-    radius: 3,
+    radius: 2,
     opacity: 0.3,
     x: 0,
     y: 0,
@@ -35,11 +35,8 @@ export default class ListComponent extends Component {
         data: PropTypes.object,
         lineScale: PropTypes.number,
         cardScale: PropTypes.number,
-        viewWidth: PropTypes.number
-    }
-
-    handlePress() {
-
+        viewWidth: PropTypes.number,
+        handlePress: PropTypes.func
     }
 
     _renderSeats(data) {
@@ -66,9 +63,7 @@ export default class ListComponent extends Component {
 
     render() {
         const { data, cardScale, lineScale, viewWidth } = this.props;
-
         const { item } = data;
-
 
         // accbyidcard 是否可以通过刷身份证进站
         // fmcity 起始站
@@ -99,8 +94,8 @@ export default class ListComponent extends Component {
                     style={styles.container}
                 >
                     <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => this.handlePress(seatsMap)}
+                        activeOpacity={0.9}
+                        onPress={() => this.props.handlePress(seatsMap)}
                         style={styles.train_info}
                     >
                         <View style={styles.info_row}>

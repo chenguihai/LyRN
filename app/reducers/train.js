@@ -1,4 +1,11 @@
-import { GET_TRAIN_BANNER, GET_TRAIN_NOTICE, GET_TAB, GET_TRAIN_LIST, CHANGE_TRAIN_LIST_LENGTH } from '../constants/train';
+import { 
+    GET_TRAIN_BANNER, 
+    GET_TRAIN_NOTICE, 
+    GET_TAB, 
+    GET_TRAIN_LIST, 
+    CHANGE_TRAIN_LIST_LENGTH,
+    IS_SHOW_SELECT_SEATS_MODAL
+} from '../constants/train';
 
 const initialState = {
     data1: {},
@@ -41,6 +48,12 @@ export default function train(state = initialState, action) {
         nextState = {
             ...state,
             length: action.length
+        };
+        break;
+    case IS_SHOW_SELECT_SEATS_MODAL:
+        nextState = {
+            ...state,
+            modalVisible: action.modalVisible
         };
         break;
     default:

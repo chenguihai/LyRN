@@ -7,6 +7,7 @@ const GET_TAB = { type: Types.GET_TAB };
 
 const GET_TRAIN_LIST = { type: Types.GET_TRAIN_LIST };
 const CHANGE_TRAIN_LIST_LENGTH = { type: Types.CHANGE_TRAIN_LIST_LENGTH };
+const IS_SHOW_SELECT_SEATS_MODAL = { type: Types.IS_SHOW_SELECT_SEATS_MODAL };
 
 const getBanner = () => (dispatch) => {
     _.get('pubapi/home/Commercial.ashx')
@@ -74,7 +75,14 @@ const changeLength = () => (dispatch, getState) => {
 
     dispatch({
         ...CHANGE_TRAIN_LIST_LENGTH,
-        length: originalLength + 6
+        length: originalLength + 20
+    });
+};
+
+const isShowSeatsModal = (bool) => (dispatch) => {
+    dispatch({
+        ...IS_SHOW_SELECT_SEATS_MODAL,
+        modalVisible: bool
     });
 };
 
@@ -83,6 +91,7 @@ export default {
     getNotice,
     getTab,
     getTrainList,
-    changeLength
+    changeLength,
+    isShowSeatsModal
 };
 

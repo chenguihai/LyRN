@@ -23,7 +23,8 @@ class Header extends Component {
 
     static propTypes = {
         from: PropTypes.object,
-        to: PropTypes.object
+        to: PropTypes.object,
+        modalVisible: PropTypes.bool
     }
 
     render() {
@@ -32,16 +33,23 @@ class Header extends Component {
         return (
             <View style={styles.header}>
                 <View>
+                    <Image 
+                        source={}
+                    />
                 </View>
-                <Text>{from.Name}</Text>
-                <Image
-                    source={require('../images/title_1.png')}
-                    style={{
-                        width: 10,
-                        height: 10
-                    }}
-                />
-                <Text>{to.Name}</Text>
+                <View style={{
+                    flexDirection: 'row'
+                }}>
+                    <Text>{from.Name}</Text>
+                    <Image
+                        source={require('../images/title_1.png')}
+                        style={{
+                            width: 10,
+                            height: 10
+                        }}
+                    />
+                    <Text>{to.Name}</Text>
+                </View>
             </View>
         );
     }
@@ -78,7 +86,7 @@ class TrainListPage extends Component {
                 <Modal
                     animationType={'fade'}
                     transparent={true}
-                    visible={true}
+                    visible={false}
                     onRequestClose={() => {
                         alert('Modal has been closed.');
                     }}
@@ -87,16 +95,7 @@ class TrainListPage extends Component {
                         flex: 1,
                         backgroundColor: 'rgba(0,0,0,.5)'
                     }}>
-                        <View style={{
-                            width: 375,
-                            height: 500,
-                            position: 'absolute',
-                            bottom: 0,
-                            backgroundColor: '#FFF'
-                        }}>
-                            <Text>Hello World!</Text>
-                            <Text>Hide Modal</Text>
-                        </View>
+                        <SeatsListComponent />
                     </View>
                 </Modal>
             </View>
@@ -104,11 +103,15 @@ class TrainListPage extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    modalVisible: state.Train.modalVisible
+});
+
 const mapDispatchToProps = (dispatch) => ({
     getTrainList: bindActionCreators(TrainAction.getTrainList, dispatch) // 获取站点时刻表
 });
 
-export default connect(() => ({}), mapDispatchToProps)(TrainListPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TrainListPage);
 
 const styles = StyleSheet.create({
     container: {
