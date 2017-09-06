@@ -6,10 +6,8 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Animated
 } from 'react-native';
 
-import SeatsListComponent from './seats_list';
 
 import _ from '../../util';
 
@@ -20,7 +18,7 @@ const shadowOpt = {
     color: '#C8CECB',
     border: 1.3,
     radius: 3,
-    opacity: 0.2,
+    opacity: 0.3,
     x: 0,
     y: 0,
     style: {
@@ -33,11 +31,6 @@ const shadowOpt = {
 
 export default class ListComponent extends Component {
 
-    state = {
-        expand: false,
-        height: new Animated.Value(0)
-    }
-
     static propTypes = {
         data: PropTypes.object,
         lineScale: PropTypes.number,
@@ -46,26 +39,7 @@ export default class ListComponent extends Component {
     }
 
     handlePress() {
-        this.layout();
-        if (this.state.expand) {
-            Animated.timing(this.state.height, {
-                duration: 300,
-                toValue: 0
-            }).start(() => {
-                this.setState({
-                    expand: false
-                });
-            });
-        } else {
-            this.setState({
-                expand: true
-            }, () => {
-                Animated.timing(this.state.height, {
-                    duration: 300,
-                    toValue: 153
-                }).start();
-            });
-        }
+
     }
 
     _renderSeats(data) {
@@ -91,13 +65,10 @@ export default class ListComponent extends Component {
     }
 
     render() {
-        const { expand, height } = this.state;
-
         const { data, cardScale, lineScale, viewWidth } = this.props;
 
-        const { index, item } = data;
+        const { item } = data;
 
-        shadowOpt.width = viewWidth - 10;
 
         // accbyidcard 是否可以通过刷身份证进站
         // fmcity 起始站
@@ -120,18 +91,16 @@ export default class ListComponent extends Component {
             }
         }
 
+        shadowOpt.width = viewWidth - 10;
+
         return (
-            <BoxShadow setting={shadowOpt}>
+            <BoxShadow setting={shadowOpt} >
                 <View
-                    cornerRadius={0}
                     style={styles.container}
-                    onLayout={({ nativeEvent: e }) => {
-                        // alert(JSON.stringify(e));
-                    }}
                 >
                     <TouchableOpacity
                         activeOpacity={0.8}
-                        onPress={() => this.handlePress(index)}
+                        onPress={() => this.handlePress(seatsMap)}
                         style={styles.train_info}
                     >
                         <View style={styles.info_row}>
@@ -246,15 +215,9 @@ export default class ListComponent extends Component {
                             </View>
                         </View>
                     </TouchableOpacity>
-                    {!expand
-                        ? <View style={styles.train_seats} >
-                            {this._renderSeats(seatsMap)}
-                        </View>
-                        : null
-                    }
-                    {
-                        expand ? <SeatsListComponent height={height} data={seatsMap} /> : null
-                    }
+                    <View style={styles.train_seats} >
+                        {this._renderSeats(seatsMap)}
+                    </View>
                 </View >
             </BoxShadow >
         );
@@ -263,7 +226,7 @@ export default class ListComponent extends Component {
 
 const styles = StyleSheet.create({
     'container': {
-        borderRadius: 4,
+        borderRadius: 3,
         backgroundColor: '#FFF'
     },
     'train_info': {
@@ -271,7 +234,8 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e4e4e4',
-        borderStyle: 'dashed'
+        borderStyle: 'dashed',
+        // borderRadius: 4
     },
     'info_row': {
         flexDirection: 'row',
@@ -293,9 +257,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 30,
         alignItems: 'center',
-        paddingLeft: 15
-        // paddingLeft: 8,
-        // height: 30,
-        // alignItems: 'center'
+        paddingLeft: 15,
+        // backgroundColor: '#f9f9f9'
     }
 });

@@ -4,14 +4,12 @@ import {
     View,
     Text,
     StyleSheet,
-    Animated
 } from 'react-native';
 
 export default class SeatsListComponent extends Component {
 
     static propTypes = {
-        data: PropTypes.array,
-        height: PropTypes.object
+        data: PropTypes.array
     }
 
     _renderSeatsList(data) {
@@ -73,15 +71,14 @@ export default class SeatsListComponent extends Component {
     }
 
     render() {
-        const { data, height } = this.props;
+        const { data } = this.props;
 
         return (
-            <Animated.View style={{
-                backgroundColor: '#f9f9f9',
-                height
+            <View style={{
+                backgroundColor: '#FFF',
             }}>
                 {this._renderSeatsList(data)}
-            </Animated.View>
+            </View>
         );
     }
 }

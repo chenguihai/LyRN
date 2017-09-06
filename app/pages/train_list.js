@@ -4,7 +4,8 @@ import {
     View,
     Text,
     Image,
-    StyleSheet
+    StyleSheet,
+    Modal
 } from 'react-native';
 
 import HeaderComponent from '../components/train_list/header';
@@ -15,6 +16,8 @@ import { connect } from 'react-redux';
 import { TrainAction } from '../actions';
 
 import _ from '../util';
+
+import SeatsListComponent from '../components/train_list/seats_list';
 
 class Header extends Component {
 
@@ -72,6 +75,30 @@ class TrainListPage extends Component {
             <View style={styles.container}>
                 <HeaderComponent />
                 <ListComponent />
+                <Modal
+                    animationType={'fade'}
+                    transparent={true}
+                    visible={true}
+                    onRequestClose={() => {
+                        alert('Modal has been closed.');
+                    }}
+                >
+                    <View style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0,.5)'
+                    }}>
+                        <View style={{
+                            width: 375,
+                            height: 500,
+                            position: 'absolute',
+                            bottom: 0,
+                            backgroundColor: '#FFF'
+                        }}>
+                            <Text>Hello World!</Text>
+                            <Text>Hide Modal</Text>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         );
     }
