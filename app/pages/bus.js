@@ -15,6 +15,8 @@ import ButtonComponent from '../components/home/button';
 import OperationComponent from '../components/home/operation';
 import PubOperationComponent from '../components/home/pub_operation';
 
+import { getBanner, getNotice, getTab } from '../actions/http';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { BusAction } from '../actions';
@@ -22,8 +24,6 @@ import { BusAction } from '../actions';
 class BusPage extends Component {
 
     static propTypes = {
-        getBanner: PropTypes.func,
-        getNotice: PropTypes.func,
         Train: PropTypes.object,
         Bus: PropTypes.object,
         navigation: PropTypes.object,
@@ -34,11 +34,24 @@ class BusPage extends Component {
     }
 
     state = {
+        tabIcon: {}
     }
 
     componentWillMount() {
-        this.props.getBanner();
-        this.props.getNotice();
+        // 获取通知
+        getNotice({
+            params: { projectId: 30 },
+            that: this
+        });
+        // 获取banner
+        getBanner({
+            params: { projectId: 30 },
+            that: this
+        });
+        getTab({
+            params: {},
+            that: this
+        });
     }
 
 
@@ -68,11 +81,8 @@ class BusPage extends Component {
     }
 
     render() {
-        const { Bus, Train, BusfromCity, BustoCity, BustripTime, BustripTimeDes } = this.props;
-        const { data, notice } = Bus;
-        const { data2 } = Train;
-        const { Adverts = { List: [] }, Icons = { List: [] } } = data;
-        const { OperationIcon = [] } = data2;
+        const { BusfromCity, BustoCity, BustripTime, BustripTimeDes } = this.props;
+        const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -131,8 +141,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getBanner: bindActionCreators(BusAction.getBanner, dispatch),
-    getNotice: bindActionCreators(BusAction.getNotice, dispatch)
+    // getBanner: bindActionCreators(BusAction.getBanner, dispatch),
+    // getNotice: bindActionCreators(BusAction.getNotice, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BusPage);

@@ -185,10 +185,14 @@ class QueryCityComponent extends Component {
                                 transform: [
                                     {
                                         rotate: rotate.interpolate({
-                                            inputRange: [0,
-                                                1],
-                                            outputRange: ['0deg',
-                                                '180deg']
+                                            inputRange: [
+                                                0,
+                                                1
+                                            ],
+                                            outputRange: [
+                                                '0deg',
+                                                '180deg'
+                                            ]
                                         })
                                     }
                                 ]

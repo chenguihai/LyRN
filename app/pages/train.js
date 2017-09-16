@@ -16,6 +16,8 @@ import ButtonComponent from '../components/home/button';
 import OperationComponent from '../components/home/operation';
 import PubOperationComponent from '../components/home/pub_operation';
 
+import { getBanner, getNotice, getTab } from '../actions/http';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TrainAction } from '../actions';
@@ -35,12 +37,28 @@ class TrainPage extends Component {
     }
 
     state = {
+        tabIcon: {}
     }
 
     componentWillMount() {
-        this.props.getBanner();
-        this.props.getNotice();
-        this.props.getTab();
+        console.log('componentWillMount');
+        // this.props.getBanner();
+        // this.props.getNotice();
+        // this.props.getTab();
+        // 获取通知
+        getNotice({
+            params: { projectId: 10 },
+            that: this
+        });
+        // 获取banner
+        getBanner({
+            params: {},
+            that: this
+        });
+        getTab({
+            params: {},
+            that: this
+        });
     }
 
     selectCity(key) {
@@ -77,10 +95,9 @@ class TrainPage extends Component {
     }
 
     render() {
-        const { Train, TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
-        const { data1, notice, data2 } = Train;
-        const { Adverts = { List: [] }, Icons = { List: [] } } = data1;
-        const { OperationIcon = [] } = data2;
+        const { TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
+        
+        const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -146,7 +163,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    Train: state.Train,
     TrainfromCity: state.City.TrainfromCity,
     TraintoCity: state.City.TraintoCity,
     TraintripTime: state.Date.TraintripTime,
@@ -154,9 +170,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getBanner: bindActionCreators(TrainAction.getBanner, dispatch), // 获取banner
-    getNotice: bindActionCreators(TrainAction.getNotice, dispatch), // 获取顶部通知消息
-    getTab: bindActionCreators(TrainAction.getTab, dispatch)
+    // getBanner: bindActionCreators(TrainAction.getBanner, dispatch), // 获取banner
+    // getNotice: bindActionCreators(TrainAction.getNotice, dispatch), // 获取顶部通知消息
+    // getTab: bindActionCreators(TrainAction.getTab, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);

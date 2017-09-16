@@ -33,9 +33,9 @@ class Header extends Component {
         return (
             <View style={styles.header}>
                 <View>
-                    <Image 
+                    {/* <Image 
                         source={}
-                    />
+                    /> */}
                 </View>
                 <View style={{
                     flexDirection: 'row'

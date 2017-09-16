@@ -22,6 +22,7 @@
         "react"
     ],
     "rules": {
+        "no-debugger": "off",
         "no-console": "off",
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
@@ -40,7 +41,7 @@
         "block-scoped-var": "error",
         "block-spacing": "error",
         "brace-style": "error",
-        "callback-return": "error",
+        "callback-return": "off",
         "camelcase": "error",
         "capitalized-comments": [
             "off",
@@ -234,7 +235,7 @@
         "prefer-destructuring": "error",
         "prefer-numeric-literals": "error",
         "prefer-promise-reject-errors": "error",
-        "prefer-reflect": "error",
+        "prefer-reflect": "off",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
         "prefer-template": "error",

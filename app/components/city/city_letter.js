@@ -20,7 +20,10 @@ export default class CityLetterComponent extends Component {
     blockList = [];
     selectedIndex = '';
 
-    handlePress(data, index) {
+    handlePress(letter, index) { // eslint-disable-line
+        if (this.selectedIndex === index) {
+            return;
+        }
         if (this.selectedIndex !== '') {
             this.blockList[this.selectedIndex].setNativeProps({
                 style: {
@@ -39,10 +42,10 @@ export default class CityLetterComponent extends Component {
 
         const { handlePress } = this.props;
 
-        handlePress && handlePress(data);
+        handlePress && handlePress(letter);
     }
 
-    _renderItem = (data, index) => {
+    _renderItem = (letter, index) => { // eslint-disable-line
 
         return (
             <TouchableOpacity
@@ -58,9 +61,9 @@ export default class CityLetterComponent extends Component {
                     }
                 ]}
                 key={index}
-                onPress={() => this.handlePress(data, index)}
+                onPress={() => this.handlePress(letter, index)}
             >
-                <Text style={styles.txt}>{data}</Text>
+                <Text style={styles.txt}>{letter}</Text>
             </TouchableOpacity>
         );
     }

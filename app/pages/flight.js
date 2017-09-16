@@ -17,6 +17,8 @@ import ButtonComponent from '../components/home/button';
 import OperationComponent from '../components/home/operation';
 import PubOperationComponent from '../components/home/pub_operation';
 
+import { getBanner, getNotice, getTab } from '../actions/http';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { FlightAction } from '../actions';
@@ -24,8 +26,6 @@ import { FlightAction } from '../actions';
 class FlightPage extends Component {
 
     static propTypes = {
-        getBanner: PropTypes.func,
-        getNotice: PropTypes.func,
         Train: PropTypes.object,
         Flight: PropTypes.object,
         navigation: PropTypes.object,
@@ -36,12 +36,25 @@ class FlightPage extends Component {
     }
 
     state = {
+        tabIcon: {}
     }
 
     componentWillMount() {
         InteractionManager.runAfterInteractions(() => {
-            this.props.getBanner();
-            this.props.getNotice();
+            // 获取通知
+            getNotice({
+                params: { projectId: 20 },
+                that: this
+            });
+            // 获取banner
+            getBanner({
+                params: { projectId: 20 },
+                that: this
+            });
+            getTab({
+                params: {},
+                that: this
+            });
         });
     }
 
@@ -71,11 +84,8 @@ class FlightPage extends Component {
     }
 
     render() {
-        const { Flight, Train, FlightfromCity, FlighttoCity, FlighttripTime, FlighttripTimeDes } = this.props;
-        const { data, notice } = Flight;
-        const { data2 } = Train;
-        const { Adverts = { List: [] }, Icons = { List: [] } } = data;
-        const { OperationIcon = [] } = data2;
+        const { FlightfromCity, FlighttoCity, FlighttripTime, FlighttripTimeDes } = this.props;
+        const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
             <ScrollView style={styles.wrap}>
@@ -151,8 +161,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getBanner: bindActionCreators(FlightAction.getBanner, dispatch),
-    getNotice: bindActionCreators(FlightAction.getNotice, dispatch)
+    // getBanner: bindActionCreators(FlightAction.getBanner, dispatch),
+    // getNotice: bindActionCreators(FlightAction.getNotice, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlightPage);

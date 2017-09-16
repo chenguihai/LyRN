@@ -14,38 +14,41 @@ import CityListBlock from '../components/city/city_list_block';
 import CityLetterComponent from '../components/city/city_letter';
 import CitySingleList from '../components/city/city_single_list.js';
 
+import { getCityListByLetter, getHotCities } from '../actions/http';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { CityAction } from '../actions';
 
 class CityPage extends Component {
 
-    static propTypes = {
-        navigation: PropTypes.object,
-        historycities: PropTypes.array,
-        hotcities: PropTypes.array,
-        getHistoryCities: PropTypes.func,
-        getHotCities: PropTypes.func,
-        selectCity: PropTypes.func,
-        getCityList: PropTypes.func,
-        currentCity: PropTypes.object
-    }
+    state = {
 
-    static defaultProps = {
-        hotcities: []
-    }
+    };
 
     scrollViewRef = null;
     letterScrollTop = 0;
 
     componentWillMount() {
-        InteractionManager.runAfterInteractions(() => {
-            // Storage.clearMapForKey('trainhistorycities');
-            // 获取历史选择
-            this.props.getHistoryCities();
-            // 获取热门城市
-            this.props.getHotCities();
+        getHotCities({
+            params: {
+                para: {
+                    length: 15,
+                    callback: '_jsonp6p6ua4ts5m5poth30m6rms4i'
+                }
+            },
+            callback: ({ TrainStation: { StationList } }) => {
+                this.setState({
+                    hotcities: StationList
+                });
+            }
         });
+        // InteractionManager.runAfterInteractions(() => {
+        //     // Storage.clearMapForKey('trainhistorycities');
+        //     // 获取历史选择
+        //     this.props.getHistoryCities();
+        //     // 获取热门城市
+        //     this.props.getHotCities();
+        // });
     }
 
     addToHistoryCities(data, index) {
@@ -67,9 +70,9 @@ class CityPage extends Component {
         const { state, goBack } = navigation;
         const { routeName, key } = state.params;
 
-        this.props.selectCity({
-            [`${routeName}${key}`]: data
-        });
+        // this.props.selectCity({
+        //     [`${routeName}${key}`]: data
+        // });
         goBack();
 
         if (isAddToHistoryCities) {
@@ -99,10 +102,30 @@ class CityPage extends Component {
         });
     }
 
-    render() {
-        const { historycities, hotcities, getCityList, currentCity } = this.props;
+    getCityListByLetter = (cityName) => {
+        getCityListByLetter({
+            params: {
+                para: {
+                    'headtime': Number(new Date()),
+                    'memberId': '',
+                    'platId': 432,
+                    'requestType': 3,
+                    'headct': 0,
+                    'headus': 3,
+                    'headver': '2.14.0.2',
+                    cityName
+                }
+            },
+            callback: ({ data: { TrainStation: { StationList = [] } } }) => {
+                this.setState({
+                    StationList
+                });
+            }
+        });
+    }
 
-        const { info } = currentCity;
+    render() {
+        const { historycities = [], hotcities = [], StationList = [] } = this.state;
 
         return (
             <ScrollView
@@ -113,9 +136,8 @@ class CityPage extends Component {
             >
                 <SearchComponent />
 
-                {info ? <CityListTitle title="当前城市" /> : null}
+                <CityListTitle title="当前城市" />
                 <CityLocationComponent
-                    data={currentCity}
                     handlePress={this.selectCity.bind(this, true)}
                 />
 
@@ -132,12 +154,13 @@ class CityPage extends Component {
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent
                     layout={this.getLetterScrollTop}
-                    handlePress={getCityList}
+                    handlePress={this.getCityListByLetter}
                 />
 
                 <CitySingleList
                     handlePress={this.selectCity.bind(this, true)}
                     cityListUpdate={this.cityListUpdate}
+                    data = {StationList}
                 />
             </ScrollView>
         );
@@ -151,17 +174,14 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = (state) => ({
-    currentCity: state.City.currentCity,
-    historycities: state.City.historycities,
-    hotcities: state.City.hotcities
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getHistoryCities: bindActionCreators(CityAction.getHistoryCities, dispatch),
-    getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
-    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
-    getCityList: bindActionCreators(CityAction.getCityList, dispatch)
+    // getHistoryCities: bindActionCreators(CityAction.getHistoryCities, dispatch),
+    // getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
+    // selectCity: bindActionCreators(CityAction.selectCity, dispatch),
+    // getCityList: bindActionCreators(CityAction.getCityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CityPage);

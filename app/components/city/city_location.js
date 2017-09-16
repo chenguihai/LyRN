@@ -8,32 +8,41 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { CityAction } from '../../actions';
+import config from '../../config';
+import { ajaxByGet } from '../../services/ajax';
 
-class CityLoctionComponent extends Component {
+export default class CityLoctionComponent extends Component {
 
     static propTypes = {
-        getCurrentLocation: PropTypes.func,
-        data: PropTypes.object,
         handlePress: PropTypes.func
     }
+
+    state = {
+        regeocode: {}
+    };
 
     componentWillMount() {
         this.getCurrentPosition();
     }
 
     getCurrentPosition() {
-        // try {
-        //     navigator.geolocation.getCurrentPosition((location) => {
-        //         const { longitude, latitude } = location.coords;
+        try {
+            navigator.geolocation.getCurrentPosition((location) => {
+                const { longitude, latitude } = location.coords;
 
-        //         this.props.getCurrentLocation(`${longitude},${latitude}`);
-        //     });
-        // } catch (e) {
-        //     console.log(e);
-        // }
+                // this.props.getCurrentLocation();
+                ajaxByGet('http://restapi.amap.com/v3/geocode/regeo', {
+                    key: config.key,
+                    location: `${longitude},${latitude}`
+                }, ({ regeocode }) => {
+                    this.setState({
+                        regeocode
+                    });
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     handlePress(Name) {
@@ -43,19 +52,14 @@ class CityLoctionComponent extends Component {
     }
 
     render() {
-        const
-            { width } = Dimensions.get('window'),
-            { data } = this.props;
+        const { width } = Dimensions.get('window'),
+            { addressComponent = {} } = this.state.regeocode,
+            { province = '' } = addressComponent,
+            cityName = province.replace(/市/g, '');
 
-        const { info, regeocode = {} } = data;
-
-        if (!info) {
-            return null;
+        if (cityName === '') { 
+            return null; 
         }
-
-        const { addressComponent = {} } = regeocode;
-        const { province } = addressComponent;
-        const cityName = province.replace(/市/g, '');
 
         return (
             <View style={styles.container}>
@@ -101,9 +105,3 @@ const styles = StyleSheet.create({
         color: '#2d2d2d'
     }
 });
-
-const mapDispatchToProps = (dispatch) => ({
-    getCurrentLocation: bindActionCreators(CityAction.getCurrentLocation, dispatch)
-});
-
-export default connect(() => ({}), mapDispatchToProps)(CityLoctionComponent);

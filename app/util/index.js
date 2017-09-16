@@ -9,6 +9,23 @@ import axios from 'axios';
 import lodash from './lodash.custom.min.js';
 
 const Util = () => { };
+const class2type = {},
+    { toString } = class2type;
+
+[
+    'String', 
+    'Number', 
+    'Array',
+    'Boolean', 
+    'Function',
+    'Object'
+].forEach((i) => {
+    class2type[`[object ${i}]`] = i.toLowerCase();
+});
+
+function type(obj) {
+    return obj === null ? String(obj) : class2type[toString.call(obj)] || 'object';
+}
 
 Util.prototype = {
     constructor: Util,
@@ -25,6 +42,15 @@ Util.prototype.debounce = lodash.debounce;
 
 Util.prototype.isNull = function (value) {
     return value === null;
+};
+
+/**
+ * @description 判断元素是否为函数
+ * @param {*} 要判断的元素
+ */
+
+Util.prototype.isFunction = function (value) {
+    return type(value) === 'function';
 };
 
 /**

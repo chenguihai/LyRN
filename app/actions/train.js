@@ -1,48 +1,11 @@
 import * as Types from '../constants/train';
 import _ from '../util';
 
-const GET_BANNER = { type: Types.GET_TRAIN_BANNER };
-const GET_NOTICE = { type: Types.GET_TRAIN_NOTICE };
-const GET_TAB = { type: Types.GET_TAB };
+// const GET_BANNER = { type: Types.GET_TRAIN_BANNER };
 
 const GET_TRAIN_LIST = { type: Types.GET_TRAIN_LIST };
 const CHANGE_TRAIN_LIST_LENGTH = { type: Types.CHANGE_TRAIN_LIST_LENGTH };
 const IS_SHOW_SELECT_SEATS_MODAL = { type: Types.IS_SHOW_SELECT_SEATS_MODAL };
-
-const getBanner = () => (dispatch) => {
-    _.get('pubapi/home/Commercial.ashx')
-        .then(({ data }) => {
-            dispatch(
-                {
-                    ...GET_BANNER,
-                    data1: data || {}
-                }
-            );
-        });
-};
-
-const getNotice = () => (dispatch) => {
-    _.get('pubapi/home/notice.ashx?cardId=&cardCode=&openId=&projectId=10&type=')
-        .then(({ data }) => {
-            dispatch({
-                ...GET_NOTICE,
-                notice: data.Notice || {}
-            }
-            );
-        });
-};
-
-const getTab = () => (dispatch) => {
-    _.get('pubapi/home/tabicon.ashx')
-        .then(({ data }) => {
-            dispatch(
-                {
-                    ...GET_TAB,
-                    data2: data || {}
-                }
-            );
-        });
-};
 
 // 获取火车时刻列表
 const getTrainList = (fromCity, toCity, date) => (dispatch) => {
@@ -87,9 +50,6 @@ const isShowSeatsModal = (bool) => (dispatch) => {
 };
 
 export default {
-    getBanner,
-    getNotice,
-    getTab,
     getTrainList,
     changeLength,
     isShowSeatsModal

@@ -8,12 +8,10 @@ import {
     InteractionManager
 } from 'react-native';
 
-import { connect } from 'react-redux';
-
-class CityListComponent extends Component {
+export default class CityListComponent extends Component {
 
     static propTypes = {
-        cityList: PropTypes.array,
+        data: PropTypes.array,
         handlePress: PropTypes.func,
         cityListUpdate: PropTypes.func
     }
@@ -43,15 +41,19 @@ class CityListComponent extends Component {
     }
 
     componentDidUpdate() {
-        this.props.cityList.length > 0 && this.props.cityListUpdate();
+        this.props.data.length > 0 && this.props.cityListUpdate();
     }
 
     render() {
-        const { cityList } = this.props;
+        const { data } = this.props;
 
+        if (data.length === 0) {
+            return null;
+        }
+        
         return (
             <View style={styles.container}>
-                {cityList.length > 0 ? this._renderRow(cityList) : null}
+                {data.length > 0 ? this._renderRow(data) : null}
             </View>
         );
     }
@@ -74,9 +76,3 @@ const styles = StyleSheet.create({
         color: '#2d2d2d',
     }
 });
-
-const mapStateToProps = (state) => ({
-    cityList: state.City.cityList
-});
-
-export default connect(mapStateToProps)(CityListComponent);
