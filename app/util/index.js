@@ -73,6 +73,8 @@ Util.prototype.chunk = function (arr, num) {
  * @description 获取组件的宽度和高度及位置信息
  * @param {ReactElement} ref 组件实例
  * @returns {promise} x,y组件的相对坐标,width组件的宽度,height组件的高度,pageX,pageY组件相对于屏幕的绝对坐标
+ * @example
+ * const layout = await _.getLayout(this._ref);
  */
 
 Util.prototype.getLayout = function (ref) {

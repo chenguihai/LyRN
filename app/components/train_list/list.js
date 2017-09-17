@@ -32,7 +32,6 @@ class ListComponent extends Component {
         const { navigation } = this.props;
         const { from, to, tripTime } = navigation.state.params;
 
-        console.log(navigation.state.params);
         getTrainList({
             params: {
                 para: { 
@@ -88,18 +87,18 @@ class ListComponent extends Component {
         this.width = width;
         this.cardScale = 31 / 21;
         this.lineScale = 100 / 7;
-
+        
         return (
             <FlatList
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
                 initialNumToRender={6}
-                data={trainlist.slice(0, 100)}
+                data={trainlist.slice(0, 1)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({
-                    length: 98.5,
-                    offset: 98.5 * index,
+                    length: 99,
+                    offset: 99 * index,
                     index
                 })}
             />
