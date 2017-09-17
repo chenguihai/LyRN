@@ -40,19 +40,19 @@ class TrainPage extends Component {
         // this.props.getNotice();
         // this.props.getTab();
         // 获取通知
-        // getNotice({
-        //     params: { projectId: 10 },
-        //     that: this
-        // });
-        // // 获取banner
-        // getBanner({
-        //     params: {},
-        //     that: this
-        // });
-        // getTab({
-        //     params: {},
-        //     that: this
-        // });
+        getNotice({
+            params: { projectId: 10 },
+            that: this
+        });
+        // 获取banner
+        getBanner({
+            params: {},
+            that: this
+        });
+        getTab({
+            params: {},
+            that: this
+        });
     }
 
     toSelectCityPage(key) {
@@ -76,13 +76,14 @@ class TrainPage extends Component {
     }
 
     searchTrainList = () => {
-        const { trainFromCity, trainToCity, TraintripTime, navigation } = this.props;
+        const { city, navigation } = this.props;
+        const { trainFromCity, trainToCity } = city;
 
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('TrainList', {
                 from: trainFromCity,
                 to: trainToCity,
-                tripTime: TraintripTime
+                // tripTime: TraintripTime
             });
         });
     }

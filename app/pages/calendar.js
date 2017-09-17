@@ -23,7 +23,7 @@ class CalenDarPage extends Component {
         calendar: []
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.setState({
             calendar: createCalendar.init()
         });

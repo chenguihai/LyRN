@@ -106,8 +106,9 @@ export default class QueryCityComponent extends Component {
     handlePress = () => {
         this.isSwitch = true;
         this.animationEnd = false;
-
-        this.switchCity();
+        requestAnimationFrame(() => {
+            this.switchCity();
+        });
     }
 
     switchCity = () => {

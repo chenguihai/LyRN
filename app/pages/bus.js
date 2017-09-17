@@ -19,18 +19,15 @@ import { getBanner, getNotice, getTab } from '../actions/http';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { BusAction } from '../actions';
+import { selectCity } from '../actions';
 
 class BusPage extends Component {
 
     static propTypes = {
-        Train: PropTypes.object,
-        Bus: PropTypes.object,
         navigation: PropTypes.object,
-        BusfromCity: PropTypes.object,
-        BustoCity: PropTypes.object,
-        BustripTime: PropTypes.number,
-        BustripTimeDes: PropTypes.string
+        city: PropTypes.object,
+        date: PropTypes.object,
+        selectCity: PropTypes.func
     }
 
     state = {
@@ -61,7 +58,7 @@ class BusPage extends Component {
         });
     }
 
-    selectCity(key) {
+    toSelectCityPage(key) {
         const { navigation } = this.props;
 
         navigation.navigate('City', {
@@ -81,7 +78,10 @@ class BusPage extends Component {
     }
 
     render() {
-        const { BusfromCity, BustoCity, BustripTime, BustripTimeDes } = this.props;
+
+        const { city, selectCity, date } = this.props;
+        const { busFromCity = {}, busToCity = {} } = city;
+        const { busTripTime, busTripTimeDesc } = date;
         const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
@@ -95,19 +95,19 @@ class BusPage extends Component {
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
                     <QueryCityComponent
-                        selectFromCity={() => this.selectCity('fromCity')}
-                        selectToCity={() => this.selectCity('toCity')}
-                        fromCity={BusfromCity}
-                        toCity={BustoCity}
-                        fromKey="BusfromCity"
-                        toKey="BustoCity"
+                        toSelectCityPage={(key) => this.toSelectCityPage(key)}
+                        selectCity={selectCity}
+                        fromCity={busFromCity}
+                        toCity={busToCity}
+                        fromKey="busFromCity"
+                        toKey="busToCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent 
                         handlePress={this.selectDate}
-                        tripTime={BustripTime}
-                        tripTimeDes={BustripTimeDes}
+                        tripTime={busTripTime}
+                        tripTimeDes={busTripTimeDesc}
                     />
                     {/* 查询日期结束  */}
                     {/* 查询按钮开始  */}
@@ -132,17 +132,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    Bus: state.Bus,
-    Train: state.Train,
-    BusfromCity: state.City.BusfromCity,
-    BustoCity: state.City.BustoCity,
-    BustripTime: state.Date.BustripTime,
-    BustripTimeDes: state.Date.BustripTimeDes
+    city: state.City,
+    date: state.Date
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    // getBanner: bindActionCreators(BusAction.getBanner, dispatch),
-    // getNotice: bindActionCreators(BusAction.getNotice, dispatch)
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ selectCity }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(BusPage);

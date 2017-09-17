@@ -21,18 +21,15 @@ import { getBanner, getNotice, getTab } from '../actions/http';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { FlightAction } from '../actions';
+import { selectCity } from '../actions';
 
 class FlightPage extends Component {
 
     static propTypes = {
-        Train: PropTypes.object,
-        Flight: PropTypes.object,
         navigation: PropTypes.object,
-        FlightfromCity: PropTypes.object,
-        FlighttoCity: PropTypes.object,
-        FlighttripTime: PropTypes.number,
-        FlighttripTimeDes: PropTypes.string
+        city: PropTypes.object,
+        date: PropTypes.object,
+        selectCity: PropTypes.func
     }
 
     state = {
@@ -64,7 +61,7 @@ class FlightPage extends Component {
         });
     }
 
-    selectCity(key) {
+    toSelectCityPage(key) {
         const { navigation } = this.props;
 
         navigation.navigate('City', {
@@ -84,7 +81,9 @@ class FlightPage extends Component {
     }
 
     render() {
-        const { FlightfromCity, FlighttoCity, FlighttripTime, FlighttripTimeDes } = this.props;
+        const { city, selectCity, date } = this.props;
+        const { flightFromCity = {}, flightToCity = {} } = city;
+        const { flightTripTime, flightTripTimeDesc } = date;
         const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
@@ -98,19 +97,19 @@ class FlightPage extends Component {
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
                     <QueryCityComponent
-                        selectFromCity={() => this.selectCity('fromCity')}
-                        selectToCity={() => this.selectCity('toCity')}
-                        fromCity={FlightfromCity}
-                        toCity={FlighttoCity}
-                        fromKey="FlightfromCity"
-                        toKey="FlighttoCity"
+                        toSelectCityPage={(key) => this.toSelectCityPage(key)}
+                        selectCity={selectCity}
+                        fromCity={flightFromCity}
+                        toCity={flightToCity}
+                        fromKey="flightFromCity"
+                        toKey="flightToCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent 
                         handlePress={this.selectDate}
-                        tripTime={FlighttripTime}
-                        tripTimeDes={FlighttripTimeDes}
+                        tripTime={flightTripTime}
+                        tripTimeDes={flightTripTimeDesc}
                     />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
@@ -152,17 +151,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    Flight: state.Flight,
-    Train: state.Train,
-    FlightfromCity: state.City.FlightfromCity,
-    FlighttoCity: state.City.FlighttoCity,
-    FlighttripTime: state.Date.FlighttripTime,
-    FlighttripTimeDes: state.Date.FlighttripTimeDes
+    city: state.City,
+    date: state.Date
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    // getBanner: bindActionCreators(FlightAction.getBanner, dispatch),
-    // getNotice: bindActionCreators(FlightAction.getNotice, dispatch)
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ selectCity }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlightPage);

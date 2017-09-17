@@ -8,7 +8,11 @@ const City = handleAction(
     (state, { payload }) => Object.assign({}, state, { ...payload }), 
     { 
         trainFromCity: { Name: '上海' }, 
-        trainToCity: { Name: '北京' } 
+        trainToCity: { Name: '北京' },
+        flightFromCity: { Name: '上海' }, 
+        flightToCity: { Name: '北京' },
+        busFromCity: { Name: '上海' }, 
+        busToCity: { Name: '北京' }
     }
 );
 
@@ -17,7 +21,11 @@ const Date = handleAction(
     (state, { payload }) => Object.assign({}, state, { ...payload }), 
     { 
         trainTripTime: date.getTomorrow(), 
-        trainTripTimeDesc: '明日出发' 
+        trainTripTimeDesc: '明日出发',
+        flightTripTime: date.getTomorrow(), 
+        flightTripTimeDesc: '明日出发',
+        busTripTime: date.getTomorrow(), 
+        busTripTimeDesc: '明日出发'
     }
 );
 

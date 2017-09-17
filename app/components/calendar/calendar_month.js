@@ -76,9 +76,10 @@ export default class CalendarMonthComponent extends Component {
         [date.getAfterTomorrow()]: '后天'
     };
 
-    _renderRow(item, index, year, month) {
+    _renderRow(day, index, year, month) {
 
-        const time = _.isNull(item) ? '' : Number(new Date(year, month - 1, item));
+        // const time = _.isNull(day) ? '' : Number(new Date(year, month - 1, day));
+        const time = '';
         const bgColor = time === date.getToday() ? todayBgColor : '#FFF';
         // const txtColor = time < date.getToday()
         // ? '#ccc' 
@@ -111,7 +112,7 @@ export default class CalendarMonthComponent extends Component {
                         style={{
                             color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
                         }}
-                    >{item}</Text>
+                    >{day}</Text>
                 </View>
                 <Text 
                     style={[
