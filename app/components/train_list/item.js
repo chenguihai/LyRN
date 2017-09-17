@@ -39,6 +39,10 @@ export default class ListComponent extends Component {
         handlePress: PropTypes.func
     }
 
+    shouldComponentUpdate(nextProps) {
+        return nextProps.data !== this.props.data;
+    }
+
     _renderSeats(data) {
         return data.map((item, index) => {
             const { cn, seats } = item;

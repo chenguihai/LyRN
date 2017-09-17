@@ -7,21 +7,55 @@ import {
 
 import ItemComponent from './item';
 
-import { bindActionCreators } from 'redux';
+import { getTrainList } from '../../actions/http';
+import date from '../../util/date';
+
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TrainAction } from '../../actions';
+// import { TrainAction } from '../../actions';
 
 class ListComponent extends Component {
 
     static propTypes = {
+        navigation: PropTypes.object,
         trainList: PropTypes.object,
         length: PropTypes.number,
-        changeLength: PropTypes.func,
-        isShowSeatsModal: PropTypes.func
+        // changeLength: PropTypes.func,
+        // isShowSeatsModal: PropTypes.func
+    }
+
+    state = {
+
+    }
+
+    componentWillMount() {
+        const { navigation } = this.props;
+        const { from, to, tripTime } = navigation.state.params;
+
+        console.log(navigation.state.params);
+        getTrainList({
+            params: {
+                para: { 
+                    'from': from.Name,
+                    'to': to.Name, 
+                    'oby': '0', 
+                    'date': date.format(tripTime),
+                    'platId': 501, 
+                    'requestType': 4,
+                    'headct': 1, 
+                    'headus': 1, 
+                    'headver': '2.14.0.2', 
+                    'isstu': false, 
+                    'headtime': Number(new Date()) 
+                }
+            },
+            callback: ({ data }) => {
+                this.setState({ data });
+            }
+        });
     }
 
     handlePress(seatsMap) {
-        alert(JSON.stringify(seatsMap));
     }
 
     _renderItem = (data) => {
@@ -39,13 +73,12 @@ class ListComponent extends Component {
     }
 
     onEndReached = () => {
-        this.props.changeLength();
+        // this.props.changeLength();
     }
 
     render() {
         const { width } = Dimensions.get('window');
-        const { trainList, length } = this.props;
-        const { data = {} } = trainList;
+        const { data = {} } = this.state;
         const { tcount = 0, trainlist = [] } = data;
 
         if (tcount === 0) {
@@ -61,7 +94,7 @@ class ListComponent extends Component {
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
                 initialNumToRender={6}
-                data={trainlist.slice(0, length)}
+                data={trainlist.slice(0, 100)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({
@@ -75,14 +108,9 @@ class ListComponent extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    trainList: state.Train.trainList,
-    length: state.Train.length
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    getTrainList: bindActionCreators(TrainAction.getTrainList, dispatch), // 获取站点时刻表
-    changeLength: bindActionCreators(TrainAction.changeLength, dispatch),
-    isShowSeatsModal: bindActionCreators(TrainAction.isShowSeatsModal, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListComponent);

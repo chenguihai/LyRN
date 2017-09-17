@@ -76,14 +76,15 @@ class TrainPage extends Component {
     }
 
     searchTrainList = () => {
-        const { city, navigation } = this.props;
+        const { city, date, navigation } = this.props;
         const { trainFromCity, trainToCity } = city;
+        const { trainTripTime } = date;
 
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('TrainList', {
                 from: trainFromCity,
                 to: trainToCity,
-                // tripTime: TraintripTime
+                tripTime: trainTripTime
             });
         });
     }

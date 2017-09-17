@@ -61,3 +61,12 @@ export const getCityListByLetter = ({ params, callback }) => {
     );
 };
 
+// 获取火车时刻表
+export const getTrainList = ({ params, callback }) => {
+    ajaxByGet(
+        getFullUri(1, 'uniontrain/trainapi/searchno.html'),
+        params, 
+        callback
+    );
+};
+

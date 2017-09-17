@@ -11,13 +11,11 @@ export const ajaxByGet = async (uri, params, callback) => {
         response = await axios.get(uri, {
             params
         });
+        if (callback) {
+            callback(response.data);
+        }
     } catch (e) {
-        console.log(e);
+        console.log(e.message);
     }
-
-    if (callback) {
-        callback(response.data);
-    }
-    
 };
 

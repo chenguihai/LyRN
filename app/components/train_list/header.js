@@ -12,7 +12,6 @@ const themeColor = '#3C6';
 export default class HeaderComponent extends Component {
 
     layout(e) {
-        console.log(e);
     }
 
     render() {
