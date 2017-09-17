@@ -1,14 +1,12 @@
 /* eslint-disable no-multi-assign,id-length,no-empty-function */
 
 import {
-    StyleSheet,
     findNodeHandle,
     UIManager
 } from 'react-native';
-import axios from 'axios';
 import lodash from './lodash.custom.min.js';
 
-const Util = () => { };
+const Util = () => {};
 const class2type = {},
     { toString } = class2type;
 
@@ -28,9 +26,7 @@ function type(obj) {
 }
 
 Util.prototype = {
-    constructor: Util,
-    hairlineWidth: StyleSheet.hairlineWidth,
-    prefixUri: 'http://wx.17u.cn/'
+    constructor: Util
 };
 
 Util.prototype.debounce = lodash.debounce;
@@ -94,93 +90,6 @@ Util.prototype.getLayout = function (ref) {
             });
         });
     });
-};
-
-// ===== ajax helpers
-
-Util.prototype.get = (uri, data) => {
-    return new Promise((resolve) => {
-        const url = uri.indexOf('http') !== -1 ? uri : _.prefixUri + uri;
-
-        axios.get(url, {
-            params: data
-        })
-            .then((response) => {
-                resolve(response);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    });
-    //     if (error.response) {
-    //         // The request was made and the server responded with a status code
-    //         // that falls out of the range of 2xx
-    //         // console.log(error.response.data);
-    //         // console.log(error.response.status);
-    //         // console.log(error.response.headers);
-    //     } else if (error.request) {
-    //         // The request was made but no response was received
-    //         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    //         // http.ClientRequest in node.js
-    //         // console.log(error.request);
-    //     } else {
-    //         // Something happened in setting up the request that triggered an Error
-    //         // console.log('Error', error.message);
-    //     }
-    //     // console.log(error.config);
-
-    //     return error;
-};
-
-// ===== date helpers
-
-/**
- * @description 重置时间
- * @param {date} date 需要重置的时间
- * @returns {date}
- */
-
-Util.prototype.resetTime = function (date) {
-    date.setHours(0);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-
-    return Number(date);
-};
-
-/**
- * @description 获取今天凌晨0点0时0分的时间戳(毫秒为单位)
- */
-
-Util.prototype.getToday = function () {
-    return _.resetTime(new Date());
-};
-
-/**
- * @description 获取明天凌晨0点0时0分的时间戳(毫秒为单位)
- */
-
-Util.prototype.getTomorrow = function () {
-    return _.resetTime(new Date(_.getToday() + 8.64e7));
-};
-
-/**
- * @description 获取后天凌晨0点0时0分的时间戳(毫秒为单位)
- */
-
-Util.prototype.getAfterTomorrow = function () {
-    return _.resetTime(new Date(_.getTomorrow() + 8.64e7));
-};
-
-Util.prototype.format = function (timeStamp) {
-    const
-        date = new Date(timeStamp),
-        year = date.getFullYear(),
-        month = date.getMonth() + 1,
-        day = date.getDate();
-
-    return `${year}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`;
 };
 
 const _ = new Util();

@@ -9,7 +9,6 @@ import CalendarMonthComponent from '../components/calendar/calendar_month';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { DateAction } from '../actions';
 
 import createCalendar from '../util/createCalendar';
 
@@ -33,7 +32,7 @@ class CalenDarPage extends Component {
     handleSelect = (time) => {
         const { navigation, selectDate } = this.props;
 
-        selectDate(navigation.state.params.routeName, time);
+        // selectDate(navigation.state.params.routeName, time);
         InteractionManager.runAfterInteractions(() => {
             navigation.goBack();
         });
@@ -57,7 +56,7 @@ const mapStateToProps = () => ({
 });
 
 const mapActionToProps = (dispatch) => ({
-    selectDate: bindActionCreators(DateAction.selectDate, dispatch)
+    // selectDate: bindActionCreators(DateAction.selectDate, dispatch)
 });
 
 export default connect(mapStateToProps, mapActionToProps)(CalenDarPage);

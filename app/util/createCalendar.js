@@ -9,23 +9,21 @@ module.exports = {
             return this.calendar;
         }
         this.startDate = startDate ? startDate : this.startDate;
-        this.endDate = endDate && endDate !== '' ? endDate : new Date(Number(this.startDate) + 5356.8e6); // eslint-disable-line
+        this.endDate = endDate && endDate !== '' ? endDate : new Date(Number(this.startDate) + 5356.8e6);
         this.year = this.startDate.getFullYear();
         this.month = this.startDate.getMonth() + 1;
-        // debugger; // eslint-disable-line
         this.createCalendar();
 
         return this.calendar;
     },
-
-    createCalendar() { // eslint-disable-line
+    createCalendar() {
         const endYear = this.endDate.getFullYear(); // 获取结束年份
         const endMonth = this.endDate.getMonth() + 1; // 获取结束月份
-        const monthNum = (endYear - this.year) * 12 + endMonth - this.month; // eslint-disable-line
+        const monthNum = (endYear - this.year) * 12 + endMonth - this.month;
+
         for (let i = 0; i <= monthNum; i++) {
-            // debugger; // eslint-disable-line
             const idx = this.month + i;
-            const month = idx - Math.floor((idx - 1) / 12) * 12; // eslint-disable-line
+            const month = idx - Math.floor((idx - 1) / 12) * 12;
             const year = Math.floor((idx - 1) / 12) + this.year;
             const monthObj = {
                 year: '',
@@ -46,7 +44,7 @@ module.exports = {
      * @param {number} month 
      * @return {array} 
      */
-
+    
     createDayList(year, month) {
         const dayList = [];
         const dayNumofMonth = this.getDayNum(year, month); // 获取当前月份的总天数
@@ -76,9 +74,23 @@ module.exports = {
      */
 
     getDayNum(year, month) {
-        let dayOfMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // eslint-disable-line
+        const dayOfMonth = [
+            31,
+            28,
+            31,
+            30,
+            31,
+            30,
+            31,
+            31,
+            30,
+            31,
+            30,
+            31
+        ];
         // 判断是否为闰年,闰年2月份有29天
-        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {  // eslint-disable-line
+
+        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
             dayOfMonth[1] = 29;
         }
 

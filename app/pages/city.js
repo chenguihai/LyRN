@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import {
     ScrollView,
-    StyleSheet,
-    InteractionManager
+    StyleSheet
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -18,8 +17,14 @@ import { getCityListByLetter, getHotCities } from '../actions/http';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { selectCity } from '../actions';
 
 class CityPage extends Component {
+
+    static propTypes = {
+        navigation: PropTypes.object,
+        selectCity: PropTypes.func
+    }
 
     state = {
 
@@ -29,6 +34,7 @@ class CityPage extends Component {
     letterScrollTop = 0;
 
     componentWillMount() {
+        // 获取热门城市
         getHotCities({
             params: {
                 para: {
@@ -42,21 +48,23 @@ class CityPage extends Component {
                 });
             }
         });
-        // InteractionManager.runAfterInteractions(() => {
-        //     // Storage.clearMapForKey('trainhistorycities');
-        //     // 获取历史选择
-        //     this.props.getHistoryCities();
-        //     // 获取热门城市
-        //     this.props.getHotCities();
-        // });
+        // 获取历史选择
+        this.getHistoryCities();
+    }
+
+    getHistoryCities = async () => {
+        const historycities = await Storage.getAllDataForKey('trainhistorycities');
+
+        this.setState({
+            historycities
+        });
     }
 
     addToHistoryCities(data, index) {
         Storage.save({
             key: 'trainhistorycities',
             id: `${index}`,
-            data,
-            expires: 1000 * 60 * 60 * 2
+            data
         });
     }
 
@@ -66,13 +74,13 @@ class CityPage extends Component {
          * routeName {String} 上一个页面的routeName
          * key {String} fromCity或者toCity
          */
-        const { historycities, navigation } = this.props;
+        const { historycities = [] } = this.state;
+        const { navigation, selectCity } = this.props;
         const { state, goBack } = navigation;
-        const { routeName, key } = state.params;
+        const { key } = state.params || {};
 
-        // this.props.selectCity({
-        //     [`${routeName}${key}`]: data
-        // });
+        selectCity({ [key]: data });
+
         goBack();
 
         if (isAddToHistoryCities) {
@@ -138,18 +146,18 @@ class CityPage extends Component {
 
                 <CityListTitle title="当前城市" />
                 <CityLocationComponent
-                    handlePress={this.selectCity.bind(this, true)}
+                    handlePress={(data) => this.selectCity(true, data)}
                 />
 
                 {historycities.length === 0 ? null
                     : <CityListTitle title="历史选择" />}
                 {historycities.length === 0 ? null
-                    : <CityListBlock handlePress={this.selectCity.bind(this, false)} data={historycities} />}
+                    : <CityListBlock handlePress={(data) => this.selectCity(false, data)} data={historycities} />}
 
                 {hotcities.length === 0 ? null
                     : <CityListTitle title="热门" />}
                 {hotcities.length === 0 ? null
-                    : <CityListBlock handlePress={this.selectCity.bind(this, true)} data={hotcities} />}
+                    : <CityListBlock handlePress={(data) => this.selectCity(true, data)} data={hotcities} />}
 
                 <CityListTitle title="更多城市" />
                 <CityLetterComponent
@@ -158,7 +166,7 @@ class CityPage extends Component {
                 />
 
                 <CitySingleList
-                    handlePress={this.selectCity.bind(this, true)}
+                    handlePress={(data) => this.selectCity(true, data)}
                     cityListUpdate={this.cityListUpdate}
                     data = {StationList}
                 />
@@ -174,14 +182,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const mapStateToProps = () => ({
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ selectCity }, dispatch);
 
-const mapDispatchToProps = (dispatch) => ({
-    // getHistoryCities: bindActionCreators(CityAction.getHistoryCities, dispatch),
-    // getHotCities: bindActionCreators(CityAction.getHotCities, dispatch),
-    // selectCity: bindActionCreators(CityAction.selectCity, dispatch),
-    // getCityList: bindActionCreators(CityAction.getCityList, dispatch)
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(CityPage);
+export default connect(() => ({}), mapDispatchToProps)(CityPage);

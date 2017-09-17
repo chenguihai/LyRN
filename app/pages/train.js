@@ -20,20 +20,15 @@ import { getBanner, getNotice, getTab } from '../actions/http';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { TrainAction } from '../actions';
+import { selectCity } from '../actions';
 
 class TrainPage extends Component {
 
     static propTypes = {
-        getBanner: PropTypes.func,
-        getNotice: PropTypes.func,
-        getTab: PropTypes.func,
-        Train: PropTypes.object,
         navigation: PropTypes.object,
-        TrainfromCity: PropTypes.object,
-        TraintoCity: PropTypes.object,
-        TraintripTime: PropTypes.number,
-        TraintripTimeDes: PropTypes.string
+        city: PropTypes.object,
+        date: PropTypes.object,
+        selectCity: PropTypes.func
     }
 
     state = {
@@ -41,33 +36,31 @@ class TrainPage extends Component {
     }
 
     componentWillMount() {
-        console.log('componentWillMount');
         // this.props.getBanner();
         // this.props.getNotice();
         // this.props.getTab();
         // 获取通知
-        getNotice({
-            params: { projectId: 10 },
-            that: this
-        });
-        // 获取banner
-        getBanner({
-            params: {},
-            that: this
-        });
-        getTab({
-            params: {},
-            that: this
-        });
+        // getNotice({
+        //     params: { projectId: 10 },
+        //     that: this
+        // });
+        // // 获取banner
+        // getBanner({
+        //     params: {},
+        //     that: this
+        // });
+        // getTab({
+        //     params: {},
+        //     that: this
+        // });
     }
 
-    selectCity(key) {
+    toSelectCityPage(key) {
         const { navigation } = this.props;
 
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('City', {
-                key,
-                routeName: navigation.state.routeName
+                key
             });
         });
     }
@@ -83,20 +76,21 @@ class TrainPage extends Component {
     }
 
     searchTrainList = () => {
-        const { TrainfromCity, TraintoCity, TraintripTime, navigation } = this.props;
+        const { trainFromCity, trainToCity, TraintripTime, navigation } = this.props;
 
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('TrainList', {
-                from: TrainfromCity,
-                to: TraintoCity,
+                from: trainFromCity,
+                to: trainToCity,
                 tripTime: TraintripTime
             });
         });
     }
 
     render() {
-        const { TrainfromCity, TraintoCity, TraintripTime, TraintripTimeDes } = this.props;
-        
+        const { city, selectCity, date } = this.props;
+        const { trainFromCity = {}, trainToCity = {} } = city;
+        const { trainTripTime, trainTripTimeDesc } = date;
         const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
@@ -110,19 +104,19 @@ class TrainPage extends Component {
                     {/* Banner end  */}
                     {/* 查询城市开始  */}
                     <QueryCityComponent
-                        selectFromCity={() => this.selectCity('fromCity')}
-                        selectToCity={() => this.selectCity('toCity')}
-                        fromCity={TrainfromCity}
-                        toCity={TraintoCity}
-                        fromKey="TrainfromCity"
-                        toKey="TraintoCity"
+                        toSelectCityPage={(key) => this.toSelectCityPage(key)}
+                        selectCity={selectCity}
+                        fromCity={trainFromCity}
+                        toCity={trainToCity}
+                        fromKey="trainFromCity"
+                        toKey="trainToCity"
                     />
                     {/* 查询城市结束  */}
                     {/* 查询日期开始  */}
                     <QueryDateComponent
                         handlePress={this.selectDate}
-                        tripTime={TraintripTime}
-                        tripTimeDes={TraintripTimeDes}
+                        tripTime={trainTripTime}
+                        tripTimeDes={trainTripTimeDesc}
                     />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
@@ -163,16 +157,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    TrainfromCity: state.City.TrainfromCity,
-    TraintoCity: state.City.TraintoCity,
-    TraintripTime: state.Date.TraintripTime,
-    TraintripTimeDes: state.Date.TraintripTimeDes
+    city: state.City,
+    date: state.Date
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    // getBanner: bindActionCreators(TrainAction.getBanner, dispatch), // 获取banner
-    // getNotice: bindActionCreators(TrainAction.getNotice, dispatch), // 获取顶部通知消息
-    // getTab: bindActionCreators(TrainAction.getTab, dispatch)
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ selectCity }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrainPage);

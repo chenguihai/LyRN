@@ -10,6 +10,7 @@ import {
     InteractionManager
 } from 'react-native';
 import _ from '../../util';
+import date from '../../util/date';
 
 const themeColor = '#09bb07';
 const todayBgColor = '#e7e7e7';
@@ -70,20 +71,20 @@ export default class CalendarMonthComponent extends Component {
     }
 
     dayMap = {
-        [_.getToday()]: '今天',
-        [_.getTomorrow()]: '明天',
-        [_.getAfterTomorrow()]: '后天'
+        [date.getToday()]: '今天',
+        [date.getTomorrow()]: '明天',
+        [date.getAfterTomorrow()]: '后天'
     };
 
     _renderRow(item, index, year, month) {
 
         const time = _.isNull(item) ? '' : Number(new Date(year, month - 1, item));
-        const bgColor = time === _.getToday() ? todayBgColor : '#FFF';
-        // const txtColor = time < _.getToday()
+        const bgColor = time === date.getToday() ? todayBgColor : '#FFF';
+        // const txtColor = time < date.getToday()
         // ? '#ccc' 
         // : index === 0 && time !== '' || index === length - 1 && length === 7 ? themeColor : '#000';
-        const handlePress = time < _.getToday() ? null : this.handlePress;
-        const txtColor = time < _.getToday() ? '#ccc' : '#000';
+        const handlePress = time < date.getToday() ? null : this.handlePress;
+        const txtColor = time < date.getToday() ? '#ccc' : '#000';
         
         return (
             <TouchableOpacity

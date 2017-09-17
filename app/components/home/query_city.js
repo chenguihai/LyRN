@@ -11,13 +11,9 @@ import {
     InteractionManager
 } from 'react-native';
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { CityAction } from '../../actions';
-
 import _ from '../../util';
 
-class QueryCityComponent extends Component {
+export default class QueryCityComponent extends Component {
 
     state = {
         left: new Animated.Value(0),
@@ -33,11 +29,10 @@ class QueryCityComponent extends Component {
     static propTypes = {
         fromCity: PropTypes.object,
         toCity: PropTypes.object,
-        selectFromCity: PropTypes.func,
-        selectToCity: PropTypes.func,
+        toSelectCityPage: PropTypes.func,
+        selectCity: PropTypes.func,
         fromKey: PropTypes.string,
-        toKey: PropTypes.string,
-        selectCity: PropTypes.func
+        toKey: PropTypes.string
     }
 
     componentDidUpdate(nextProps, nextState) {
@@ -108,24 +103,6 @@ class QueryCityComponent extends Component {
         return true;
     }
 
-    selectFromCity = () => {
-        requestAnimationFrame(() => {
-            const { selectFromCity } = this.props;
-
-            selectFromCity && selectFromCity();
-        });
-    }
-
-    selectToCity = () => {
-        requestAnimationFrame(() => {
-            const { selectToCity } = this.props;
-
-            InteractionManager.runAfterInteractions(() => {
-                selectToCity && selectToCity();
-            });
-        });
-    }
-
     handlePress = () => {
         this.isSwitch = true;
         this.animationEnd = false;
@@ -144,7 +121,7 @@ class QueryCityComponent extends Component {
 
     render() {
         const { width } = Dimensions.get('window');
-        const { fromCity, toCity } = this.props;
+        const { fromCity, toCity, toSelectCityPage, fromKey, toKey } = this.props;
         const { left, right, opacity, rotate } = this.state;
 
         this.innerWidth = (width - 30) / 2;
@@ -162,7 +139,7 @@ class QueryCityComponent extends Component {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={this.selectFromCity}
+                            onPress={() => toSelectCityPage(fromKey)}
                         >
                             <Text
                                 ref={(ref) => {
@@ -215,7 +192,7 @@ class QueryCityComponent extends Component {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={this.selectToCity}
+                            onPress={() => toSelectCityPage(toKey)}
                         >
                             <Text
                                 ref={(ref) => {
@@ -266,9 +243,3 @@ const styles = StyleSheet.create({
         top: 30
     }
 });
-
-const mapDispatchToProps = (dispatch) => ({
-    selectCity: bindActionCreators(CityAction.selectCity, dispatch),
-});
-
-export default connect(() => ({}), mapDispatchToProps)(QueryCityComponent);
