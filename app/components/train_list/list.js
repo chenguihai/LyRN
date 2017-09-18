@@ -89,7 +89,7 @@ class ListComponent extends Component {
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
                 initialNumToRender={6}
-                data={trainlist.slice(0, 1)}
+                data={trainlist.slice(0, 100)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({

@@ -35,20 +35,6 @@ export default class ListComponent extends Component {
         return nextProps.data !== this.props.data || showDetail !== nextState.showDetail || height !== nextState.height;
     }
 
-    componentDidUpdate() {
-        if (this.state.showDetail) {
-            Animated.timing(this.state.height, {
-                toValue: this.height,
-                duration: 200
-            }).start();
-        } else {
-            Animated.timing(this.state.height, {
-                toValue: 30,
-                duration: 200
-            }).start();
-        }
-    }
-
     _renderSeats(data) {
         return data.map((item, index) => {
             const { cn, seats } = item;
@@ -75,10 +61,31 @@ export default class ListComponent extends Component {
         });
     }
 
-    handlePress = (showDetail) => {
-        this.setState({
-            showDetail: !showDetail
+    handlePress = () => {
+        const { showDetail } = this.state;
+
+        requestAnimationFrame(() => {
+            if (showDetail) {
+                Animated.timing(this.state.height, {
+                    toValue: 30,
+                    duration: 200
+                }).start(() => {
+                    this.setState({
+                        showDetail: false
+                    });
+                });
+            } else {
+                this.setState({
+                    showDetail: true
+                }, () => {
+                    Animated.timing(this.state.height, {
+                        toValue: this.height,
+                        duration: 200
+                    }).start();
+                });
+            }
         });
+        
     }
 
     render() {
@@ -124,7 +131,7 @@ export default class ListComponent extends Component {
             >
                 <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() => this.handlePress(showDetail)}
+                    onPress={() => this.handlePress()}
                     style={styles.train_info}
                 >
                     <View style={styles.info_row} >
@@ -280,6 +287,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 15,
         position: 'relative',
-        bottom: 4
+        bottom: 3
     }
 });
