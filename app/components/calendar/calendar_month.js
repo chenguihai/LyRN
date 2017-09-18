@@ -78,8 +78,8 @@ export default class CalendarMonthComponent extends Component {
 
     _renderRow(day, index, year, month) {
 
-        // const time = _.isNull(day) ? '' : Number(new Date(year, month - 1, day));
-        const time = '';
+        const time = _.isNull(day) ? '' : Number(new Date(year, month - 1, day));
+        // const time = '';
         const bgColor = time === date.getToday() ? todayBgColor : '#FFF';
         // const txtColor = time < date.getToday()
         // ? '#ccc' 

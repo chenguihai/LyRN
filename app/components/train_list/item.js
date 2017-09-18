@@ -6,7 +6,10 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
+    Animated
 } from 'react-native';
+
+import SeatsDetailComponent from './seats_detail';
 
 import _ from '../../util';
 
@@ -18,26 +21,32 @@ export default class ListComponent extends Component {
         data: PropTypes.object,
         lineScale: PropTypes.number,
         cardScale: PropTypes.number,
-        viewWidth: PropTypes.number,
-        handlePress: PropTypes.func
+        viewWidth: PropTypes.number
     }
 
-    shouldComponentUpdate(nextProps) {
-        return nextProps.data !== this.props.data;
+    state = {
+        showDetail: false,
+        height: new Animated.Value(30)
     }
 
-    componentDidMount() {
-        this.layout();
+    shouldComponentUpdate(nextProps, nextState) {
+        const { showDetail, height } = this.state;
+        
+        return nextProps.data !== this.props.data || showDetail !== nextState.showDetail || height !== nextState.height;
     }
 
-    layout = async () => {
-        // const layout = await _.getLayout(this._ref);
-
-        // console.log(layout);
-    }
-
-    getlayout(e) {
-        console.log(e);
+    componentDidUpdate() {
+        if (this.state.showDetail) {
+            Animated.timing(this.state.height, {
+                toValue: this.height,
+                duration: 200
+            }).start();
+        } else {
+            Animated.timing(this.state.height, {
+                toValue: 30,
+                duration: 200
+            }).start();
+        }
     }
 
     _renderSeats(data) {
@@ -45,15 +54,15 @@ export default class ListComponent extends Component {
             const { cn, seats } = item;
 
             if (seats > 0) {
-                return <Text key={index} style={{
-                    fontSize: 11,
-                    lineHeight: 11,
-                    marginLeft: 8,
-                    color: '#333',
-                    position: 'relative',
-                    bottom: '15'
-                }}
-                onLayout={({ nativeEvent: e }) => this.getlayout(e)}>{cn} ({seats})</Text>;
+                return <Text 
+                    key={index} 
+                    style={{
+                        fontSize: 11,
+                        lineHeight: 11,
+                        marginLeft: 8,
+                        color: '#333'
+                    }}
+                >{cn} ({seats})</Text>;
             }
 
             return <Text key={index} style={{
@@ -66,7 +75,14 @@ export default class ListComponent extends Component {
         });
     }
 
+    handlePress = (showDetail) => {
+        this.setState({
+            showDetail: !showDetail
+        });
+    }
+
     render() {
+        const { showDetail, height } = this.state;
         const { data, cardScale, lineScale, viewWidth } = this.props;
         const { item } = data;
 
@@ -91,6 +107,10 @@ export default class ListComponent extends Component {
             }
         }
 
+        this.height = seatsMap.length * 51; // 51为火车票详情的高度
+
+        const style = showDetail ? {} : styles.train_seats;
+
         return (
             <CardView 
                 cardElevation={2}
@@ -104,10 +124,10 @@ export default class ListComponent extends Component {
             >
                 <TouchableOpacity
                     activeOpacity={0.9}
-                    onPress={() => this.props.handlePress(seatsMap)}
+                    onPress={() => this.handlePress(showDetail)}
                     style={styles.train_info}
                 >
-                    <View style={styles.info_row}>
+                    <View style={styles.info_row} >
                         {/* 始发时间 */}
                         <View style={styles.info_item}>
                             <Text style={{
@@ -219,9 +239,16 @@ export default class ListComponent extends Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <View style={styles.train_seats} >
-                    {this._renderSeats(seatsMap)}
-                </View>
+                <Animated.View 
+                    style={[
+                        style,
+                        {
+                            height
+                        }
+                    ]} 
+                >
+                    {showDetail ? <SeatsDetailComponent data={seatsMap} /> : this._renderSeats(seatsMap)}
+                </Animated.View>
             </CardView >
         );
     }
@@ -248,11 +275,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'baseline'
     },
-
     'train_seats': {
         flexDirection: 'row',
-        height: 30,
-        // alignItems: 'center',
-        paddingLeft: 15
+        alignItems: 'center',
+        paddingLeft: 15,
+        position: 'relative',
+        bottom: 4
     }
 });

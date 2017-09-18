@@ -27,19 +27,19 @@ export default class CityLoctionComponent extends Component {
 
     getCurrentPosition() {
         try {
-            navigator.geolocation.getCurrentPosition((location) => {
-                const { longitude, latitude } = location.coords;
+            // navigator.geolocation.getCurrentPosition((location) => {
+            //     const { longitude, latitude } = location.coords;
 
-                // this.props.getCurrentLocation();
-                ajaxByGet('http://restapi.amap.com/v3/geocode/regeo', {
-                    key: config.key,
-                    location: `${longitude},${latitude}`
-                }, ({ regeocode }) => {
-                    this.setState({
-                        regeocode
-                    });
-                });
-            });
+            //     // this.props.getCurrentLocation();
+            //     ajaxByGet('http://restapi.amap.com/v3/geocode/regeo', {
+            //         key: config.key,
+            //         location: `${longitude},${latitude}`
+            //     }, ({ regeocode }) => {
+            //         this.setState({
+            //             regeocode
+            //         });
+            //     });
+            // });
         } catch (e) {
             console.log(e);
         }

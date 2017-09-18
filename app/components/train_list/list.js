@@ -53,17 +53,13 @@ class ListComponent extends Component {
             }
         });
     }
-
-    handlePress(seatsMap) {
-    }
-
+    
     _renderItem = (data) => {
         return <ItemComponent 
             cardScale={this.cardScale} 
             viewWidth={this.width} 
             lineScale={this.lineScale} 
             data={data} 
-            handlePress={this.handlePress}
         />;
     }
 

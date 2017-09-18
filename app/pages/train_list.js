@@ -4,18 +4,14 @@ import {
     View,
     Text,
     Image,
-    StyleSheet,
-    Modal
+    StyleSheet
 } from 'react-native';
 
 import HeaderComponent from '../components/train_list/header';
 import ListComponent from '../components/train_list/list';
 
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { TrainAction } from '../actions';
-
-import SeatsListComponent from '../components/train_list/seats_list';
 
 class Header extends Component {
 
@@ -73,20 +69,6 @@ class TrainListPage extends Component {
             <View style={styles.container}>
                 <HeaderComponent />
                 <ListComponent navigation={this.props.navigation} />
-                <Modal
-                    animationType={'fade'}
-                    transparent={true}
-                    visible={false}
-                    onRequestClose={() => {
-                    }}
-                >
-                    <View style={{
-                        flex: 1,
-                        backgroundColor: 'rgba(0,0,0,.5)'
-                    }}>
-                        <SeatsListComponent />
-                    </View>
-                </Modal>
             </View>
         );
     }

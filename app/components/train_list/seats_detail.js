@@ -4,6 +4,7 @@ import {
     View,
     Text,
     StyleSheet,
+    Animated
 } from 'react-native';
 
 export default class SeatsListComponent extends Component {
@@ -24,6 +25,7 @@ export default class SeatsListComponent extends Component {
                     <View style={styles.seats_box}>
                         <Text style={{
                             fontSize: 14,
+                            lineHeight: 14,
                             color: '#333'
                         }}>{cn}</Text>
                     </View>
@@ -47,20 +49,24 @@ export default class SeatsListComponent extends Component {
                     <View style={styles.seats_box}>
                         <Text style={{
                             fontSize: 14,
+                            lineHeight: 14,
                             color: 'rgb(170, 170, 170)'
                         }}>{seats} 张</Text>
                     </View>
                     <View style={styles.seats_box}>
-                        <View style={{
-                            paddingTop: 4,
-                            paddingBottom: 4,
-                            paddingLeft: 8,
-                            paddingRight: 8,
-                            borderRadius: 3,
-                            backgroundColor: '#3c6'
-                        }}>
+                        <View 
+                            style={{
+                                width: 40,
+                                height: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 3,
+                                backgroundColor: '#3c6'
+                            }}
+                        >
                             <Text style={{
                                 fontSize: 12,
+                                lineHeight: 12,
                                 color: '#FFF'
                             }}>预定</Text>
                         </View>
@@ -75,7 +81,7 @@ export default class SeatsListComponent extends Component {
 
         return (
             <View style={{
-                backgroundColor: '#FFF',
+                backgroundColor: '#FFF'
             }}>
                 {this._renderSeatsList(data)}
             </View>
@@ -87,12 +93,16 @@ const styles = StyleSheet.create({
     'seats_list': {
         flexDirection: 'row',
         height: 51,
+        alignItems: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#dcdcdc',
+        position: 'relative',
+        bottom: 8
+        // borderTopWidth: StyleSheet.hairlineWidth,
+        // borderTopColor: '#dcdcdc'
     },
     'seats_box': {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignItems: 'center'
     }
 });
