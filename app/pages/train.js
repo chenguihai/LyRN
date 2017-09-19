@@ -70,7 +70,7 @@ class TrainPage extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('Calendar', {
-                routeName: navigation.state.routeName
+                key: 'trainTripTime'
             });
         });
     }
@@ -79,7 +79,7 @@ class TrainPage extends Component {
         const { city, date, navigation } = this.props;
         const { trainFromCity, trainToCity } = city;
         const { trainTripTime } = date;
-
+        
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('TrainList', {
                 from: trainFromCity,

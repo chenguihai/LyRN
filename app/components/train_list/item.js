@@ -16,6 +16,8 @@ import _ from '../../util';
 
 import CardView from 'react-native-cardview';
 
+const seatsHeight = 33;
+
 export default class ListComponent extends Component {
 
     static propTypes = {
@@ -27,21 +29,13 @@ export default class ListComponent extends Component {
 
     state = {
         showDetail: false,
-        height: new Animated.Value(40)
-    }
-
-    componentDidMount() {
-        this.layout();
+        height: new Animated.Value(seatsHeight)
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         const { showDetail, height } = this.state;
         
         return nextProps.data !== this.props.data || showDetail !== nextState.showDetail || height !== nextState.height;
-    }
-
-    layout = async () => {
-        const layout = await _.getLayout(this._cartViewRef);
     }
 
     _renderSeats(data) {
@@ -76,7 +70,7 @@ export default class ListComponent extends Component {
         requestAnimationFrame(() => {
             if (showDetail) {
                 Animated.timing(this.state.height, {
-                    toValue: 40,
+                    toValue: seatsHeight,
                     duration: 150,
                     easing: Easing.ease
                 }).start();
@@ -137,9 +131,6 @@ export default class ListComponent extends Component {
                     backgroundColor: '#FFF',
                     width: viewWidth - 10,
                     marginLeft: 5
-                }}
-                ref={(ref) => { 
-                    this._cartViewRef = ref;
                 }}
             >
                 <TouchableOpacity
@@ -281,7 +272,8 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e4e4e4',
-        borderStyle: 'dashed',
+        borderStyle: 'dashed'
+        
     },
     'info_row': {
         flexDirection: 'row'
@@ -301,6 +293,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 15,
         position: 'relative',
-        bottom: 3
+        bottom: 4
     }
 });

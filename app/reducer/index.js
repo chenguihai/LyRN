@@ -3,6 +3,8 @@ import { combineReducers } from 'redux';
 import { selectCity, selectDate } from '../actions';
 import date from '../util/date';
 
+const tripTime = date.format(date.getTomorrow());
+
 const City = handleAction(
     selectCity, 
     (state, { payload }) => Object.assign({}, state, { ...payload }), 
@@ -20,11 +22,11 @@ const Date = handleAction(
     selectDate, 
     (state, { payload }) => Object.assign({}, state, { ...payload }), 
     { 
-        trainTripTime: date.getTomorrow(), 
+        trainTripTime: tripTime, 
         trainTripTimeDesc: '明日出发',
-        flightTripTime: date.getTomorrow(), 
+        flightTripTime: tripTime, 
         flightTripTimeDesc: '明日出发',
-        busTripTime: date.getTomorrow(), 
+        busTripTime: tripTime, 
         busTripTimeDesc: '明日出发'
     }
 );

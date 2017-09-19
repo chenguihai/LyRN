@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#dcdcdc',
         position: 'relative',
-        bottom: 8
+        bottom: 4.5
         // borderTopWidth: StyleSheet.hairlineWidth,
         // borderTopColor: '#dcdcdc'
     },

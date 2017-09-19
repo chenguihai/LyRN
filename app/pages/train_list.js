@@ -64,11 +64,12 @@ class TrainListPage extends Component {
     }
 
     render() {
-
+        const { navigation } = this.props;
+        
         return (
             <View style={styles.container}>
-                <HeaderComponent />
-                <ListComponent navigation={this.props.navigation} />
+                <HeaderComponent navigation={navigation} />
+                <ListComponent navigation={navigation} />
             </View>
         );
     }
@@ -88,5 +89,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f1f3f6'
-    }
+    },
 });

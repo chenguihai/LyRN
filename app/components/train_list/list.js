@@ -27,33 +27,33 @@ class ListComponent extends Component {
     }
 
     state = {
-
+        length: 10
     }
 
     componentWillMount() {
         const { navigation } = this.props;
         const { from, to, tripTime } = navigation.state.params;
 
-        getTrainList({
-            params: {
-                para: { 
-                    'from': from.Name,
-                    'to': to.Name, 
-                    'oby': '0', 
-                    'date': date.format(tripTime),
-                    'platId': 501, 
-                    'requestType': 4,
-                    'headct': 1, 
-                    'headus': 1, 
-                    'headver': '2.14.0.2', 
-                    'isstu': false, 
-                    'headtime': Number(new Date()) 
-                }
-            },
-            callback: ({ data }) => {
-                this.setState({ data });
-            }
-        });
+        // getTrainList({
+        //     params: {
+        //         para: { 
+        //             'from': from.Name,
+        //             'to': to.Name, 
+        //             'oby': '0', 
+        //             'date': date.format(tripTime),
+        //             'platId': 501, 
+        //             'requestType': 4,
+        //             'headct': 1, 
+        //             'headus': 1, 
+        //             'headver': '2.14.0.2', 
+        //             'isstu': false, 
+        //             'headtime': Number(new Date()) 
+        //         }
+        //     },
+        //     callback: ({ data }) => {
+        //         this.setState({ data });
+        //     }
+        // });
     }
     
     _renderItem = (data) => {
@@ -70,18 +70,23 @@ class ListComponent extends Component {
     }
 
     onEndReached = () => {
+        const { length, data } = this.state;
         // this.props.changeLength();
+
+        if (length < data.trainlist.length) { 
+            this.setState({
+                length: length + 10
+            }); 
+        }
     }
 
     _footer() {
-        return <View ref={(ref) => { 
-            this._footerRef = ref;
-        }} style={{ height: 0 }}><Text>这是尾部组件</Text></View>;
+        return <View style={{ height: 0 }}><Text>这是尾部组件</Text></View>;
     }
 
     render() {
         const { width } = Dimensions.get('window');
-        const { data = {} } = this.state;
+        const { data = {}, length } = this.state;
         const { tcount = 0, trainlist = [] } = data;
 
         if (tcount === 0) {
@@ -98,7 +103,7 @@ class ListComponent extends Component {
                 onEndReachedThreshold={0.9}
                 ListFooterComponent={this._footer()}
                 initialNumToRender={10}
-                data={trainlist.slice(0, 10)}
+                data={trainlist.slice(0, length)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({

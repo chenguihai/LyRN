@@ -9,8 +9,6 @@ import {
     Dimensions,
     InteractionManager
 } from 'react-native';
-import _ from '../../util';
-import date from '../../util/date';
 
 const themeColor = '#09bb07';
 const todayBgColor = '#e7e7e7';
@@ -23,8 +21,11 @@ export default class CalendarMonthComponent extends Component {
 
     static propTypes = {
         data: PropTypes.array,
-        onSelect: PropTypes.func
+        onSelect: PropTypes.func,
+        dayMap: PropTypes.object
     }
+
+    beforeToday = true; // 用来判断日期是否小于今天
 
     _refView = [];
 
@@ -70,26 +71,31 @@ export default class CalendarMonthComponent extends Component {
         }
     }
 
-    dayMap = {
-        [date.getToday()]: '今天',
-        [date.getTomorrow()]: '明天',
-        [date.getAfterTomorrow()]: '后天'
-    };
-
     _renderRow(day, index, year, month) {
+        const time = `${year}-${month > 9 ? month : `0${month}`}-${day}`;
+        let todayBg, txtColor, handlePress;
 
-        const time = _.isNull(day) ? '' : Number(new Date(year, month - 1, day));
-        // const time = '';
-        const bgColor = time === date.getToday() ? todayBgColor : '#FFF';
-        // const txtColor = time < date.getToday()
-        // ? '#ccc' 
-        // : index === 0 && time !== '' || index === length - 1 && length === 7 ? themeColor : '#000';
-        const handlePress = time < date.getToday() ? null : this.handlePress;
-        const txtColor = time < date.getToday() ? '#ccc' : '#000';
+        if (this.dayMap[time] === '今天') {
+            this.beforeToday = false;
+            todayBg = todayBgColor;
+        } else {
+            todayBg = '#FFF';
+        }
+
+        handlePress = () => this.handlePress(time);
+        
+        if (this.beforeToday) {
+            txtColor = '#CCC';
+            handlePress = null;
+        } else if (this.dayIMap.includes(index) && day !== null) {
+            txtColor = themeColor;
+        } else {
+            txtColor = '#000';
+        }
         
         return (
             <TouchableOpacity
-                onPress={() => handlePress(time)}
+                onPress={handlePress}
                 style={[
                     styles.each_day,
                     { width: this.innerWidth / 7 }
@@ -97,17 +103,17 @@ export default class CalendarMonthComponent extends Component {
             >
                 <View 
                     ref={(ref) => { 
-                        time !== '' && (this._refView[time] = ref);
+                        day !== null && (this._refView[time] = ref);
                     }} style={[
                         styles.each_day_number,
                         {
-                            backgroundColor: bgColor
+                            backgroundColor: todayBg
                         }
                     ]}
                 >
                     <Text 
                         ref={(ref) => { 
-                            time !== '' && (this._refText[time] = ref);
+                            day !== null && (this._refText[time] = ref);
                         }} 
                         style={{
                             color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
@@ -126,10 +132,25 @@ export default class CalendarMonthComponent extends Component {
 
     render() {
         const { width } = Dimensions.get('window');
-        const { data } = this.props;
+        const { data, dayMap } = this.props;
 
+        this.dayMap = dayMap;
+        this.dayIMap = [
+            0,
+            6,
+            7, 
+            13, 
+            14, 
+            20,
+            21,
+            27,
+            28,
+            34,
+            35,
+            41
+        ];
         this.innerWidth = width * 0.9;
-
+        
         return (
             <ScrollView style={{ flex: 1 }}>
                 {

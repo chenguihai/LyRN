@@ -140,7 +140,11 @@ export default class QueryCityComponent extends Component {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={() => toSelectCityPage(fromKey)}
+                            onPress={() => {
+                                requestAnimationFrame(() => { 
+                                    toSelectCityPage(fromKey);
+                                });
+                            }}
                         >
                             <Text
                                 ref={(ref) => {
@@ -193,7 +197,11 @@ export default class QueryCityComponent extends Component {
                         }}
                     >
                         <TouchableOpacity
-                            onPress={() => toSelectCityPage(toKey)}
+                            onPress={() => {
+                                requestAnimationFrame(() => {
+                                    toSelectCityPage(toKey);
+                                });
+                            }}
                         >
                             <Text
                                 ref={(ref) => {

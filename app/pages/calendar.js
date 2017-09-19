@@ -9,8 +9,11 @@ import CalendarMonthComponent from '../components/calendar/calendar_month';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { selectDate } from '../actions';
 
 import createCalendar from '../util/createCalendar';
+
+import date from '../util/date';
 
 class CalenDarPage extends Component {
 
@@ -31,11 +34,23 @@ class CalenDarPage extends Component {
 
     handleSelect = (time) => {
         const { navigation, selectDate } = this.props;
+        const { key } = navigation.state.params || {};
 
-        // selectDate(navigation.state.params.routeName, time);
+        selectDate({
+            [key]: time,
+            [`${key}Desc`]: this.getDayMap()[time] || ''
+        });
         InteractionManager.runAfterInteractions(() => {
             navigation.goBack();
         });
+    }
+
+    getDayMap() {
+        return {
+            [date.format(date.getToday())]: '今天',
+            [date.format(date.getTomorrow())]: '明天',
+            [date.format(date.getAfterTomorrow())]: '后天'
+        };
     }
 
     render() {
@@ -46,6 +61,7 @@ class CalenDarPage extends Component {
                 <CalendarMonthComponent 
                     onSelect={this.handleSelect} 
                     data={this.state.calendar} 
+                    dayMap = {this.getDayMap()}
                 />
             </View>
         );
@@ -55,8 +71,6 @@ class CalenDarPage extends Component {
 const mapStateToProps = () => ({
 });
 
-const mapActionToProps = (dispatch) => ({
-    // selectDate: bindActionCreators(DateAction.selectDate, dispatch)
-});
-
+const mapActionToProps = (dispatch) => bindActionCreators({ selectDate }, dispatch);
+    
 export default connect(mapStateToProps, mapActionToProps)(CalenDarPage);

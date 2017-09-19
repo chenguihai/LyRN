@@ -10,17 +10,15 @@ import {
 export default class QueryDateComponent extends Component {
 
     static propTypes = {
-        tripTime: PropTypes.number,
+        tripTime: PropTypes.string,
         tripTimeDes: PropTypes.string,
         handlePress: PropTypes.func
     }
 
     covertDate(time) {
-        const date = new Date(time);
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
+        const dateArr = time.split('-');
 
-        return `${month}月${day}日`;
+        return `${dateArr[1]}月${dateArr[2]}日`;
     }
 
     handlePress = () => {
@@ -33,7 +31,7 @@ export default class QueryDateComponent extends Component {
 
     render() {
         const { tripTime, tripTimeDes } = this.props;
-
+        
         return (
             <TouchableOpacity onPress={this.handlePress} style={styles.query_date}>
                 <View style={styles.query_date_inner}>
