@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     FlatList,
-    Dimensions
+    Dimensions,
+    Text,
+    View
 } from 'react-native';
 
 import ItemComponent from './item';
@@ -59,7 +61,7 @@ class ListComponent extends Component {
             cardScale={this.cardScale} 
             viewWidth={this.width} 
             lineScale={this.lineScale} 
-            data={data} 
+            data={data}
         />;
     }
 
@@ -69,6 +71,12 @@ class ListComponent extends Component {
 
     onEndReached = () => {
         // this.props.changeLength();
+    }
+
+    _footer() {
+        return <View ref={(ref) => { 
+            this._footerRef = ref;
+        }} style={{ height: 0 }}><Text>这是尾部组件</Text></View>;
     }
 
     render() {
@@ -81,15 +89,16 @@ class ListComponent extends Component {
         }
 
         this.width = width;
-        this.cardScale = 31 / 21;
+        this.cardScale = 31 / 21; // 身份证
         this.lineScale = 100 / 7;
         
-        return (
+        return (       
             <FlatList
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
-                initialNumToRender={6}
-                data={trainlist.slice(0, 100)}
+                ListFooterComponent={this._footer()}
+                initialNumToRender={10}
+                data={trainlist.slice(0, 10)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({

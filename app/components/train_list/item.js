@@ -6,7 +6,8 @@ import {
     Image,
     StyleSheet,
     TouchableOpacity,
-    Animated
+    Animated,
+    Easing
 } from 'react-native';
 
 import SeatsDetailComponent from './seats_detail';
@@ -26,13 +27,21 @@ export default class ListComponent extends Component {
 
     state = {
         showDetail: false,
-        height: new Animated.Value(30)
+        height: new Animated.Value(40)
+    }
+
+    componentDidMount() {
+        this.layout();
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         const { showDetail, height } = this.state;
         
         return nextProps.data !== this.props.data || showDetail !== nextState.showDetail || height !== nextState.height;
+    }
+
+    layout = async () => {
+        const layout = await _.getLayout(this._cartViewRef);
     }
 
     _renderSeats(data) {
@@ -67,12 +76,12 @@ export default class ListComponent extends Component {
         requestAnimationFrame(() => {
             if (showDetail) {
                 Animated.timing(this.state.height, {
-                    toValue: 30,
-                    duration: 200
-                }).start(() => {
-                    this.setState({
-                        showDetail: false
-                    });
+                    toValue: 40,
+                    duration: 150,
+                    easing: Easing.ease
+                }).start();
+                this.setState({
+                    showDetail: false
                 });
             } else {
                 this.setState({
@@ -80,7 +89,8 @@ export default class ListComponent extends Component {
                 }, () => {
                     Animated.timing(this.state.height, {
                         toValue: this.height,
-                        duration: 200
+                        duration: 150,
+                        easing: Easing.ease
                     }).start();
                 });
             }
@@ -127,6 +137,9 @@ export default class ListComponent extends Component {
                     backgroundColor: '#FFF',
                     width: viewWidth - 10,
                     marginLeft: 5
+                }}
+                ref={(ref) => { 
+                    this._cartViewRef = ref;
                 }}
             >
                 <TouchableOpacity
@@ -254,7 +267,8 @@ export default class ListComponent extends Component {
                         }
                     ]} 
                 >
-                    {showDetail ? <SeatsDetailComponent data={seatsMap} /> : this._renderSeats(seatsMap)}
+                    {!showDetail ? this._renderSeats(seatsMap) : null}
+                    <SeatsDetailComponent data={seatsMap} />
                 </Animated.View>
             </CardView >
         );
