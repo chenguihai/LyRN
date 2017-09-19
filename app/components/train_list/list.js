@@ -33,26 +33,26 @@ class ListComponent extends Component {
         const { navigation } = this.props;
         const { from, to, tripTime } = navigation.state.params;
 
-        // getTrainList({
-        //     params: {
-        //         para: { 
-        //             'from': from.Name,
-        //             'to': to.Name, 
-        //             'oby': '0', 
-        //             'date': tripTime,
-        //             'platId': 501, 
-        //             'requestType': 4,
-        //             'headct': 1, 
-        //             'headus': 1, 
-        //             'headver': '2.14.0.2', 
-        //             'isstu': false, 
-        //             'headtime': Number(new Date()) 
-        //         }
-        //     },
-        //     callback: ({ data }) => {
-        //         this.setState({ data });
-        //     }
-        // });
+        getTrainList({
+            params: {
+                para: { 
+                    'from': from.Name,
+                    'to': to.Name, 
+                    'oby': '0', 
+                    'date': tripTime,
+                    'platId': 501, 
+                    'requestType': 4,
+                    'headct': 1, 
+                    'headus': 1, 
+                    'headver': '2.14.0.2', 
+                    'isstu': false, 
+                    'headtime': Number(new Date()) 
+                }
+            },
+            callback: ({ data }) => {
+                this.setState({ data });
+            }
+        });
     }
     
     _renderItem = (data) => {
