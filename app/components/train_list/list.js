@@ -10,7 +10,6 @@ import {
 import ItemComponent from './item';
 
 import { getTrainList } from '../../actions/http';
-import date from '../../util/date';
 
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -40,7 +39,7 @@ class ListComponent extends Component {
         //             'from': from.Name,
         //             'to': to.Name, 
         //             'oby': '0', 
-        //             'date': date.format(tripTime),
+        //             'date': tripTime,
         //             'platId': 501, 
         //             'requestType': 4,
         //             'headct': 1, 

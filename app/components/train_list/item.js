@@ -27,15 +27,18 @@ export default class ListComponent extends Component {
         viewWidth: PropTypes.number
     }
 
+    showDetail = false;
+
     state = {
-        showDetail: false,
-        height: new Animated.Value(seatsHeight)
+        height: new Animated.Value(seatsHeight),
+        topHeight: new Animated.Value(seatsHeight),
+        bottomHeight: new Animated.Value(0)
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const { showDetail, height } = this.state;
+        const { height } = this.state;
         
-        return nextProps.data !== this.props.data || showDetail !== nextState.showDetail || height !== nextState.height;
+        return nextProps.data !== this.props.data || height !== nextState.height;
     }
 
     _renderSeats(data) {
@@ -65,35 +68,69 @@ export default class ListComponent extends Component {
     }
 
     handlePress = () => {
-        const { showDetail } = this.state;
-
         requestAnimationFrame(() => {
-            if (showDetail) {
-                Animated.timing(this.state.height, {
-                    toValue: seatsHeight,
-                    duration: 150,
-                    easing: Easing.ease
-                }).start();
-                this.setState({
-                    showDetail: false
-                });
+            if (this.showDetail) {
+                Animated.parallel([
+                    Animated.timing(this.state.height, {
+                        toValue: seatsHeight,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.topHeight, {
+                        toValue: seatsHeight,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.bottomHeight, {
+                        toValue: 0,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                ]).start();
+                setTimeout(() => {
+                    this._topRef.setNativeProps({
+                        style: {
+                            opacity: 1
+                        }
+                    });
+                }, 100);
             } else {
-                this.setState({
-                    showDetail: true
-                }, () => {
+                this._topRef.setNativeProps({
+                    style: {
+                        opacity: 0
+                    }
+                });
+                Animated.parallel([
                     Animated.timing(this.state.height, {
                         toValue: this.height,
                         duration: 150,
-                        easing: Easing.ease
-                    }).start();
-                });
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.topHeight, {
+                        toValue: 0,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.bottomHeight, {
+                        toValue: this.height,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    })
+                ]).start();
             }
+            this.showDetail = !this.showDetail;
         });
         
     }
 
     render() {
-        const { showDetail, height } = this.state;
+        const { topHeight, bottomHeight, height } = this.state;
         const { data, cardScale, lineScale, viewWidth } = this.props;
         const { item } = data;
 
@@ -119,8 +156,6 @@ export default class ListComponent extends Component {
         }
 
         this.height = seatsMap.length * 51; // 51为火车票详情的高度
-
-        const style = showDetail ? {} : styles.train_seats;
 
         return (
             <CardView 
@@ -252,14 +287,34 @@ export default class ListComponent extends Component {
                 </TouchableOpacity>
                 <Animated.View 
                     style={[
-                        style,
                         {
                             height
                         }
                     ]} 
                 >
-                    {!showDetail ? this._renderSeats(seatsMap) : null}
-                    <SeatsDetailComponent data={seatsMap} />
+                    <Animated.View
+                        ref={(ref) => { 
+                            this._topRef = ref;
+                        }}
+                        style={[
+                            styles.train_seats,
+                            {
+                                height: topHeight,
+                                opacity: 1
+                            }
+                        ]}
+                    >
+                        {this._renderSeats(seatsMap)}
+                    </Animated.View>
+                    <Animated.View
+                        style={[
+                            {
+                                height: bottomHeight
+                            }
+                        ]}
+                    >
+                        <SeatsDetailComponent data={seatsMap} />
+                    </Animated.View>
                 </Animated.View>
             </CardView >
         );
@@ -272,8 +327,9 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e4e4e4',
-        borderStyle: 'dashed'
-        
+        borderStyle: 'dashed',
+        position: 'relative',
+        zIndex: 1000
     },
     'info_row': {
         flexDirection: 'row'

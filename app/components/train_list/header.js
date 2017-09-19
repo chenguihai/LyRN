@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
     View,
     Text,
@@ -9,38 +10,105 @@ import {
     Animated
 } from 'react-native';
 
+import date from '../../util/date';
+
 const themeColor = '#3C6';
 
 export default class HeaderComponent extends Component {
 
+    static propTypes = {
+        navigation: PropTypes.object
+    };
+
+    static defaultProps={
+        navigation: { state: { params: {} } }
+    }
+
+    dayMap = [
+        '周日', 
+        '周一', 
+        '周二', 
+        '周三', 
+        '周四', 
+        '周五', 
+        '周六'
+    ];
+
     state = {
-        left: new Animated.Value(-1)
+        prev: '09月20日',
+        current: '09月21日',
+        next: '09月22日'
+    }
+
+    componentWillMount() {
+        const { navigation: { state: { params: { tripTime } } } } = this.props;
+
+        this.animtedValue = new Animated.Value(-1);
+        this.setState({
+            tripTime
+        });
     }
 
     selectPrevDay = () => {
-        Animated.timing(this.state.transform, {
+        Animated.timing(this.animtedValue, {
             toValue: 0,
-            duration: 2000
-        }).start();
+            duration: 200,
+            useNativeDriver: true
+        }).start(() => {
+            Animated.timing(this.animtedValue, {
+                toValue: -1,
+                duration: 0,
+                useNativeDriver: true
+            }).start();
+        });
     }
 
-    selectNextDay() {
-        Animated.timing(this.state.transform, {
+    selectNextDay = () => {
+        Animated.timing(this.animtedValue, {
             toValue: 1,
-            duration: 2000
-        }).start();
+            duration: 100,
+            useNativeDriver: true
+        }).start(() => {
+            this.setState({
+                tripTime: this.todayTimeStamp + 8.64e7
+            });
+            Animated.timing(this.animtedValue, {
+                toValue: -1,
+                duration: 0,
+                useNativeDriver: true
+            }).start();
+        });
+    }
+
+    covertToMonthAndDay(time) {
+        const date = new Date(time),
+            month = date.getMonth() + 1,
+            day = date.getDate(),
+            weekDay = this.dayMap[date.getDay()];
+        
+        return {
+            date: `${month > 9 ? month : `0${month}`}月${day > 9 ? day : `0${day}`}日`,
+            weekDay
+        };
     }
 
     render() {
+        const { tripTime } = this.state;
         const { width } = Dimensions.get('window');
         const btnWidth = (width - 12) * 0.28;
 
         const imageScale = 12 / 22;
 
+        this.todayTimeStamp = date.resetTime(tripTime);
+        const 
+            today = this.covertToMonthAndDay(this.todayTimeStamp),
+            tomorrow = this.covertToMonthAndDay(this.todayTimeStamp + 8.64e7),
+            yesterday = this.covertToMonthAndDay(this.todayTimeStamp - 8.64e7);
+        
         return (
             <View style={styles.header}>
                 <TouchableOpacity
-                    handlePress={this.selectPrevDay}
+                    onPress={this.selectPrevDay}
                 >
                     <View style={[
                         styles.btn,
@@ -70,47 +138,50 @@ export default class HeaderComponent extends Component {
                     backgroundColor: '#f4f4f4',
                     flexDirection: 'row'
                 }}>
-                    <View style={{
+                    <Animated.View style={{
                         width: 298,
                         height: 32,
                         flexDirection: 'row',
                         alignItems: 'center',
-                        position: 'absolute',
-                        left: this.state.left.interpolate({
-                            inputRange: [
-                                -1, 
-                                0, 
-                                1
-                            ],
-                            outputRange: [
-                                -98, 
-                                0, 
-                                98
-                            ]
-                        })
+                        transform: [
+                            {
+                                translateX: this.animtedValue.interpolate({
+                                    inputRange: [
+                                        -1,
+                                        0, 
+                                        1
+                                    ],
+                                    outputRange: [
+                                        -98,
+                                        0, 
+                                        -196
+                                    ]
+                                })
+                            }
+                        ]
                     }}>
                         <View style={{ flex: 1, 
                             alignItems: 'center', 
                             justifyContent: 'center' }}>
                             <Text style={{
                                 fontSize: 14
-                            }}>09月19日 周二</Text>
+                            }}>{yesterday.date} {yesterday.weekDay}</Text>
                         </View>
                         <View style={{ flex: 1, 
                             alignItems: 'center', 
                             justifyContent: 'center' }}>
                             <Text style={{
                                 fontSize: 14
-                            }}>09月20日 周三</Text>
+                            }}>{today.date} {today.weekDay}</Text>
                         </View>
                         <View style={{ flex: 1, 
                             alignItems: 'center', 
                             justifyContent: 'center' }}>
                             <Text style={{
                                 fontSize: 14
-                            }}>09月21日 周四</Text>
+                            }}>{tomorrow.date} {tomorrow.weekDay}</Text>
                         </View>
-                    </View> 
+                    </Animated.View> 
                     <View style={{
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -125,7 +196,7 @@ export default class HeaderComponent extends Component {
                     </View>
                 </View>
                 <TouchableOpacity
-                    handlePress={this.selectNextDay}
+                    onPress={this.selectNextDay}
                 >
                     <View style={[
                         styles.btn,
