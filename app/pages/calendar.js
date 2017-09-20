@@ -36,10 +36,17 @@ class CalenDarPage extends Component {
         const { navigation, selectDate } = this.props;
         const { key } = navigation.state.params || {};
 
-        selectDate({
-            [key]: time,
-            [`${key}Desc`]: this.getDayMap()[time] || ''
-        });
+        // 判断是否从首页进来
+        if (key.indexOf('TripTime')) {
+            selectDate({
+                [key]: time,
+                [`${key}Desc`]: this.getDayMap()[time] || ''
+            });
+        } else {
+            selectDate({
+                [key]: time
+            });
+        }
         InteractionManager.runAfterInteractions(() => {
             navigation.goBack();
         });

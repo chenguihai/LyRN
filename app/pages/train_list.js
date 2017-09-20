@@ -13,6 +13,8 @@ import ListComponent from '../components/train_list/list';
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { getTrainList } from '../actions/http';
+
 class Header extends Component {
 
     static propTypes = {
@@ -49,7 +51,7 @@ class Header extends Component {
     }
 }
 
-class TrainListPage extends Component {
+export default class TrainListPage extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { from, to } = navigation.state.params;
@@ -63,27 +65,56 @@ class TrainListPage extends Component {
         navigation: PropTypes.object
     }
 
+    state = {
+        data: {
+            trainlist: [],
+            tcount: 0
+        }
+    }
+
+    componentWillMount() {
+        const { navigation: { state: { params: { tripTime } } } } = this.props;
+
+        this.requestTrainList(tripTime);        
+    }
+
+    requestTrainList = (date) => {
+        const { navigation: { state: { params: { from, to } } } } = this.props;
+
+        getTrainList({
+            params: {
+                para: { 
+                    'from': from.Name,
+                    'to': to.Name, 
+                    'oby': '0', 
+                    date,
+                    'platId': 501, 
+                    'requestType': 4,
+                    'headct': 1, 
+                    'headus': 1, 
+                    'headver': '2.14.0.2', 
+                    'isstu': false, 
+                    'headtime': Number(new Date()) 
+                }
+            },
+            callback: ({ data }) => {
+                this.setState({ data });
+            }
+        });
+    }
+
     render() {
         const { navigation } = this.props;
-        
+        const { data } = this.state;
+
         return (
             <View style={styles.container}>
-                <HeaderComponent navigation={navigation} />
-                <ListComponent navigation={navigation} />
+                <HeaderComponent navigation={navigation} getTrainList={this.requestTrainList} />
+                <ListComponent data={data} />
             </View>
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-    // modalVisible: state.Train.modalVisible
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    // getTrainList: bindActionCreators(TrainAction.getTrainList, dispatch) // 获取站点时刻表
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TrainListPage);
 
 const styles = StyleSheet.create({
     container: {

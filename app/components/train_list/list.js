@@ -9,50 +9,18 @@ import {
 
 import ItemComponent from './item';
 
-import { getTrainList } from '../../actions/http';
-
-// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { TrainAction } from '../../actions';
 
-class ListComponent extends Component {
+export default class ListComponent extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object,
+        data: PropTypes.object,
         trainList: PropTypes.object,
         length: PropTypes.number,
-        // changeLength: PropTypes.func,
-        // isShowSeatsModal: PropTypes.func
     }
 
     state = {
         length: 10
-    }
-
-    componentWillMount() {
-        const { navigation } = this.props;
-        const { from, to, tripTime } = navigation.state.params;
-
-        getTrainList({
-            params: {
-                para: { 
-                    'from': from.Name,
-                    'to': to.Name, 
-                    'oby': '0', 
-                    'date': tripTime,
-                    'platId': 501, 
-                    'requestType': 4,
-                    'headct': 1, 
-                    'headus': 1, 
-                    'headver': '2.14.0.2', 
-                    'isstu': false, 
-                    'headtime': Number(new Date()) 
-                }
-            },
-            callback: ({ data }) => {
-                this.setState({ data });
-            }
-        });
     }
     
     _renderItem = (data) => {
@@ -69,10 +37,10 @@ class ListComponent extends Component {
     }
 
     onEndReached = () => {
-        const { length, data } = this.state;
-        // this.props.changeLength();
+        const { data: { trainlist } } = this.props;
+        const { length } = this.state;
 
-        if (length < data.trainlist.length) { 
+        if (length < trainlist.length) { 
             this.setState({
                 length: length + 10
             }); 
@@ -85,7 +53,8 @@ class ListComponent extends Component {
 
     render() {
         const { width } = Dimensions.get('window');
-        const { data = {}, length } = this.state;
+        const { length } = this.state;
+        const { data } = this.props;
         const { tcount = 0, trainlist = [] } = data;
 
         if (tcount === 0) {
@@ -114,11 +83,3 @@ class ListComponent extends Component {
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-});
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListComponent);

@@ -72,7 +72,7 @@ export default class CalendarMonthComponent extends Component {
     }
 
     _renderRow(day, index, year, month) {
-        const time = `${year}-${month > 9 ? month : `0${month}`}-${day}`;
+        const time = `${year}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`;
         let todayBg, txtColor, handlePress;
 
         if (this.dayMap[time] === '今天') {

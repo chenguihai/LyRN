@@ -26,8 +26,10 @@ class TrainPage extends Component {
 
     static propTypes = {
         navigation: PropTypes.object,
-        city: PropTypes.object,
-        date: PropTypes.object,
+        fromCity: PropTypes.object,
+        toCity: PropTypes.object,
+        tripTime: PropTypes.string,
+        tripTimeDesc: PropTypes.string,
         selectCity: PropTypes.func
     }
 
@@ -76,23 +78,19 @@ class TrainPage extends Component {
     }
 
     searchTrainList = () => {
-        const { city, date, navigation } = this.props;
-        const { trainFromCity, trainToCity } = city;
-        const { trainTripTime } = date;
+        const { fromCity, toCity, tripTime, navigation } = this.props;
         
         InteractionManager.runAfterInteractions(() => {
             navigation.navigate('TrainList', {
-                from: trainFromCity,
-                to: trainToCity,
-                tripTime: trainTripTime
+                from: fromCity,
+                to: toCity,
+                tripTime
             });
         });
     }
 
     render() {
-        const { city, selectCity, date } = this.props;
-        const { trainFromCity = {}, trainToCity = {} } = city;
-        const { trainTripTime, trainTripTimeDesc } = date;
+        const { fromCity, toCity, selectCity, tripTime, tripTimeDesc } = this.props;
         const { notice = {}, Adverts = { List: [] }, Icons = { List: [] }, tabIcon: { OperationIcon = [] } } = this.state;
 
         return (
@@ -108,8 +106,8 @@ class TrainPage extends Component {
                     <QueryCityComponent
                         toSelectCityPage={(key) => this.toSelectCityPage(key)}
                         selectCity={selectCity}
-                        fromCity={trainFromCity}
-                        toCity={trainToCity}
+                        fromCity={fromCity}
+                        toCity={toCity}
                         fromKey="trainFromCity"
                         toKey="trainToCity"
                     />
@@ -117,8 +115,8 @@ class TrainPage extends Component {
                     {/* 查询日期开始  */}
                     <QueryDateComponent
                         handlePress={this.selectDate}
-                        tripTime={trainTripTime}
-                        tripTimeDes={trainTripTimeDesc}
+                        tripTime={tripTime}
+                        tripTimeDes={tripTimeDesc}
                     />
                     {/* 查询日期结束  */}
                     <View style={styles.checkbox}>
@@ -159,8 +157,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-    city: state.City,
-    date: state.Date
+    fromCity: state.City.trainFromCity,
+    toCity: state.City.trainToCity,
+    tripTime: state.Date.trainTripTime,
+    tripTimeDesc: state.Date.trainTripTimeDesc
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ selectCity }, dispatch);

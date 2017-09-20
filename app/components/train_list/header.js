@@ -12,16 +12,20 @@ import {
 
 import date from '../../util/date';
 
-const themeColor = '#3C6';
+import { connect } from 'react-redux';
 
-export default class HeaderComponent extends Component {
+const themeColor = '#3C6';
+// const imageScale = 12 / 22;
+
+class HeaderComponent extends Component {
 
     static propTypes = {
-        navigation: PropTypes.object
+        navigation: PropTypes.object,
+        trainlistTime: PropTypes.string,
+        getTrainList: PropTypes.func
     };
 
     static defaultProps={
-        navigation: { state: { params: {} } }
     }
 
     dayMap = [
@@ -34,83 +38,156 @@ export default class HeaderComponent extends Component {
         '周六'
     ];
 
-    dayArr = [];
-
     state = {
-        prev: '09月20日',
-        current: '09月21日',
-        next: '09月22日'
+        dayArr: [],
+        index: 0
     }
 
-    index = 0;
-
     componentWillMount() {
+        this.todayTimeStamp = date.getToday(); // 提前存储当日的时间戳
+
         const { navigation: { state: { params: { tripTime } } } } = this.props;
+        // 将当前选择的时间戳存入数组
+
+        this.setState({
+            dayArr: [date.resetTime(tripTime)]
+        });
 
         this.animtedValue = new Animated.Value(0);
-        this.setState({
-            tripTime
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.trainlistTime !== this.props.trainlistTime) {
+            this.setState({
+                dayArr: [date.resetTime(nextProps.trainlistTime)],
+                index: 0
+            }, () => {
+                this.startAnimation(this.state.index, 0, () => {
+                    // 重新刷新列车时刻表
+                    this.props.getTrainList(nextProps.trainlistTime);
+                });
+            });
+        }
+    }
+
+    startAnimation(value, duration, callback) {
+        Animated.timing(this.animtedValue, {
+            toValue: value,
+            duration,
+            useNativeDriver: true
+        }).start(() => { 
+            if (callback) {
+                callback();
+            }
         });
     }
 
     selectPrevDay = () => {
         requestAnimationFrame(() => {
-            if (this.index > 0) {
-                this.index--;
-                Animated.timing(this.animtedValue, {
-                    toValue: this.index,
-                    duration: 200,
-                    useNativeDriver: true
-                }).start();
+            const { dayArr } = this.state;
+            let { index } = this.state;
+
+            if (index > 0) {
+                index--;
+                this.setState({ index });
+                this.startAnimation(index, 200, () => {
+                    const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
+                    
+                    // 刷新时刻表
+                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                });
+            } else {
+                const prevDayTimeStamp = dayArr[0] - 8.64e7;
+
+                // 如果上一天大于今天，允许切换
+                if (this.todayTimeStamp <= prevDayTimeStamp) {
+                    dayArr.unshift(prevDayTimeStamp);
+                    this.setState({
+                        dayArr
+                    }, () => {
+                        this.startAnimation(index + 1, 0, () => { 
+                            this.startAnimation(index, 200, () => {
+                                // 刷新列表时刻表
+                                this.props.getTrainList(this.covertToMonthAndDay(prevDayTimeStamp).dateSeq);
+                            });
+                        });
+                    });  
+                }
             }
         });
     }
 
     selectNextDay = () => {
         requestAnimationFrame(() => {
-            this.setState({
-                tripTime: this.todayTimeStamp + 8.64e7
-            }, () => {
-                this.index++;
-                Animated.timing(this.animtedValue, {
-                    toValue: this.index,
-                    duration: 200,
-                    useNativeDriver: true
-                }).start();
-            });
+            const { dayArr } = this.state;
+            let { index } = this.state;
+
+            if (index < dayArr.length - 1) {
+                index++;
+                this.setState({ index });
+                this.startAnimation(index, 200, () => {
+                    const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
+
+                    // 刷新时刻表
+                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                });
+            } else {
+                const time = dayArr[dayArr.length - 1] + 8.64e7;
+
+                dayArr.push(time);
+                this.setState({
+                    dayArr
+                }, () => {
+                    index++;
+                    this.setState({ index });
+                    this.startAnimation(index, 200, () => {
+                        // 刷新时刻表
+                        this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                    });
+                });
+            }
         });
     }
 
     covertToMonthAndDay(time) {
         const date = new Date(time),
-            month = date.getMonth() + 1,
-            day = date.getDate(),
+            year = date.getFullYear(),
             weekDay = this.dayMap[date.getDay()];
+        let month = date.getMonth() + 1,
+            day = date.getDate();
+
+        month = month > 9 ? month : `0${month}`;
+        day = day > 9 ? day : `0${day}`;
         
         return {
-            date: `${month > 9 ? month : `0${month}`}月${day > 9 ? day : `0${day}`}日`,
+            date: `${month}月${day}日`,
+            dateSeq: `${year}-${month}-${day}`,
             weekDay
         };
     }
 
+    toSelectDate = () => {
+        requestAnimationFrame(() => {
+            const { navigation } = this.props;
+
+            navigation.navigate('Calendar', {
+                key: 'trainlistTime'
+            });
+        });
+    }
+
     render() {
-        const { tripTime } = this.state;
+        const { dayArr, index } = this.state;
         const { width } = Dimensions.get('window');
         const btnWidth = (width - 12) * 0.28;
-
-        const imageScale = 12 / 22;
-
-        this.todayTimeStamp = date.resetTime(tripTime);
-        this.dayArr.push(this.todayTimeStamp);
-        // const 
-        //     today = this.covertToMonthAndDay(this.todayTimeStamp),
-        //     tomorrow = this.covertToMonthAndDay(this.todayTimeStamp + 8.64e7),
-        //     yesterday = this.covertToMonthAndDay(this.todayTimeStamp - 8.64e7);
         
+        const isPreventSelectPrev = dayArr[index > 0 ? index : 0] === this.todayTimeStamp;
+
         return (
             <View style={styles.header}>
+                {/* 前一天开始 */}
                 <TouchableOpacity
-                    onPress={this.selectPrevDay}
+                    onPress={!isPreventSelectPrev ? this.selectPrevDay : null}
                 >
                     <View style={[
                         styles.btn,
@@ -118,7 +195,7 @@ export default class HeaderComponent extends Component {
                             width: btnWidth
                         }
                     ]}>
-                        <Image
+                        {/* <Image
                             source={require('../../images/arrow_left.png')}
                             resizeMode="cover"
                             style={
@@ -128,20 +205,32 @@ export default class HeaderComponent extends Component {
                                     marginRight: 6
                                 }
                             }
-                        />
-                        <Text style={styles.btn_txt}>
+                        /> */}
+                        <Text style={[
+                            styles.btn_txt,
+                            {
+                                opacity: isPreventSelectPrev ? 0.4 : 1
+                            }
+                        ]}>
                         前一天
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <View style={{
-                    width: 150,
-                    height: 32,
-                    backgroundColor: '#f4f4f4',
-                    flexDirection: 'row'
-                }}>
+                {/* 前一天结束 */}
+                {/* 日历开始 */}
+                <TouchableOpacity 
+                    style={{
+                        width: 150,
+                        height: 32,
+                        backgroundColor: '#f4f4f4',
+                        flexDirection: 'row',
+                        borderRadius: 3
+                    }}
+                    activeOpacity={0.8}
+                    onPress={this.toSelectDate}
+                >
                     <Animated.View style={{
-                        width: this.dayArr.length * 98,
+                        width: dayArr.length * 110,
                         height: 32,
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -154,9 +243,9 @@ export default class HeaderComponent extends Component {
                                         1
                                     ],
                                     outputRange: [
-                                        -98,
+                                        110,
                                         0, 
-                                        -98
+                                        -110
                                     ]
                                 })
                             }
@@ -165,7 +254,7 @@ export default class HeaderComponent extends Component {
                     }}
                     >
                         {
-                            this.dayArr.map((timeStamp, index) => {
+                            dayArr.map((timeStamp, index) => {
                                 const date = this.covertToMonthAndDay(timeStamp);
                                 
                                 return (
@@ -173,26 +262,37 @@ export default class HeaderComponent extends Component {
                                         alignItems: 'center', 
                                         justifyContent: 'center' }}>
                                         <Text style={{
-                                            fontSize: 14
+                                            fontSize: 14,
+                                            color: themeColor
                                         }}>{date.date} {date.weekDay}</Text>
                                     </View>
                                 );
                             })
                         }
                     </Animated.View> 
-                    <View style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'absolute',
-                        width: 50,
-                        zIndex: 100,
-                        backgroundColor: '#f4f4f4',
-                        right: 0,
-                        height: 32
-                    }}>
-                        <Text>日历</Text>
+                    <View
+                        style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'absolute',
+                            width: 40,
+                            zIndex: 100,
+                            backgroundColor: '#f4f4f4',
+                            right: 0,
+                            height: 32,
+                        }}
+                    >
+                        <Image 
+                            source={require('../../images/calendar.png')} 
+                            style={{
+                                width: 15,
+                                height: 15
+                            }}
+                        />
                     </View>
-                </View>
+                </TouchableOpacity>
+                {/* 日历结束 */}
+                {/* 后一天开始 */}
                 <TouchableOpacity
                     onPress={this.selectNextDay}
                 >
@@ -206,7 +306,7 @@ export default class HeaderComponent extends Component {
                         <Text style={styles.btn_txt}>
                         后一天
                         </Text>
-                        <Image
+                        {/* <Image
                             style={
                                 {
                                     width: 6,
@@ -215,9 +315,10 @@ export default class HeaderComponent extends Component {
                                 }
                             }
                             source={require('../../images/arrow_right.png')}
-                        />
+                        /> */}
                     </View>
                 </TouchableOpacity>
+                {/* 后一天结束 */}
             </View>
         );
     }
@@ -233,6 +334,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#e4e4e4'
     },
     'btn': {
         height: 24,
@@ -244,3 +347,9 @@ const styles = StyleSheet.create({
         color: themeColor
     }
 });
+
+const mapStateToProps = (state) => ({
+    trainlistTime: state.Date.trainlistTime
+});
+
+export default connect(mapStateToProps, () => ({}))(HeaderComponent);
