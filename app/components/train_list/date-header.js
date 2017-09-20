@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 const themeColor = '#3C6';
 // const imageScale = 12 / 22;
 
-class HeaderComponent extends Component {
+class DateHeaderComponent extends Component {
 
     static propTypes = {
         navigation: PropTypes.object,
@@ -352,4 +352,4 @@ const mapStateToProps = (state) => ({
     trainlistTime: state.Date.trainlistTime
 });
 
-export default connect(mapStateToProps, () => ({}))(HeaderComponent);
+export default connect(mapStateToProps, () => ({}))(DateHeaderComponent);

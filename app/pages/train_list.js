@@ -7,11 +7,8 @@ import {
     StyleSheet
 } from 'react-native';
 
-import HeaderComponent from '../components/train_list/header';
+import DateHeaderComponent from '../components/train_list/date-header';
 import ListComponent from '../components/train_list/list';
-
-// import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import { getTrainList } from '../actions/http';
 
@@ -109,7 +106,7 @@ export default class TrainListPage extends Component {
 
         return (
             <View style={styles.container}>
-                <HeaderComponent navigation={navigation} getTrainList={this.requestTrainList} />
+                <DateHeaderComponent navigation={navigation} getTrainList={this.requestTrainList} />
                 <ListComponent data={data} />
             </View>
         );
