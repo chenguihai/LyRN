@@ -34,49 +34,50 @@ export default class HeaderComponent extends Component {
         '周六'
     ];
 
+    dayArr = [];
+
     state = {
         prev: '09月20日',
         current: '09月21日',
         next: '09月22日'
     }
 
+    index = 0;
+
     componentWillMount() {
         const { navigation: { state: { params: { tripTime } } } } = this.props;
 
-        this.animtedValue = new Animated.Value(-1);
+        this.animtedValue = new Animated.Value(0);
         this.setState({
             tripTime
         });
     }
 
     selectPrevDay = () => {
-        Animated.timing(this.animtedValue, {
-            toValue: 0,
-            duration: 200,
-            useNativeDriver: true
-        }).start(() => {
-            Animated.timing(this.animtedValue, {
-                toValue: -1,
-                duration: 0,
-                useNativeDriver: true
-            }).start();
+        requestAnimationFrame(() => {
+            if (this.index > 0) {
+                this.index--;
+                Animated.timing(this.animtedValue, {
+                    toValue: this.index,
+                    duration: 200,
+                    useNativeDriver: true
+                }).start();
+            }
         });
     }
 
     selectNextDay = () => {
-        Animated.timing(this.animtedValue, {
-            toValue: 1,
-            duration: 100,
-            useNativeDriver: true
-        }).start(() => {
+        requestAnimationFrame(() => {
             this.setState({
                 tripTime: this.todayTimeStamp + 8.64e7
+            }, () => {
+                this.index++;
+                Animated.timing(this.animtedValue, {
+                    toValue: this.index,
+                    duration: 200,
+                    useNativeDriver: true
+                }).start();
             });
-            Animated.timing(this.animtedValue, {
-                toValue: -1,
-                duration: 0,
-                useNativeDriver: true
-            }).start();
         });
     }
 
@@ -100,10 +101,11 @@ export default class HeaderComponent extends Component {
         const imageScale = 12 / 22;
 
         this.todayTimeStamp = date.resetTime(tripTime);
-        const 
-            today = this.covertToMonthAndDay(this.todayTimeStamp),
-            tomorrow = this.covertToMonthAndDay(this.todayTimeStamp + 8.64e7),
-            yesterday = this.covertToMonthAndDay(this.todayTimeStamp - 8.64e7);
+        this.dayArr.push(this.todayTimeStamp);
+        // const 
+        //     today = this.covertToMonthAndDay(this.todayTimeStamp),
+        //     tomorrow = this.covertToMonthAndDay(this.todayTimeStamp + 8.64e7),
+        //     yesterday = this.covertToMonthAndDay(this.todayTimeStamp - 8.64e7);
         
         return (
             <View style={styles.header}>
@@ -139,7 +141,7 @@ export default class HeaderComponent extends Component {
                     flexDirection: 'row'
                 }}>
                     <Animated.View style={{
-                        width: 298,
+                        width: this.dayArr.length * 98,
                         height: 32,
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -154,33 +156,29 @@ export default class HeaderComponent extends Component {
                                     outputRange: [
                                         -98,
                                         0, 
-                                        -196
+                                        -98
                                     ]
                                 })
                             }
                         ]
-                    }}>
-                        <View style={{ flex: 1, 
-                            alignItems: 'center', 
-                            justifyContent: 'center' }}>
-                            <Text style={{
-                                fontSize: 14
-                            }}>{yesterday.date} {yesterday.weekDay}</Text>
-                        </View>
-                        <View style={{ flex: 1, 
-                            alignItems: 'center', 
-                            justifyContent: 'center' }}>
-                            <Text style={{
-                                fontSize: 14
-                            }}>{today.date} {today.weekDay}</Text>
-                        </View>
-                        <View style={{ flex: 1, 
-                            alignItems: 'center', 
-                            justifyContent: 'center' }}>
-                            <Text style={{
-                                fontSize: 14
-                            }}>{tomorrow.date} {tomorrow.weekDay}</Text>
-                        </View>
+                        
+                    }}
+                    >
+                        {
+                            this.dayArr.map((timeStamp, index) => {
+                                const date = this.covertToMonthAndDay(timeStamp);
+                                
+                                return (
+                                    <View key={index} style={{ flex: 1, 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center' }}>
+                                        <Text style={{
+                                            fontSize: 14
+                                        }}>{date.date} {date.weekDay}</Text>
+                                    </View>
+                                );
+                            })
+                        }
                     </Animated.View> 
                     <View style={{
                         alignItems: 'center',
