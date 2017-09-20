@@ -9,18 +9,21 @@ import {
 
 import ItemComponent from './item';
 
-import { connect } from 'react-redux';
-
 export default class ListComponent extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        trainList: PropTypes.object,
         length: PropTypes.number,
     }
 
     state = {
         length: 10
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.data.trainlist !== this.props.data.trainlist) {
+            this.setState({ length: 10 });
+        }
     }
     
     _renderItem = (data) => {

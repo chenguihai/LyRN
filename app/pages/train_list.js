@@ -9,6 +9,8 @@ import {
 
 import DateHeaderComponent from '../components/train_list/date-header';
 import ListComponent from '../components/train_list/list';
+import SfzMaskComponent from '../components/train_list/sfz-mask';
+import LoadingComponent from '../components/train_list/loading';
 
 import { getTrainList } from '../actions/http';
 
@@ -63,10 +65,6 @@ export default class TrainListPage extends Component {
     }
 
     state = {
-        data: {
-            trainlist: [],
-            tcount: 0
-        }
     }
 
     componentWillMount() {
@@ -78,6 +76,12 @@ export default class TrainListPage extends Component {
     requestTrainList = (date) => {
         const { navigation: { state: { params: { from, to } } } } = this.props;
 
+        this.setState({
+            data: {
+                trainlist: [],
+                tcount: 0
+            }
+        });
         getTrainList({
             params: {
                 para: { 
@@ -101,13 +105,16 @@ export default class TrainListPage extends Component {
     }
 
     render() {
+        
         const { navigation } = this.props;
         const { data } = this.state;
-
+        
         return (
             <View style={styles.container}>
                 <DateHeaderComponent navigation={navigation} getTrainList={this.requestTrainList} />
                 <ListComponent data={data} />
+                <SfzMaskComponent />
+                {data.tcount === 0 ? <LoadingComponent /> : null}
             </View>
         );
     }

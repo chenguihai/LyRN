@@ -70,6 +70,10 @@ class DateHeaderComponent extends Component {
         }
     }
 
+    shouldComponentWillUpdate(nextProps, nextState) {
+        return this.state.dayArr !== nextState.dayArr || this.state.index !== nextState.index;
+    }
+
     startAnimation(value, duration, callback) {
         Animated.timing(this.animtedValue, {
             toValue: value,
