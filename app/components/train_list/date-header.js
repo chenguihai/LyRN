@@ -196,7 +196,8 @@ class DateHeaderComponent extends Component {
                     <View style={[
                         styles.btn,
                         {
-                            width: btnWidth
+                            width: btnWidth,
+                            paddingLeft: 15
                         }
                     ]}>
                         {/* <Image
@@ -305,6 +306,7 @@ class DateHeaderComponent extends Component {
                         {
                             width: btnWidth,
                             justifyContent: 'flex-end',
+                            paddingRight: 15
                         }
                     ]}>
                         <Text style={styles.btn_txt}>
@@ -332,8 +334,6 @@ const styles = StyleSheet.create({
     'header': {
         paddingTop: 12.5,
         paddingBottom: 12.5,
-        paddingRight: 6,
-        paddingLeft: 6,
         backgroundColor: '#FFF',
         flexDirection: 'row',
         alignItems: 'center',

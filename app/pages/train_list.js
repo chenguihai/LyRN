@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text,
-    Image,
     StyleSheet
 } from 'react-native';
 
@@ -14,51 +12,7 @@ import LoadingComponent from '../components/train_list/loading';
 
 import { getTrainList } from '../actions/http';
 
-class Header extends Component {
-
-    static propTypes = {
-        from: PropTypes.object,
-        to: PropTypes.object,
-        modalVisible: PropTypes.bool
-    }
-
-    render() {
-        const { from, to } = this.props;
-
-        return (
-            <View style={styles.header}>
-                <View>
-                    {/* <Image 
-                        source={}
-                    /> */}
-                </View>
-                <View style={{
-                    flexDirection: 'row'
-                }}>
-                    <Text>{from.Name}</Text>
-                    <Image
-                        source={require('../images/title_1.png')}
-                        style={{
-                            width: 10,
-                            height: 10
-                        }}
-                    />
-                    <Text>{to.Name}</Text>
-                </View>
-            </View>
-        );
-    }
-}
-
 export default class TrainListPage extends Component {
-
-    static navigationOptions = ({ navigation }) => {
-        const { from, to } = navigation.state.params;
-
-        return {
-            headerTitle: <Header from={from} to={to} />
-        };
-    }
 
     static propTypes = {
         navigation: PropTypes.object
@@ -70,7 +24,7 @@ export default class TrainListPage extends Component {
     componentWillMount() {
         const { navigation: { state: { params: { tripTime } } } } = this.props;
 
-        this.requestTrainList(tripTime);        
+        this.requestTrainList(tripTime);       
     }
 
     requestTrainList = (date) => {
@@ -99,13 +53,14 @@ export default class TrainListPage extends Component {
                 }
             },
             callback: ({ data }) => {
-                this.setState({ data });
+                setTimeout(() => {
+                    this.setState({ data });
+                }, 500);
             }
         });
     }
 
     render() {
-        
         const { navigation } = this.props;
         const { data } = this.state;
         

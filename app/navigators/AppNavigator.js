@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -163,6 +163,28 @@ const AppNavigator = StackNavigator(
         'TrainList': {
             screen: TrainListPage,
             navigationOptions: {
+                /* eslint-disable */
+                header: ({ scene: { route: { params } } }) => {
+                    const { from, to } = params;
+                    
+                    return (
+                        <View style={{
+                            height: 44,
+                            flexDirection: 'row',
+                            alignItems: 'center'
+                        }}>
+                            <Image 
+                                source={require('../images/icon_back.png')}
+                                style={{
+                                    width: 28,
+                                    height: 24
+                                }}
+                            />
+                            <Text>{from.Name}-{to.Name}</Text>
+                        </View>
+                    );
+                }
+                /* eslint-enable */
             }
         }
     },
