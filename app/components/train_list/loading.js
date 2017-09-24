@@ -2,14 +2,23 @@ import React, { Component } from 'react';
 import {
     View,
     Image,
+    Dimensions,
+    StatusBar
 } from 'react-native';
 
 export default class LoadingComponent extends Component {
 
     render() {
+        const { width, height } = Dimensions.get('window');
+
         return (
             <View style={{
-                flex: 1,
+                position: 'absolute',
+                width,
+                height: height - StatusBar.currentHeight,
+                top: 0,
+                left: 0,
+                zIndex: 999,
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>

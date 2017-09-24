@@ -64,7 +64,7 @@ class DateHeaderComponent extends Component {
             }, () => {
                 this.startAnimation(this.state.index, 0, () => {
                     // 重新刷新列车时刻表
-                    this.props.getTrainList(nextProps.trainlistTime);
+                    this.props.getTrainList(nextProps.trainlistTime, true);
                 });
             });
         }
@@ -98,7 +98,7 @@ class DateHeaderComponent extends Component {
                     const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
                     
                     // 刷新时刻表
-                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
                 });
             } else {
                 const prevDayTimeStamp = dayArr[0] - 8.64e7;
@@ -112,7 +112,7 @@ class DateHeaderComponent extends Component {
                         this.startAnimation(index + 1, 0, () => { 
                             this.startAnimation(index, 200, () => {
                                 // 刷新列表时刻表
-                                this.props.getTrainList(this.covertToMonthAndDay(prevDayTimeStamp).dateSeq);
+                                this.props.getTrainList(this.covertToMonthAndDay(prevDayTimeStamp).dateSeq, true);
                             });
                         });
                     });  
@@ -133,7 +133,7 @@ class DateHeaderComponent extends Component {
                     const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
 
                     // 刷新时刻表
-                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
                 });
             } else {
                 const time = dayArr[dayArr.length - 1] + 8.64e7;
@@ -146,7 +146,7 @@ class DateHeaderComponent extends Component {
                     this.setState({ index });
                     this.startAnimation(index, 200, () => {
                         // 刷新时刻表
-                        this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq);
+                        this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
                     });
                 });
             }

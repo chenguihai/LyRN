@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'react-native';
 import { connect } from 'react-redux';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -12,6 +12,8 @@ import BusPage from '../pages/bus'; // 汽车/船票
 import CityPage from '../pages/city'; // 选择城市
 import CalendarPage from '../pages/calendar'; // 选择日历
 import TrainListPage from '../pages/train_list'; // 火车时刻表页面
+
+import backNavbar from '../components/back_navbar';
 
 const HomeTabNavigator = TabNavigator(
     {
@@ -151,57 +153,24 @@ const AppNavigator = StackNavigator(
         'City': {
             screen: CityPage,
             navigationOptions: {
-                headerTitle: '选择城市'
+                header: backNavbar
             }
         },
         'Calendar': {
             screen: CalendarPage,
             navigationOptions: {
-                headerTitle: '选择日期'
+                header: backNavbar
             }
         },
         'TrainList': {
             screen: TrainListPage,
             navigationOptions: {
-                /* eslint-disable */
-                header: ({ navigation }) => {
-                    const { state, goBack } = navigation;
-                    const { from, to } = state.routes[0].params;
-                    
-                    return (
-                        <View style={{
-                            height: 50,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingLeft: 10,
-                            backgroundColor: '#FFF',
-                            borderBottomColor: '#e4e4e4',
-                            borderBottomWidth: StyleSheet.hairlineWidth
-                        }}>
-                            <TouchableOpacity
-                                activeOpacity={0.6}
-                                onPress={ () => { goBack() } }
-                            >
-                                <Image 
-                                    source={require('../images/icon_back.png')}
-                                    style={{
-                                        width: 32,
-                                        height: 28
-                                    }}
-                                />
-                            </TouchableOpacity>
-                            <Text style={{
-                                fontSize: 18
-                            }}>{from.Name} - {to.Name}</Text>
-                        </View>
-                    );
-                }
-                /* eslint-enable */
+                header: backNavbar
             }
         }
     },
     {
-        initialRouteName: 'City',
+        initialRouteName: 'Main',
         // initialRouteParams: { key: 'trainFromCity' }
         // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-25' } // eslint-disable-line
     }

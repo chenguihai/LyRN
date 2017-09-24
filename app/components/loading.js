@@ -16,10 +16,6 @@ export default class LoadingComponent extends Component {
     render() {
         const { width, height } = Dimensions.get('window');
         
-        const toastHeight = height - StatusBar.currentHeight;
-        const loadingHeight = width * 0.28;
-        const loadingMarginTop = toastHeight / 2 - loadingHeight;
-
         return (
             <TouchableOpacity
                 activeOpacity={1}
@@ -27,7 +23,7 @@ export default class LoadingComponent extends Component {
                     styles.toast,
                     {
                         width,
-                        height: toastHeight,
+                        height: height - StatusBar.currentHeight,
                     }
                 ]}
             >
@@ -36,8 +32,8 @@ export default class LoadingComponent extends Component {
                         backgroundColor: 'rgba(17, 17, 17, 0.7)',
                         alignItems: 'center',
                         width: width * 0.38,
-                        height: loadingHeight,
-                        marginTop: loadingMarginTop,
+                        height: width * 0.28,
+                        marginTop: -(width * 0.14),
                         borderRadius: width * 0.02
                     }}
                 >
@@ -67,6 +63,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         zIndex: 1000,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

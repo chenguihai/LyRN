@@ -20,6 +20,10 @@ export default class ListComponent extends Component {
         length: 10
     }
 
+    shouldComponentUpdate(nextProps) {
+        return this.props.data !== nextProps.data;
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.data.trainlist !== this.props.data.trainlist) {
             this.setState({ length: 10 });
@@ -28,9 +32,7 @@ export default class ListComponent extends Component {
     
     _renderItem = (data) => {
         return <ItemComponent 
-            cardScale={this.cardScale} 
             viewWidth={this.width} 
-            lineScale={this.lineScale} 
             data={data}
         />;
     }
@@ -65,8 +67,6 @@ export default class ListComponent extends Component {
         }
 
         this.width = width;
-        this.cardScale = 31 / 21; // 身份证
-        this.lineScale = 100 / 7;
         
         return (       
             <FlatList

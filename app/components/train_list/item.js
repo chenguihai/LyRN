@@ -16,7 +16,9 @@ import _ from '../../util';
 
 import CardView from 'react-native-cardview';
 
-const seatsHeight = 33;
+const seatsHeight = 33,
+    cardScale = 31 / 21, // 身份证
+    lineScale = 100 / 7;
 
 export default class ListComponent extends Component {
 
@@ -131,7 +133,7 @@ export default class ListComponent extends Component {
 
     render() {
         const { topHeight, bottomHeight, height } = this.state;
-        const { data, cardScale, lineScale, viewWidth } = this.props;
+        const { data, viewWidth } = this.props;
         const { item } = data;
 
         // accbyidcard 是否可以通过刷身份证进站
