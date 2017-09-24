@@ -4,13 +4,30 @@ import {
     View,
     Text,
     StyleSheet,
-    Animated
+    TouchableOpacity
 } from 'react-native';
 
 export default class SeatsListComponent extends Component {
 
+    static contextTypes = {
+        navigation: PropTypes.object
+    }
+
     static propTypes = {
-        data: PropTypes.array
+        navigation: PropTypes.object,
+        data: PropTypes.object,
+        seatsMap: PropTypes.array
+    }
+
+    handlePress = (item) => {
+        if (item.seats > 0) {
+            this.context.navigation.navigate('TrainOrder', {
+                data: { 
+                    ...this.props.data.item, 
+                    selectedSeats: item 
+                }
+            });
+        }
     }
 
     _renderSeatsList(data) {
@@ -54,22 +71,27 @@ export default class SeatsListComponent extends Component {
                         }}>{seats} 张</Text>
                     </View>
                     <View style={styles.seats_box}>
-                        <View 
+                        <TouchableOpacity
+                            onPress={() => {
+                                requestAnimationFrame(() => {
+                                    this.handlePress(item);
+                                });
+                            }} 
                             style={{
-                                width: 40,
-                                height: 20,
+                                width: 56,
+                                height: 30,
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 3,
-                                backgroundColor: '#3c6'
+                                backgroundColor: seats > 0 ? '#3c6' : '#FF6540'
                             }}
                         >
                             <Text style={{
                                 fontSize: 12,
                                 lineHeight: 12,
                                 color: '#FFF'
-                            }}>预定</Text>
-                        </View>
+                            }}>{seats > 0 ? '预定' : '抢票'}</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             );
@@ -77,13 +99,13 @@ export default class SeatsListComponent extends Component {
     }
 
     render() {
-        const { data } = this.props;
+        const { seatsMap } = this.props;
 
         return (
             <View style={{
                 backgroundColor: '#FFF'
             }}>
-                {this._renderSeatsList(data)}
+                {this._renderSeatsList(seatsMap)}
             </View>
         );
     }

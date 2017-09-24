@@ -22,6 +22,7 @@
         "react"
     ],
     "rules": {
+        "react/display-name": "off",
         "no-debugger": "off",
         "no-console": "off",
         "accessor-pairs": "error",

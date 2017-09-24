@@ -12,7 +12,8 @@ class BackNavbarComponent extends Component {
 
     titleMap = {
         City: '选择城市',
-        Calendar: '选择日期'
+        Calendar: '选择日期',
+        TrainOrder: '订单'
     }
 
     render() {

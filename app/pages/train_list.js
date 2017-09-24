@@ -17,6 +17,14 @@ import { getTrainList } from '../actions/http';
 
 export default class TrainListPage extends Component {
 
+    childContextTypes= {
+        navigation: PropTypes.object
+    }
+
+    getChildContext= {
+        navigation: this.props.navigation
+    }
+
     static navigationOptions = ({ navigation }) => {
         const { state: { params: { from, to } } } = navigation;        
 
@@ -38,6 +46,12 @@ export default class TrainListPage extends Component {
     componentWillMount() {
         InteractionManager.runAfterInteractions(() => {
             const { navigation: { state: { params: { tripTime } } } } = this.props;
+            
+            // 保存选择的时间给订单页面用
+            Storage.save({
+                key: 'bDate',
+                data: tripTime
+            });
             
             this.requestTrainList(tripTime); 
         });
@@ -85,12 +99,11 @@ export default class TrainListPage extends Component {
     }
 
     render() {
-        const { navigation } = this.props;
         const { data, showLoading1, showLoading2 } = this.state;
         
         return (
             <View style={styles.container}>
-                <DateHeaderComponent navigation={navigation} getTrainList={this.requestTrainList} />
+                <DateHeaderComponent getTrainList={this.requestTrainList} />
                 <ListComponent data={data} />
                 <SfzMaskComponent />
                 {showLoading1 ? <Loading1Component /> : null}

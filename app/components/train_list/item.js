@@ -315,7 +315,7 @@ export default class ListComponent extends Component {
                             }
                         ]}
                     >
-                        <SeatsDetailComponent data={seatsMap} />
+                        <SeatsDetailComponent data={data} seatsMap={seatsMap} />
                     </Animated.View>
                 </Animated.View>
             </CardView >

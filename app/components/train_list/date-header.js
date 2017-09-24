@@ -19,24 +19,17 @@ const themeColor = '#3C6';
 
 class DateHeaderComponent extends Component {
 
-    static propTypes = {
+    static contextTypes = {
         navigation: PropTypes.object,
+    }
+
+    static propTypes = {
         trainlistTime: PropTypes.string,
         getTrainList: PropTypes.func
     };
 
     static defaultProps={
     }
-
-    dayMap = [
-        '周日', 
-        '周一', 
-        '周二', 
-        '周三', 
-        '周四', 
-        '周五', 
-        '周六'
-    ];
 
     state = {
         dayArr: [],
@@ -46,7 +39,7 @@ class DateHeaderComponent extends Component {
     componentWillMount() {
         this.todayTimeStamp = date.getToday(); // 提前存储当日的时间戳
 
-        const { navigation: { state: { params: { tripTime } } } } = this.props;
+        const { navigation: { state: { params: { tripTime } } } } = this.context;
         // 将当前选择的时间戳存入数组
 
         this.setState({
@@ -95,10 +88,9 @@ class DateHeaderComponent extends Component {
                 index--;
                 this.setState({ index });
                 this.startAnimation(index, 200, () => {
-                    const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
                     
                     // 刷新时刻表
-                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
+                    this.props.getTrainList(date.covertToMonthAndDay(dayArr[index]).dateSeq, true);
                 });
             } else {
                 const prevDayTimeStamp = dayArr[0] - 8.64e7;
@@ -112,7 +104,7 @@ class DateHeaderComponent extends Component {
                         this.startAnimation(index + 1, 0, () => { 
                             this.startAnimation(index, 200, () => {
                                 // 刷新列表时刻表
-                                this.props.getTrainList(this.covertToMonthAndDay(prevDayTimeStamp).dateSeq, true);
+                                this.props.getTrainList(date.covertToMonthAndDay(prevDayTimeStamp).dateSeq, true);
                             });
                         });
                     });  
@@ -130,10 +122,10 @@ class DateHeaderComponent extends Component {
                 index++;
                 this.setState({ index });
                 this.startAnimation(index, 200, () => {
-                    const time = this.covertToMonthAndDay(dayArr[index]).dateSeq;
+                    const time = date.covertToMonthAndDay(dayArr[index]).dateSeq;
 
                     // 刷新时刻表
-                    this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
+                    this.props.getTrainList(date.covertToMonthAndDay(time).dateSeq, true);
                 });
             } else {
                 const time = dayArr[dayArr.length - 1] + 8.64e7;
@@ -146,35 +138,16 @@ class DateHeaderComponent extends Component {
                     this.setState({ index });
                     this.startAnimation(index, 200, () => {
                         // 刷新时刻表
-                        this.props.getTrainList(this.covertToMonthAndDay(time).dateSeq, true);
+                        this.props.getTrainList(date.covertToMonthAndDay(time).dateSeq, true);
                     });
                 });
             }
         });
     }
 
-    covertToMonthAndDay(time) {
-        const date = new Date(time),
-            year = date.getFullYear(),
-            weekDay = this.dayMap[date.getDay()];
-        let month = date.getMonth() + 1,
-            day = date.getDate();
-
-        month = month > 9 ? month : `0${month}`;
-        day = day > 9 ? day : `0${day}`;
-        
-        return {
-            date: `${month}月${day}日`,
-            dateSeq: `${year}-${month}-${day}`,
-            weekDay
-        };
-    }
-
     toSelectDate = () => {
         requestAnimationFrame(() => {
-            const { navigation } = this.props;
-
-            navigation.navigate('Calendar', {
+            this.context.navigation.navigate('Calendar', {
                 key: 'trainlistTime'
             });
         });
@@ -260,7 +233,7 @@ class DateHeaderComponent extends Component {
                     >
                         {
                             dayArr.map((timeStamp, index) => {
-                                const date = this.covertToMonthAndDay(timeStamp);
+                                const time = date.covertToMonthAndDay(timeStamp);
                                 
                                 return (
                                     <View key={index} style={{ flex: 1, 
@@ -269,7 +242,7 @@ class DateHeaderComponent extends Component {
                                         <Text style={{
                                             fontSize: 14,
                                             color: themeColor
-                                        }}>{date.date} {date.weekDay}</Text>
+                                        }}>{time.date} {time.weekDay}</Text>
                                     </View>
                                 );
                             })

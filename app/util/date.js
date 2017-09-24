@@ -54,6 +54,33 @@ _Date.prototype.format = function (timeStamp) {
     return `${year}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`;
 };
 
+const dayMap = [
+    '周日', 
+    '周一', 
+    '周二', 
+    '周三', 
+    '周四', 
+    '周五', 
+    '周六'
+];
+
+_Date.prototype.covertToMonthAndDay = function(time) {
+    const date = new Date(time),
+        year = date.getFullYear(),
+        weekDay = dayMap[date.getDay()];
+    let month = date.getMonth() + 1,
+        day = date.getDate();
+
+    month = month > 9 ? month : `0${month}`;
+    day = day > 9 ? day : `0${day}`;
+
+    return {
+        date: `${month}月${day}日`,
+        dateSeq: `${year}-${month}-${day}`,
+        weekDay
+    };
+};
+
 const date = new _Date();
 
 export default date;

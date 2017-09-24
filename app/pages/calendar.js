@@ -35,7 +35,7 @@ class CalenDarPage extends Component {
     handleSelect = (time) => {
         const { navigation, selectDate } = this.props;
         const { key } = navigation.state.params || {};
-
+        
         // 判断是否从首页进来
         if (key.indexOf('TripTime')) {
             selectDate({
