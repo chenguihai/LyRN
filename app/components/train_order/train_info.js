@@ -96,7 +96,12 @@ export default class TrainInfoComponent extends Component {
                     <Text style={styles.usedtime}>
                         {usedtime}
                     </Text>
-                    <View style={styles.stopInfo}>
+                    <View style={[
+                        styles.stopInfo,
+                        {
+                            marginTop: 5
+                        }
+                    ]}>
                         <View style={styles.stopInfoLine}>
                         </View>
                         <View style={{
@@ -207,6 +212,8 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 14,
         lineHeight: 14,
-        color: '#FFF'
+        color: '#FFF',
+        position: 'absolute',
+        bottom: 0
     }
 });
