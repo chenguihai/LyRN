@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 
@@ -164,23 +164,35 @@ const AppNavigator = StackNavigator(
             screen: TrainListPage,
             navigationOptions: {
                 /* eslint-disable */
-                header: ({ scene: { route: { params } } }) => {
-                    const { from, to } = params;
+                header: ({ navigation }) => {
+                    const { state, goBack } = navigation;
+                    const { from, to } = state.routes[0].params;
                     
                     return (
                         <View style={{
-                            height: 44,
+                            height: 50,
                             flexDirection: 'row',
-                            alignItems: 'center'
+                            alignItems: 'center',
+                            paddingLeft: 10,
+                            backgroundColor: '#FFF',
+                            borderBottomColor: '#e4e4e4',
+                            borderBottomWidth: StyleSheet.hairlineWidth
                         }}>
-                            <Image 
-                                source={require('../images/icon_back.png')}
-                                style={{
-                                    width: 28,
-                                    height: 24
-                                }}
-                            />
-                            <Text>{from.Name}-{to.Name}</Text>
+                            <TouchableOpacity
+                                activeOpacity={0.6}
+                                onPress={ () => { goBack() } }
+                            >
+                                <Image 
+                                    source={require('../images/icon_back.png')}
+                                    style={{
+                                        width: 32,
+                                        height: 28
+                                    }}
+                                />
+                            </TouchableOpacity>
+                            <Text style={{
+                                fontSize: 18
+                            }}>{from.Name} - {to.Name}</Text>
                         </View>
                     );
                 }
@@ -189,9 +201,9 @@ const AppNavigator = StackNavigator(
         }
     },
     {
-        initialRouteName: 'Main',
+        initialRouteName: 'City',
         // initialRouteParams: { key: 'trainFromCity' }
-        // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-21' } // eslint-disable-line
+        // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-25' } // eslint-disable-line
     }
 );
 
