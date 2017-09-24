@@ -20,6 +20,10 @@ export default class CityLetterComponent extends Component {
     blockList = [];
     selectedIndex = '';
 
+    shouldComponentUpdate() {
+        return false;
+    }
+
     handlePress(letter, index) { // eslint-disable-line
         if (this.selectedIndex === index) {
             return;
@@ -61,7 +65,11 @@ export default class CityLetterComponent extends Component {
                     }
                 ]}
                 key={index}
-                onPress={() => this.handlePress(letter, index)}
+                onPress={() => {
+                    requestAnimationFrame(() => {
+                        this.handlePress(letter, index);
+                    });
+                }}
             >
                 <Text style={styles.txt}>{letter}</Text>
             </TouchableOpacity>

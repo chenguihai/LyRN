@@ -70,3 +70,12 @@ export const getTrainList = ({ params, callback }) => {
     );
 };
 
+// 获取当前城市
+export const getCurrentCity = ({ params, callback }) => {
+    ajaxByGet(
+        'http://restapi.amap.com/v3/geocode/regeo',
+        params, 
+        callback
+    );
+};
+

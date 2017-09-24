@@ -1,8 +1,10 @@
 /* eslint-disable no-debugger */
 import React, { Component } from 'react';
 import {
+    View,
     ScrollView,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -19,6 +21,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { selectCity } from '../actions';
 
+import LoadingComponent from '../components/loading';
+
 class CityPage extends Component {
 
     static propTypes = {
@@ -27,29 +31,31 @@ class CityPage extends Component {
     }
 
     state = {
-
+        showLoading: false
     };
 
     scrollViewRef = null;
     letterScrollTop = 0;
 
     componentWillMount() {
-        // 获取热门城市
-        getHotCities({
-            params: {
-                para: {
-                    length: 15,
-                    callback: '_jsonp6p6ua4ts5m5poth30m6rms4i'
+        InteractionManager.runAfterInteractions(() => {
+            // 获取热门城市
+            getHotCities({
+                params: {
+                    para: {
+                        length: 15,
+                        callback: '_jsonp6p6ua4ts5m5poth30m6rms4i'
+                    }
+                },
+                callback: ({ TrainStation: { StationList } }) => {
+                    this.setState({
+                        hotcities: StationList
+                    });
                 }
-            },
-            callback: ({ TrainStation: { StationList } }) => {
-                this.setState({
-                    hotcities: StationList
-                });
-            }
+            });
+            // 获取历史选择
+            this.getHistoryCities();
         });
-        // 获取历史选择
-        this.getHistoryCities();
     }
 
     getHistoryCities = async () => {
@@ -111,66 +117,77 @@ class CityPage extends Component {
     }
 
     getCityListByLetter = (cityName) => {
-        getCityListByLetter({
-            params: {
-                para: {
-                    'headtime': Number(new Date()),
-                    'memberId': '',
-                    'platId': 432,
-                    'requestType': 3,
-                    'headct': 0,
-                    'headus': 3,
-                    'headver': '2.14.0.2',
-                    cityName
+        InteractionManager.runAfterInteractions(() => {
+            // 显示loading
+            this.setState({
+                showLoading: true
+            });
+            getCityListByLetter({
+                params: {
+                    para: {
+                        'headtime': Number(new Date()),
+                        'memberId': '',
+                        'platId': 432,
+                        'requestType': 3,
+                        'headct': 0,
+                        'headus': 3,
+                        'headver': '2.14.0.2',
+                        cityName
+                    }
+                },
+                callback: ({ data: { TrainStation: { StationList = [] } } }) => {
+                    this.setState({
+                        StationList,
+                        showLoading: false
+                    });
                 }
-            },
-            callback: ({ data: { TrainStation: { StationList = [] } } }) => {
-                this.setState({
-                    StationList
-                });
-            }
+            });
         });
     }
 
     render() {
-        const { historycities = [], hotcities = [], StationList = [] } = this.state;
+        const { historycities = [], hotcities = [], StationList = [], showLoading = false } = this.state;
 
         return (
-            <ScrollView
-                ref={(ref) => {
-                    this.scrollViewRef = ref;
-                }}
-                style={styles.wrap}
-            >
-                <SearchComponent />
+            <View style={styles.wrap}>
+                <ScrollView
+                    ref={(ref) => {
+                        this.scrollViewRef = ref;
+                    }}
+                    style={styles.wrap}
+                >
+                    <SearchComponent />
 
-                <CityListTitle title="当前城市" />
-                <CityLocationComponent
-                    handlePress={(data) => this.selectCity(true, data)}
-                />
+                    <CityListTitle title="当前城市" />
+                    <CityLocationComponent
+                        handlePress={(data) => this.selectCity(true, data)}
+                    />
 
-                {historycities.length === 0 ? null
-                    : <CityListTitle title="历史选择" />}
-                {historycities.length === 0 ? null
-                    : <CityListBlock handlePress={(data) => this.selectCity(false, data)} data={historycities} />}
+                    {historycities.length === 0 ? null
+                        : <CityListTitle title="历史选择" />}
+                    {historycities.length === 0 ? null
+                        : <CityListBlock handlePress={(data) => this.selectCity(false, data)} data={historycities} />}
 
-                {hotcities.length === 0 ? null
-                    : <CityListTitle title="热门" />}
-                {hotcities.length === 0 ? null
-                    : <CityListBlock handlePress={(data) => this.selectCity(true, data)} data={hotcities} />}
+                    {hotcities.length === 0 ? null
+                        : <CityListTitle title="热门" />}
+                    {hotcities.length === 0 ? null
+                        : <CityListBlock handlePress={(data) => this.selectCity(true, data)} data={hotcities} />}
 
-                <CityListTitle title="更多城市" />
-                <CityLetterComponent
-                    layout={this.getLetterScrollTop}
-                    handlePress={this.getCityListByLetter}
-                />
+                    <CityListTitle title="更多城市" />
+                    <CityLetterComponent
+                        layout={this.getLetterScrollTop}
+                        handlePress={this.getCityListByLetter}
+                    />
 
-                <CitySingleList
-                    handlePress={(data) => this.selectCity(true, data)}
-                    cityListUpdate={this.cityListUpdate}
-                    data = {StationList}
-                />
-            </ScrollView>
+                    <CitySingleList
+                        handlePress={(data) => this.selectCity(true, data)}
+                        cityListUpdate={this.cityListUpdate}
+                        data = {StationList}
+                    />
+                </ScrollView>
+                {showLoading ? <LoadingComponent /> : null}
+            </View>
+            
         );
     }
 }

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 import config from '../../config';
-import { ajaxByGet } from '../../services/ajax';
+import { getCurrentCity } from '../../actions/http';
 
 export default class CityLoctionComponent extends Component {
 
@@ -27,21 +27,23 @@ export default class CityLoctionComponent extends Component {
 
     getCurrentPosition() {
         try {
-            // navigator.geolocation.getCurrentPosition((location) => {
-            //     const { longitude, latitude } = location.coords;
+            navigator.geolocation.getCurrentPosition((location) => {
+                const { longitude, latitude } = location.coords;
 
-            //     // this.props.getCurrentLocation();
-            //     ajaxByGet('http://restapi.amap.com/v3/geocode/regeo', {
-            //         key: config.key,
-            //         location: `${longitude},${latitude}`
-            //     }, ({ regeocode }) => {
-            //         this.setState({
-            //             regeocode
-            //         });
-            //     });
-            // });
+                getCurrentCity({
+                    params: {
+                        key: config.key,
+                        location: `${longitude},${latitude}`
+                    },
+                    callback: ({ regeocode }) => {
+                        this.setState({
+                            regeocode
+                        });
+                    }
+                });
+            });
         } catch (e) {
-            console.log(e);
+            console.warn(e);
         }
     }
 

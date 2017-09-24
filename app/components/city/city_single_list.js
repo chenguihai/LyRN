@@ -15,6 +15,14 @@ export default class CityListComponent extends Component {
         handlePress: PropTypes.func,
         cityListUpdate: PropTypes.func
     }
+    
+    shouldComponentUpdate(nextProps) {
+        return this.props.data !== nextProps.data;
+    }
+
+    componentDidUpdate() {
+        this.props.data.length > 0 && this.props.cityListUpdate();
+    }
 
     handlePress = (data) => {
         const { handlePress } = this.props;
@@ -38,10 +46,6 @@ export default class CityListComponent extends Component {
                 </TouchableOpacity>
             )
         );
-    }
-
-    componentDidUpdate() {
-        this.props.data.length > 0 && this.props.cityListUpdate();
     }
 
     render() {
