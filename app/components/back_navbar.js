@@ -34,7 +34,7 @@ class BackNavbarComponent extends Component {
                 height: 50,
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingLeft: 10,
+                paddingLeft: 5,
                 backgroundColor: '#FFF',
                 borderBottomColor: '#e4e4e4',
                 borderBottomWidth: StyleSheet.hairlineWidth
@@ -56,7 +56,7 @@ class BackNavbarComponent extends Component {
                     />
                 </TouchableOpacity>
                 <Text style={{
-                    fontSize: 18
+                    fontSize: 20
                 }}>{title}</Text>
             </View>
         );

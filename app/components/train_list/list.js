@@ -20,8 +20,8 @@ export default class ListComponent extends Component {
         length: 10
     }
 
-    shouldComponentUpdate(nextProps) {
-        return this.props.data !== nextProps.data;
+    shouldComponentUpdate(nextProps, nextState) {
+        return this.props.data !== nextProps.data || this.state.length !== nextState.length;
     }
 
     componentWillReceiveProps(nextProps) {

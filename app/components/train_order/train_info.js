@@ -20,17 +20,22 @@ export default class TrainInfoComponent extends Component {
 
     componentWillMount() {
         let eDate;
-        const { usedtimeps } = this.props.data;
+        const { fmtimeps, totimeps, usedtimeps } = this.props.data;
 
         Storage.load({ key: 'bDate' }).then((bDate) => {
             const usedDayNum = Math.floor(usedtimeps / 60 / 24);
             // 判断所花时间是否小于一天
 
-            if (usedDayNum < 1) { 
-                eDate = bDate;
-            } else {
+            eDate = bDate;
+
+            if (usedDayNum < 1 && totimeps < fmtimeps) { 
                 eDate = Number(new Date(bDate)) + 8.64e7;
             }
+
+            if (usedDayNum >= 1) {
+                eDate = Number(new Date(bDate)) + usedDayNum * 8.64e7;
+            }
+
             this.setState({
                 bDate: date.covertToMonthAndDay(bDate),
                 eDate: date.covertToMonthAndDay(eDate) // 到站时间
@@ -111,7 +116,8 @@ export default class TrainInfoComponent extends Component {
                             <Text style={{
                                 fontSize: 14,
                                 lineHeight: 14,
-                                color: '#FFF'
+                                color: '#FFF',
+                                paddingBottom: 2
                             }}>
                                 经停信息
                             </Text>

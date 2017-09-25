@@ -47,12 +47,6 @@ export default class TrainListPage extends Component {
         InteractionManager.runAfterInteractions(() => {
             const { navigation: { state: { params: { tripTime } } } } = this.props;
             
-            // 保存选择的时间给订单页面用
-            Storage.save({
-                key: 'bDate',
-                data: tripTime
-            });
-            
             this.requestTrainList(tripTime); 
         });
     }
@@ -65,6 +59,12 @@ export default class TrainListPage extends Component {
                 showLoading2: true
             });
         }
+
+        // 保存选择的时间给订单页面用
+        Storage.save({
+            key: 'bDate',
+            data: date
+        });
         
         getTrainList({
             params: {
