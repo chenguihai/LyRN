@@ -5,7 +5,7 @@ import {
     Text
 } from 'react-native';
 
-export default class TinsuranceComponent extends Component {
+export default class TinsurancePage extends Component {
 
     static propTypes = {
     }

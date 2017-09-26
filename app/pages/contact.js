@@ -5,7 +5,7 @@ import {
     Text
 } from 'react-native';
 
-export default class ContactComponent extends Component {
+export default class ContactPage extends Component {
 
     static propTypes = {
     }

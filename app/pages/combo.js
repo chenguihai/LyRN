@@ -5,7 +5,7 @@ import {
     Text
 } from 'react-native';
 
-export default class ComboComponent extends Component {
+export default class ComboPage extends Component {
 
     static propTypes = {
     }
