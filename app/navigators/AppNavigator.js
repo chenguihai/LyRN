@@ -13,6 +13,9 @@ import CityPage from '../pages/city'; // 选择城市
 import CalendarPage from '../pages/calendar'; // 选择日历
 import TrainListPage from '../pages/train_list'; // 火车时刻表页面
 import TrainOrderPage from '../pages/train_order'; // 火车票订单
+import ContactPage from '../pages/contact'; // 添加乘客
+import ComboPage from '../pages/combo'; // 优选服务
+import TinsurancePage from '../pages/tinsurance'; // 行程保险
 
 import backNavbar from '../components/back_navbar';
 
@@ -171,6 +174,24 @@ const AppNavigator = StackNavigator(
         },
         'TrainOrder': {
             screen: TrainOrderPage,
+            navigationOptions: {
+                header: backNavbar
+            }
+        },
+        'Contact': {
+            screen: ContactPage,
+            navigationOptions: {
+                header: backNavbar
+            }
+        },
+        'Combo': {
+            screen: ComboPage,
+            navigationOptions: {
+                header: backNavbar
+            }
+        },
+        'Tinsurance': {
+            screen: TinsurancePage,
             navigationOptions: {
                 header: backNavbar
             }

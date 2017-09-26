@@ -63,7 +63,8 @@ export default class TrainListPage extends Component {
         // 保存选择的时间给订单页面用
         Storage.save({
             key: 'bDate',
-            data: date
+            data: date,
+            expires: null
         });
         
         getTrainList({

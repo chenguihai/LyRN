@@ -32,8 +32,19 @@ Util.prototype = {
 Util.prototype.debounce = lodash.debounce;
 
 /**
+ * @description 判断元素是否为字符串
+ * @param {*} 要判断的元素
+ * @return {boolean}
+ */
+
+Util.prototype.isString = function(value) {
+    return type(value) === 'string';
+};
+
+/**
  * @description 判断元素是否为null
  * @param {*} 要判断的元素
+ * @return {boolean}
  */
 
 Util.prototype.isNull = function (value) {
@@ -43,6 +54,7 @@ Util.prototype.isNull = function (value) {
 /**
  * @description 判断元素是否为函数
  * @param {*} 要判断的元素
+ * @return {boolean}
  */
 
 Util.prototype.isFunction = function (value) {
@@ -53,6 +65,7 @@ Util.prototype.isFunction = function (value) {
  * @description 将数组分割成相等数量的块
  * @param {array} arr 要切割的数组
  * @param {number} num 块的数量 
+ * @return {array}
  */
 
 Util.prototype.chunk = function (arr, num) {
@@ -75,6 +88,7 @@ Util.prototype.chunk = function (arr, num) {
  * @returns {promise} x,y组件的相对坐标,width组件的宽度,height组件的高度,pageX,pageY组件相对于屏幕的绝对坐标
  * @example
  * const layout = await _.getLayout(this._ref);
+ * @return {object}
  */
 
 Util.prototype.getLayout = function (ref) {

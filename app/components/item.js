@@ -2,33 +2,140 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     View,
-    Text
+    Text,
+    StyleSheet,
+    TouchableOpacity
 } from 'react-native';
+
+import _ from '../util';
+
+import CardView from 'react-native-cardview';
 
 export default class ItemComponent extends Component {
 
+    static defaultProps = {
+        title: '',
+        after: '',
+        boxShadow: true
+    }
+
     static propTypes = {
-        
+        title: PropTypes.oneOfType([
+            PropTypes.string, 
+            PropTypes.element
+        ]),
+        after: PropTypes.oneOfType([
+            PropTypes.string, 
+            PropTypes.element
+        ]),
+        boxShadow: PropTypes.bool,
+        style: PropTypes.object,
+        onPress: PropTypes.func
+    }
+
+    handlePress = () => {
+        const { onPress } = this.props;
+
+        if (onPress) {
+            onPress();
+        }
+    }
+
+    _renderContent() {
+        const { boxShadow, title, after, style } = this.props;
+
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={this.handlePress} 
+                style={[
+                    styles.content,
+                    {
+                        marginTop: boxShadow ? 0 : 10,
+                        marginBottom: boxShadow ? 4 : 0,
+                        marginLeft: boxShadow ? 0 : 5
+                    },
+                    style
+                ]}
+            >
+                {_.isString(title)
+                    ? <Text style={styles.title}>{title}</Text> : title
+                }
+                {_.isString(after)
+                    ? <View style={styles.after}>
+                        <View style={{
+                            marginRight: 5
+                        }}>
+                            <Text style={{
+                                fontSize: 16,
+                                lineHeight: 16,
+                                color: '#CCC'
+                            }}>{after}</Text> 
+                        </View>
+                        <View style={styles.icon}></View>
+                    </View>
+                    : after
+                }
+            </TouchableOpacity>
+        );
     }
 
     render() {
+        const { boxShadow } = this.props;
+        
+        if (!boxShadow) {
+            return this._renderContent();
+        }
+        
         return (
-            <View style={{
-                paddingLeft: 10,
-                margin: 5,
-                height: 44,
-                alignItems: 'center'
-            }}>
-                <View>
-                    <Text>优选服务</Text>
-                </View>
-                <View>
-                    <Text></Text>
-                </View>
-                <View>
-                    <Text>服务名称</Text>
-                </View>
-            </View>
+            <CardView
+                cardElevation={1}
+                cardMaxElevation={1}
+                cornerRadius={3}
+                style={[styles.wrapper]}
+            >
+                {this._renderContent()}
+            </CardView>
+            
         );
     }
 }
+
+const styles = StyleSheet.create({
+    wrapper: {
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 5
+    },
+    content: {
+        flexDirection: 'row',
+        paddingLeft: 10,
+        paddingRight: 11,
+        height: 44,
+        marginRight: 5,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: '#FFF'
+    },
+    title: {
+        fontSize: 16,
+        lineHeight: 16,
+        color: '#666'
+    },
+    after: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    icon: {
+        width: 8,
+        height: 8,
+        borderRightWidth: StyleSheet.hairlineWidth,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderColor: '#BCBBB8',
+        transform: [
+            {
+                rotateZ: '-45deg'
+            }
+        ]
+    }
+});
