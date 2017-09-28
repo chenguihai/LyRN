@@ -15,7 +15,14 @@ export const ajaxByGet = async (uri, params, callback) => {
             callback(response.data);
         }
     } catch (e) {
-        console.log(e.message);
+        console.warn(e.message);
+        
+        if (e.response) {
+            console.log(e.response);
+        }
+        if (e.request) {
+            console.log(e.request);
+        }
     }
 };
 

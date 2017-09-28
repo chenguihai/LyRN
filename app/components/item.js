@@ -4,7 +4,8 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 
 import _ from '../util';
@@ -85,6 +86,14 @@ export default class ItemComponent extends Component {
         
         if (!boxShadow) {
             return this._renderContent();
+        }
+
+        if (Platform.OS === 'ios') {
+            return (
+                <View style={styles.wrapper}>
+                    {this._renderContent()}
+                </View>
+            );
         }
         
         return (

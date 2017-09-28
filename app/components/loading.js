@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
-    StatusBar
+    StatusBar,
+    Platform
 } from 'react-native';
 
 // import Spinner from 'react-native-spinkit';
@@ -23,7 +24,7 @@ export default class LoadingComponent extends Component {
                     styles.toast,
                     {
                         width,
-                        height: height - StatusBar.currentHeight,
+                        height: Platform.OS === 'ios' ? height : height - StatusBar.currentHeight,
                     }
                 ]}
             >

@@ -4,7 +4,8 @@ import {
     View,
     Text,
     TextInput,
-    StyleSheet
+    StyleSheet,
+    Platform
 } from 'react-native';
 
 import CardView from 'react-native-cardview';
@@ -51,7 +52,8 @@ export default class ContactComponent extends Component {
                     color: '#3C6',
                     fontSize: 16,
                     lineHeight: 16,
-                    marginLeft: 15
+                    marginLeft: 15,
+                    marginTop: Platform.OS === 'ios' ? 2 : 0
                 }}>
                     添加/修改乘客
                 </Text>
@@ -81,18 +83,9 @@ export default class ContactComponent extends Component {
         );
     }
 
-    render() {
+    _renderContent() {
         return (
-            <CardView
-                cardElevation={1}
-                cardMaxElevation={1}
-                cornerRadius={3}
-                style={{
-                    marginTop: 10,
-                    marginLeft: 5,
-                    marginRight: 5
-                }}
-            >
+            <View>
                 <ItemComponent
                     onPress={() => {
                         this.context.navigation.navigate('Contact');
@@ -112,12 +105,52 @@ export default class ContactComponent extends Component {
                     style={{
                         marginTop: 0,
                         marginLeft: 0,
-                        marginBottom: 4,
+                        marginBottom: Platform.OS === 'ios' ? 0 : 4,
                         paddingRight: 0
                     }}
                     after={this._renderInput()}
                 />
+            </View>
+        );
+    }
+
+    render() {
+        if (Platform.OS === 'ios') {
+            return (
+                <View
+                    style={[
+                        styles.container,
+                        {
+                            shadowColor: '#CCC',
+                            shadowOffset: { width: 0, 
+                                height: 0 },
+                            shadowOpacity: 1,
+                            shadowRadius: 3
+                        }
+                    ]}
+                >
+                    {this._renderContent()}
+                </View>
+            );
+        }
+        
+        return (
+            <CardView
+                cardElevation={1}
+                cardMaxElevation={1}
+                cornerRadius={3}
+                style={styles.container}
+            >
+                {this._renderContent()}   
             </CardView>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 10,
+        marginLeft: 5,
+        marginRight: 0
+    }
+});

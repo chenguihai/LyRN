@@ -4,7 +4,8 @@ import {
     View,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 
 export default class SeatsListComponent extends Component {
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#dcdcdc',
         position: 'relative',
-        bottom: 4.5
+        bottom: Platform.OS === 'ios' ? 0 : 4.5
         // borderTopWidth: StyleSheet.hairlineWidth,
         // borderTopColor: '#dcdcdc'
     },

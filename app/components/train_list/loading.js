@@ -3,7 +3,8 @@ import {
     View,
     Image,
     Dimensions,
-    StatusBar
+    StatusBar,
+    Platform
 } from 'react-native';
 
 export default class LoadingComponent extends Component {
@@ -15,10 +16,9 @@ export default class LoadingComponent extends Component {
             <View style={{
                 position: 'absolute',
                 width,
-                height: height - StatusBar.currentHeight,
+                height: Platform.OS === 'ios' ? height : height - StatusBar.currentHeight,
                 top: 0,
                 left: 0,
-                zIndex: 999,
                 alignItems: 'center',
                 justifyContent: 'center'
             }}>

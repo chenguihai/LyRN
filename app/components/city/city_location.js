@@ -22,7 +22,7 @@ export default class CityLoctionComponent extends Component {
     };
 
     componentWillMount() {
-        this.getCurrentPosition();
+        // this.getCurrentPosition();
     }
 
     getCurrentPosition() {

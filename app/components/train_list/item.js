@@ -7,7 +7,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     Animated,
-    Easing
+    Easing,
+    Platform
 } from 'react-native';
 
 import SeatsDetailComponent from './seats_detail';
@@ -69,71 +70,9 @@ export default class ListComponent extends Component {
         });
     }
 
-    handlePress = () => {
-        requestAnimationFrame(() => {
-            if (this.showDetail) {
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: seatsHeight,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: seatsHeight,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                ]).start();
-                setTimeout(() => {
-                    this._topRef.setNativeProps({
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                }, 100);
-            } else {
-                this._topRef.setNativeProps({
-                    style: {
-                        opacity: 0
-                    }
-                });
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    })
-                ]).start();
-            }
-            this.showDetail = !this.showDetail;
-        });
-        
-    }
-
-    render() {
+    _renderContent = () => {
         const { topHeight, bottomHeight, height } = this.state;
-        const { data, viewWidth } = this.props;
+        const { data } = this.props;
         const { item } = data;
 
         // accbyidcard 是否可以通过刷身份证进站
@@ -158,18 +97,9 @@ export default class ListComponent extends Component {
         }
 
         this.height = seatsMap.length * 51; // 51为火车票详情的高度
-
+        
         return (
-            <CardView 
-                cardElevation={2}
-                cardMaxElevation={2}
-                cornerRadius={5}
-                style={{
-                    backgroundColor: '#FFF',
-                    width: viewWidth - 10,
-                    marginLeft: 5
-                }}
-            >
+            <View>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => this.handlePress()}
@@ -318,6 +248,105 @@ export default class ListComponent extends Component {
                         <SeatsDetailComponent data={data} seatsMap={seatsMap} />
                     </Animated.View>
                 </Animated.View>
+            </View>
+        );
+    }
+
+    handlePress = () => {
+        requestAnimationFrame(() => {
+            if (this.showDetail) {
+                Animated.parallel([
+                    Animated.timing(this.state.height, {
+                        toValue: seatsHeight,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.topHeight, {
+                        toValue: seatsHeight,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.bottomHeight, {
+                        toValue: 0,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                ]).start();
+                setTimeout(() => {
+                    this._topRef.setNativeProps({
+                        style: {
+                            opacity: 1
+                        }
+                    });
+                }, 100);
+            } else {
+                this._topRef.setNativeProps({
+                    style: {
+                        opacity: 0
+                    }
+                });
+                Animated.parallel([
+                    Animated.timing(this.state.height, {
+                        toValue: this.height,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.topHeight, {
+                        toValue: 0,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    }),
+                    Animated.timing(this.state.bottomHeight, {
+                        toValue: this.height,
+                        duration: 150,
+                        easing: Easing.ease,
+                        // useNativeDriver: true
+                    })
+                ]).start();
+            }
+            this.showDetail = !this.showDetail;
+        });
+        
+    }
+
+    render() {
+        const { viewWidth } = this.props;
+
+        if (Platform.OS === 'ios') {
+            return (
+                <View style={{
+                    marginLeft: 5,
+                    width: viewWidth - 10,
+                    backgroundColor: '#FFF',
+                    marginBottom: 5,
+                    shadowColor: '#CCC',
+                    shadowOffset: { width: 0, 
+                        height: 0 },
+                    shadowRadius: 5,
+                    shadowOpacity: 1
+                }}>
+                    {this._renderContent()}
+                </View>
+            );
+        }
+
+        return (
+            <CardView 
+                cardElevation={2}
+                cardMaxElevation={2}
+                cornerRadius={5}
+                style={{
+                    backgroundColor: '#FFF',
+                    width: viewWidth - 10,
+                    marginLeft: 5
+                }}
+            >
+                {this._renderContent()}
             </CardView >
         );
     }
@@ -351,6 +380,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 15,
         position: 'relative',
-        bottom: 4
+        bottom: Platform.OS === 'ios' ? 0 : 4
     }
 });

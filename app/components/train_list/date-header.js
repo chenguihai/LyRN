@@ -202,7 +202,8 @@ class DateHeaderComponent extends Component {
                         height: 32,
                         backgroundColor: '#f4f4f4',
                         flexDirection: 'row',
-                        borderRadius: 3
+                        borderRadius: 3,
+                        overflow: 'hidden'
                     }}
                     activeOpacity={0.8}
                     onPress={this.toSelectDate}

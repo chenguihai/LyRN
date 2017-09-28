@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    View, Image, Text, StyleSheet, TouchableOpacity
+    View, 
+    Image,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Platform
 } from 'react-native';
 
 class BackNavbarComponent extends Component {
@@ -24,6 +29,7 @@ class BackNavbarComponent extends Component {
         const { scene: { route }, navigation: { goBack } } = this.props.navigator,
             { routeName, params } = route;
 
+        // console.log(Platform.OS);
         if (routeName === 'TrainList') {
             const { from, to } = params;
 
@@ -33,15 +39,7 @@ class BackNavbarComponent extends Component {
         }
         
         return (
-            <View style={{
-                height: 50,
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingLeft: 5,
-                backgroundColor: '#FFF',
-                borderBottomColor: '#e4e4e4',
-                borderBottomWidth: StyleSheet.hairlineWidth
-            }}>
+            <View style={styles.navbar}>
                 <TouchableOpacity
                     activeOpacity={0.6}
                     onPress={ () => { 
@@ -58,9 +56,13 @@ class BackNavbarComponent extends Component {
                         }}
                     />
                 </TouchableOpacity>
-                <Text style={{
-                    fontSize: 20
-                }}>{title}</Text>
+                {/* 中间标题开始 */}
+                <View
+                    style={styles.center}
+                >
+                    <Text style={styles.title}>{title}</Text>
+                </View>
+                {/* 中间标题结束 */}
             </View>
         );
     }
@@ -71,3 +73,28 @@ const backNavbar = (navigator) => {
 };
 
 export default backNavbar;
+
+const styles = StyleSheet.create({
+    navbar: {
+        height: 50,
+        flexDirection: 'row',
+        justifyContent: Platform.OS === 'ios' ? 'space-between' : 'initial',
+        alignItems: 'center',
+        paddingLeft: 5,
+        paddingRight: 5,
+        backgroundColor: '#FFF',
+        borderBottomColor: '#e4e4e4',
+        borderBottomWidth: StyleSheet.hairlineWidth
+    },
+    center: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        margin: 'auto',
+        alignItems: 'center',
+        zIndex: -1
+    },
+    title: {
+        fontSize: Platform.OS === 'ios' ? 18 : 20
+    }
+});

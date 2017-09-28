@@ -167,7 +167,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 15,
         paddingBottom: 15,
-        height: 138
+        height: 138,
+        backgroundColor: 'transparent'
     },
     item: {
         flex: 1
@@ -186,7 +187,8 @@ const styles = StyleSheet.create({
     },
     stationDateContainer: {
         flexDirection: 'row',
-        paddingBottom: 12
+        alignItems: 'flex-end',
+        marginBottom: 12
     },
     stationDate: {
         fontSize: 13,

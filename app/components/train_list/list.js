@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     FlatList,
-    Dimensions,
-    Text,
-    View
+    Dimensions
 } from 'react-native';
 
 import ItemComponent from './item';
@@ -52,10 +50,6 @@ export default class ListComponent extends Component {
         }
     }
 
-    _footer() {
-        return <View style={{ height: 0 }}><Text>这是尾部组件</Text></View>;
-    }
-
     render() {
         const { width } = Dimensions.get('window');
         const { length } = this.state;
@@ -72,7 +66,6 @@ export default class ListComponent extends Component {
             <FlatList
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
-                ListFooterComponent={this._footer()}
                 initialNumToRender={10}
                 data={trainlist.slice(0, length)}
                 keyExtractor={this.keyExtractor}
