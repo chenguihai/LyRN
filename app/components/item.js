@@ -8,8 +8,6 @@ import {
     Platform
 } from 'react-native';
 
-import CardView from 'react-native-cardview';
-
 export default class ItemComponent extends Component {
 
     static defaultProps = {
@@ -21,19 +19,12 @@ export default class ItemComponent extends Component {
     }
 
     _renderItem(list, item, index) {
-        const { style = {}, title = '', after = '', linkIcon = true, onPress } = item;
+        const { style = {}, title = '', titleStyle = {}, after = '', afterStyle = {}, linkIcon = true, onPress } = item;
 
-        // list数组长度大于0并且不是最后一个元素
-        const borderStyle = list.length > 0 && index < list.length - 1 ? {
-            borderBottomColor: '#DCDCDC',
-            borderBottomWidth: StyleSheet.hairlineWidth
-        } : {
-        };
-
-        // 如果是第一个元素添加上边radius,最后一个元素添加下边radius
+        // 如果list元素大于1,第一个元素添加上边radius,最后一个元素添加下边radius
         let borderRadiusStyle;
 
-        if (list.length > 0) {
+        if (list.length > 1) {
             borderRadiusStyle = index === 0 ? {
                 borderTopLeftRadius: 3,
                 borderTopRightRadius: 3
@@ -46,42 +37,52 @@ export default class ItemComponent extends Component {
         }
 
         return (
-            <TouchableOpacity 
-                key={index} 
-                style={[
-                    styles.item_content,
-                    {
-                        paddingRight: linkIcon ? 0 : 5
-                    },
-                    borderStyle,
-                    borderRadiusStyle,
-                    style
-                ]}
-                onPress={() => {
-                    requestAnimationFrame(() => {
-                        if (onPress) {
-                            onPress();
+            <View key={index} >
+                <TouchableOpacity 
+                    style={[
+                        styles.item_content,
+                        {
+                            paddingRight: linkIcon ? 0 : 5
+                        },
+                        borderRadiusStyle,
+                        style
+                    ]}
+                    onPress={() => {
+                        requestAnimationFrame(() => {
+                            if (onPress) {
+                                onPress();
+                            }
+                        });
+                    }}
+                >
+                    {title.props 
+                        ? title 
+                        : <Text style={[
+                            styles.item_title,
+                            titleStyle
+                        ]}>{title}</Text>
+                    }
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        {after.props 
+                            ? after
+                            : <Text style={[
+                                styles.item_after,
+                                afterStyle
+                            ]}>{after}</Text>
                         }
-                    });
-                }}
-            >
-                {title.props 
-                    ? title 
-                    : <Text style={styles.item_title}>{title}</Text>
-                }
-                <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                }}>
-                    {after.props 
-                        ? after
-                        : <Text style={styles.item_after}>{after}</Text>
-                    }
-                    {
-                        linkIcon && <View style={styles.icon}></View>
-                    }
-                </View>
-            </TouchableOpacity>
+                        {
+                            linkIcon && <View style={styles.icon}></View>
+                        }
+                    </View>
+                </TouchableOpacity>
+                {list.length > 1 && index < list.length - 1 && <View style={{
+                    height: StyleSheet.hairlineWidth,
+                    backgroundColor: '#eee'
+                }}></View>}
+            </View>
         );
     }
 
@@ -92,28 +93,15 @@ export default class ItemComponent extends Component {
     }
 
     render() {
-        const { data: { boxShadow = true, style = {} } } = this.props;
-        
-        if (Platform.OS === 'ios') {
-            return (
-                <View style={[
-                    styles.wrapper,
-                    style,
-                    boxShadow ? styles.shadowStyle : {}
-                ]}>
-                    {this._renderList()}
-                </View>
-            );
-        }
+        const { data: { style = {} } } = this.props;
         
         return (
-            <CardView
-                cardElevation={1}
-                cardMaxElevation={1}
-                cornerRadius={3}
-                style={[styles.wrapper]}
-            >
-            </CardView>
+            <View style={[
+                styles.wrapper,
+                style
+            ]}>
+                {this._renderList()}
+            </View>
             
         );
     }
@@ -123,22 +111,24 @@ const styles = StyleSheet.create({
     wrapper: {
         marginTop: 10,
         marginLeft: 5, 
-        marginRight: 5
-    },
-    shadowStyle: {
-        shadowColor: '#E6E6E6',
-        shadowOffset: { width: 1, 
-            height: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 3
+        marginRight: 5,
+        padding: 0,
+        borderRadius: 3
     },
     'item_content': {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingLeft: 15,
-        height: 44,
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
+        ...Platform.select({
+            ios: {
+                height: 44
+            },
+            android: {
+                height: 50,
+            }
+        })
     },
     'item_title': {
         fontSize: 16,
@@ -146,14 +136,14 @@ const styles = StyleSheet.create({
         color: '#666'
     },
     'item_after': {
-        fontSize: 16,
+        fontSize: 14,
         color: '#CCC',
         marginRight: 8
     },
     icon: {
         width: 8,
         height: 8,
-        marginRight: 11,
+        marginRight: 21,
         borderRightWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#BCBBB8',

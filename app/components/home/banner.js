@@ -7,11 +7,9 @@ import {
 } from 'react-native';
 
 import Swiper from 'react-native-swiper';
-import pureRender from 'pure-render-deepcompare-decorator';
 
 const bannerHeight = 116;
 
-@pureRender
 export default class BannerComponent extends Component {
     static propTypes = {
         data: PropTypes.array

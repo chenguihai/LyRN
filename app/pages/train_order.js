@@ -4,7 +4,7 @@ import {
     View,
     Text,
     ScrollView,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 
 import TrainInfoComponent from '../components/train_order/train_info';
@@ -35,7 +35,8 @@ export default class TrainOrderPage extends Component {
             <View 
                 style={{ 
                     flex: 1, 
-                    backgroundColor: '#f2f4f7' 
+                    backgroundColor: '#f2f4f7',
+                    paddingBottom: 50
                 }}
             >
                 <ScrollView>
@@ -47,7 +48,6 @@ export default class TrainOrderPage extends Component {
                                 marginLeft: 0,
                                 marginRight: 0
                             },
-                            boxShadow: false,
                             list: [
                                 {
                                     onPress: () => {
@@ -93,6 +93,9 @@ export default class TrainOrderPage extends Component {
 
                     <ItemComponent
                         data = {{
+                            style: {
+                                marginBottom: 50
+                            },
                             list: [
                                 {
                                     onPress: () => {

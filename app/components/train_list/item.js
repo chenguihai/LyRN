@@ -195,7 +195,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <View style={{
                                 flexDirection: 'row',
-                                alignItems: 'baseline',
+                                alignItems: 'flex-end',
                             }}>
                                 <Text style={{
                                     fontSize: 12,
@@ -341,7 +341,8 @@ export default class ListComponent extends Component {
                 style={{
                     backgroundColor: '#FFF',
                     width: viewWidth - 10,
-                    marginLeft: 5
+                    marginLeft: 5,
+                    marginBottom: 3
                 }}
             >
                 {this._renderContent()}

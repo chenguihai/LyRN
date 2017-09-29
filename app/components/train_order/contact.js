@@ -4,11 +4,9 @@ import {
     View,
     Text,
     TextInput,
-    StyleSheet,
     Platform
 } from 'react-native';
 
-import CardView from 'react-native-cardview';
 import ItemComponent from '../item';
 
 export default class ContactComponent extends Component {
@@ -31,20 +29,20 @@ export default class ContactComponent extends Component {
                 }}>
                     <View
                         style={{
-                            width: 1,
+                            width: 2,
                             height: 18,
                             backgroundColor: '#3C6',
                             position: 'absolute',
-                            left: 8.5
+                            left: 8
                         }}
                     ></View>
                     <View
                         style={{
                             width: 18,
-                            height: 1,
+                            height: 2,
                             backgroundColor: '#3C6',
                             position: 'absolute',
-                            top: 8.5
+                            top: 8
                         }}
                     ></View>
                 </View>
@@ -70,7 +68,8 @@ export default class ContactComponent extends Component {
                     underlineColorAndroid="transparent"
                     placeholder="用于接收购票信息"
                     placeholderTextColor="#CCC"
-                    maxLength={13}
+                    keyboardType="numeric"
+                    maxLength={11}
                     style={{
                         padding: 0,
                         fontSize: 16,
@@ -83,52 +82,25 @@ export default class ContactComponent extends Component {
         );
     }
 
-    _renderContent() {
-        return (
-            <View>
-                <ItemComponent
-                    data = {{
-                        list: [
-                            {  
-                                onPress: () => {
-                                    this.context.navigation.navigate('Contact');
-                                },
-                                title: this.addPeople()
-                            },
-                            {
-                                title: '手机号码',
-                                after: this._renderInput(),
-                                linkIcon: false
-                            }
-                        ]
-                    }}
-                />
-            </View>
-        );
-    }
-
     render() {
-        if (Platform.OS === 'ios') {
-            return this._renderContent();
-        }
-        
         return (
-            <CardView
-                cardElevation={1}
-                cardMaxElevation={1}
-                cornerRadius={3}
-                style={styles.container}
-            >
-                {this._renderContent()}   
-            </CardView>
+            <ItemComponent
+                data = {{
+                    list: [
+                        {  
+                            onPress: () => {
+                                this.context.navigation.navigate('Contact');
+                            },
+                            title: this.addPeople()
+                        },
+                        {
+                            title: '手机号码',
+                            after: this._renderInput(),
+                            linkIcon: false
+                        }
+                    ]
+                }}
+            />
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        marginTop: 10,
-        marginLeft: 5,
-        marginRight: 0,
-    }
-});

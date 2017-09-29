@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     navbar: {
         height: 50,
         flexDirection: 'row',
-        justifyContent: Platform.OS === 'ios' ? 'space-between' : 'initial',
+        justifyContent: Platform.OS === 'ios' ? 'space-between' : 'flex-start',
         alignItems: 'center',
         paddingLeft: 5,
         paddingRight: 5,
@@ -92,10 +92,24 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         margin: 'auto',
-        alignItems: 'center',
-        zIndex: -1
+        zIndex: -1,
+        ...Platform.select({
+            ios: {
+                alignItems: 'center',
+            },
+            android: {
+            }
+        })
     },
     title: {
-        fontSize: Platform.OS === 'ios' ? 18 : 20
+        ...Platform.select({
+            ios: {
+                fontSize: 18
+            },
+            android: {
+                fontSize: 20,
+                marginLeft: 37
+            }
+        })
     }
 });

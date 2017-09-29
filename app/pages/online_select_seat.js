@@ -4,7 +4,8 @@ import {
     View,
     Text,
     Image,
-    TextInput
+    TextInput,
+    ScrollView
 } from 'react-native';
 
 import TrainInfoComponent from '../components/online_select_seat/train_info';
@@ -57,8 +58,11 @@ export default class OnlineSelectSeatPage extends Component {
                     fontSize: 16,
                     color: '#333'
                 }}
+                maxLength={11}
                 placeholder="用于接收购票信息"
                 placeholderTextColor="#ccc"
+                underlineColorAndroid="transparent"
+                keyboardType="numeric"
             />
         );
     }
@@ -66,10 +70,10 @@ export default class OnlineSelectSeatPage extends Component {
     renderTitle2(title, after, isHot = false) {
         return (
             <View style={{
-                height: 44,
+                height: 50,
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingLeft: 15
+                paddingLeft: 15,
             }}>
                 {isHot
                     ? <Image 
@@ -82,7 +86,7 @@ export default class OnlineSelectSeatPage extends Component {
                             left: 0,
                             width: 27,
                             height: 27,
-                            zIndex: 500
+                            borderTopLeftRadius: 3
                         }}
                     />
                     : null
@@ -100,54 +104,143 @@ export default class OnlineSelectSeatPage extends Component {
         );
     }
 
+    renderTitle3() {
+        return (
+            <View style={{
+                paddingTop: 11,
+                paddingBottom: 11,
+                flexDirection: 'row',
+                alignItems: 'center'
+            }}>
+                <Image 
+                    source={require('../images/getfree.png')}
+                    style={{
+                        width: 25,
+                        height: 25
+                    }}
+                />
+                <View style={{
+                    marginLeft: 15
+                }}>
+                    <Text style={{
+                        fontSize: 16,
+                        color: '#333'
+                    }}>
+                        保证达
+                    </Text>
+                    <Text style={{
+                        fontSize: 12,
+                        color: '#999'
+                    }}>
+                        车票配送遗失、延误，赔付损失
+                    </Text>
+                </View>
+            </View>
+        );
+    }
+
     render() {
         const { state: { params: { data = {} } } } = this.props.navigation;
         
         return (
             <View style={{
-                flex: 1
+                flex: 1,
+                backgroundColor: '#f2f4f7'
             }}>
-                <TrainInfoComponent data={data} />
-                <SeatsComponent data={data} />
-                <ItemComponent
-                    data={{
-                        list: [
-                            {
-                                title: this.renderTitle1()
-                            }
-                        ]
-                    }}
-                />
-                <ItemComponent
-                    data={{
-                        list: [
-                            {
-                                title: '联系手机',
-                                linkIcon: false,
-                                after: this.renderInput()
-                            }
-                        ]
-                    }}
-                />
-                <ItemComponent
-                    data={{
-                        list: [
-                            {
-                                style: {
-                                    paddingLeft: 0
-                                },
-                                title: this.renderTitle2('指定座位', '请指定座位', true)
-                            }, 
-                            {
-                                style: {
-                                    paddingLeft: 0
-                                },
-                                title: this.renderTitle2('取票方式', '指定取票方式')
-                            }
-                        ]
-                    }}
+                <ScrollView>
+                    <TrainInfoComponent data={data} />
+                    <SeatsComponent data={data} />
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    title: this.renderTitle1()
+                                }
+                            ]
+                        }}
+                    />
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    title: '联系手机',
+                                    linkIcon: false,
+                                    after: this.renderInput()
+                                }
+                            ]
+                        }}
+                    />
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    style: {
+                                        paddingLeft: 0
+                                    },
+                                    title: this.renderTitle2('指定座位', '请指定座位', true)
+                                }, 
+                                {
+                                    style: {
+                                        paddingLeft: 0
+                                    },
+                                    title: this.renderTitle2('取票方式', '指定取票方式')
+                                }
+                            ]
+                        }}
                     
-                />
+                    />
+                    {/* 保证达开始 */}
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    style: {
+                                        height: 'auto',
+                                    }, 
+                                    linkIcon: false,
+                                    title: this.renderTitle3()
+                                }
+                            ]
+                        }}
+                    />
+                    {/* 保证达结束 */}
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    title: '优先出票套餐',
+                                    after: '未选择'
+                                }
+                            ]
+                        }}
+                    />
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    title: '行程保险',
+                                    after: '安全出行，建议选购保险',
+                                    titleStyle: {
+                                        color: '#999'
+                                    }
+                                }
+                            ]
+                        }}
+                    />
+                    <ItemComponent
+                        data={{
+                            list: [
+                                {
+                                    title: '套餐发票',
+                                    after: '不需要',
+                                    titleStyle: {
+                                        color: '#999'
+                                    }
+                                }
+                            ]
+                        }}
+                    />
+                </ScrollView>
             </View>
         );
     }

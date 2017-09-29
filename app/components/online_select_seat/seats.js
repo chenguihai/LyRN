@@ -71,7 +71,7 @@ export default class SeatsComponent extends Component {
                 <TouchableOpacity 
                     activeOpacity={0.8}
                     onPress={() => {
-                        this.handlePres(index);
+                        seats > 0 && this.handlePres(index);
                     }}
                     key={index} 
                     style={{
@@ -112,7 +112,8 @@ export default class SeatsComponent extends Component {
                                 height: 13,
                                 position: 'absolute',
                                 right: 6,
-                                bottom: 6
+                                bottom: 6,
+                                zIndex: 500
                             }}
                         />
                         : null}
