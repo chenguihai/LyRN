@@ -8,9 +8,10 @@ import {
     StyleSheet
 } from 'react-native';
 
-import date from '../../util/date';
+import TrainDecorator from '../train_decorator';
 
-export default class TrainInfoComponent extends Component {
+@TrainDecorator
+class TrainInfoComponent extends Component {
 
     static propTypes = {
         data: PropTypes.object
@@ -19,28 +20,7 @@ export default class TrainInfoComponent extends Component {
     state = {}
 
     componentWillMount() {
-        let eDate;
-        const { fmtimeps, totimeps, usedtimeps } = this.props.data;
-
-        Storage.load({ key: 'bDate' }).then((bDate) => {
-            const usedDayNum = Math.floor(usedtimeps / 60 / 24);
-            // 判断所花时间是否小于一天
-
-            eDate = bDate;
-
-            if (usedDayNum < 1 && totimeps < fmtimeps) { 
-                eDate = Number(new Date(bDate)) + 8.64e7;
-            }
-
-            if (usedDayNum >= 1) {
-                eDate = Number(new Date(bDate)) + usedDayNum * 8.64e7;
-            }
-
-            this.setState({
-                bDate: date.covertToMonthAndDay(bDate),
-                eDate: date.covertToMonthAndDay(eDate) // 到站时间
-            });
-        });
+        this.covertToMonthAnDay();
     }
 
     render() {
@@ -225,3 +205,5 @@ const styles = StyleSheet.create({
         bottom: 0
     }
 });
+
+export default TrainInfoComponent;

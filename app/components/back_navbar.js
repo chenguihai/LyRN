@@ -21,7 +21,8 @@ class BackNavbarComponent extends Component {
         TrainOrder: '订单',
         Contact: '新增乘客',
         Combo: '优选服务',
-        Tinsurance: '行程保险'
+        Tinsurance: '行程保险',
+        OnlineSelectSeat: '在线选座'
     }
 
     render() {

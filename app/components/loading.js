@@ -32,9 +32,9 @@ export default class LoadingComponent extends Component {
                     style={{
                         backgroundColor: 'rgba(17, 17, 17, 0.7)',
                         alignItems: 'center',
-                        width: width * 0.38,
-                        height: width * 0.28,
-                        marginTop: -(width * 0.14),
+                        width: width * 0.3,
+                        height: width * 0.3,
+                        marginTop: -(width * 0.3),
                         borderRadius: width * 0.02
                     }}
                 >
@@ -50,7 +50,7 @@ export default class LoadingComponent extends Component {
                     <Text style={{
                         fontSize: 14,
                         color: '#FFF',
-                        marginTop: width * 0.02
+                        marginTop: width * 0.03
                     }}>加载中...</Text>
                 </View>
             </TouchableOpacity>

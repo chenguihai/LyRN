@@ -16,6 +16,7 @@ import TrainOrderPage from '../pages/train_order'; // 火车票订单
 import ContactPage from '../pages/contact'; // 添加乘客
 import ComboPage from '../pages/combo'; // 优选服务
 import TinsurancePage from '../pages/tinsurance'; // 行程保险
+import OnlineSelectSeatPage from '../pages/online_select_seat'; // 在线选座
 
 import backNavbar from '../components/back_navbar';
 
@@ -195,11 +196,17 @@ const AppNavigator = StackNavigator(
             navigationOptions: {
                 header: backNavbar
             }
+        },
+        'OnlineSelectSeat': {
+            screen: OnlineSelectSeatPage,
+            navigationOptions: {
+                header: backNavbar
+            }
         }
     },
     {
-        initialRouteName: 'TrainOrder',
-        // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-29' } // eslint-disable-line
+        initialRouteName: 'Main',
+        // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-30' } // eslint-disable-line
         initialRouteParams: { data: { 'trainno': 'G102',
             'fmtime': '06:30',
             'fmtimeps': 630, 

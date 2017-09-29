@@ -76,6 +76,7 @@ _Date.prototype.covertToMonthAndDay = function(time) {
 
     return {
         date: `${month}月${day}日`,
+        dateS: `${month}-${day}`,
         dateSeq: `${year}-${month}-${day}`,
         weekDay
     };

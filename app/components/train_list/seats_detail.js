@@ -121,8 +121,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#dcdcdc',
         position: 'relative',
         bottom: Platform.OS === 'ios' ? 0 : 4.5
-        // borderTopWidth: StyleSheet.hairlineWidth,
-        // borderTopColor: '#dcdcdc'
     },
     'seats_box': {
         flex: 1,

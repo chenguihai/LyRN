@@ -117,6 +117,6 @@ export default class TrainListPage extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f1f3f6'
+        backgroundColor: '#f2f4f7'
     },
 });

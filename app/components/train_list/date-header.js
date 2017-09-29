@@ -313,7 +313,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderColor: '#e4e4e4'
+        borderColor: '#e4e4e4',
+        marginBottom: 5
     },
     'btn': {
         height: 24,

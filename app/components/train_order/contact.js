@@ -87,28 +87,21 @@ export default class ContactComponent extends Component {
         return (
             <View>
                 <ItemComponent
-                    onPress={() => {
-                        this.context.navigation.navigate('Contact');
+                    data = {{
+                        list: [
+                            {  
+                                onPress: () => {
+                                    this.context.navigation.navigate('Contact');
+                                },
+                                title: this.addPeople()
+                            },
+                            {
+                                title: '手机号码',
+                                after: this._renderInput(),
+                                linkIcon: false
+                            }
+                        ]
                     }}
-                    boxShadow={false}
-                    style={{
-                        marginTop: 0,
-                        marginLeft: 0,
-                        borderBottomColor: '#DCDCDC',
-                        borderBottomWidth: StyleSheet.hairlineWidth
-                    }}
-                    title={this.addPeople()}
-                />
-                <ItemComponent
-                    boxShadow={false}
-                    title="手机号码"
-                    style={{
-                        marginTop: 0,
-                        marginLeft: 0,
-                        marginBottom: Platform.OS === 'ios' ? 0 : 4,
-                        paddingRight: 0
-                    }}
-                    after={this._renderInput()}
                 />
             </View>
         );
@@ -116,22 +109,7 @@ export default class ContactComponent extends Component {
 
     render() {
         if (Platform.OS === 'ios') {
-            return (
-                <View
-                    style={[
-                        styles.container,
-                        {
-                            shadowColor: '#CCC',
-                            shadowOffset: { width: 0, 
-                                height: 0 },
-                            shadowOpacity: 1,
-                            shadowRadius: 3
-                        }
-                    ]}
-                >
-                    {this._renderContent()}
-                </View>
-            );
+            return this._renderContent();
         }
         
         return (
@@ -151,6 +129,6 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 10,
         marginLeft: 5,
-        marginRight: 0
+        marginRight: 0,
     }
 });

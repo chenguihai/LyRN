@@ -3585,6 +3585,10 @@ punycode@^1.4.1:
   version "1.4.1"
   resolved "http://registry.npm.taobao.org/punycode/download/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
+pure-render-deepcompare-decorator@^1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/pure-render-deepcompare-decorator/download/pure-render-deepcompare-decorator-1.0.3.tgz#44698aabc966f0dd9ef81b66a361cd56329dcb17"
+
 qs@4.0.0:
   version "4.0.0"
   resolved "http://registry.npm.taobao.org/qs/download/qs-4.0.0.tgz#c31d9b74ec27df75e543a86c78728ed8d4623607"

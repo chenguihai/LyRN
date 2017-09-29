@@ -73,7 +73,6 @@ export default class ListComponent extends Component {
     _renderContent = () => {
         const { topHeight, bottomHeight, height } = this.state;
         const { data } = this.props;
-        const { item } = data;
 
         // accbyidcard 是否可以通过刷身份证进站
         // fmcity 起始站
@@ -84,7 +83,7 @@ export default class ListComponent extends Component {
         // usedtime 花费时间
         // ticketstatus 座位类型数组
 
-        const { accbyidcard, fmcity, tocity, fmtime, totime, trainno, usedtime, ticketstatus } = item;
+        const { accbyidcard, fmcity, tocity, fmtime, totime, trainno, usedtime, ticketstatus } = data.item;
 
         const seatsMap = [];
         const priceMap = [];
@@ -196,22 +195,19 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <View style={{
                                 flexDirection: 'row',
-                                alignItems: 'baseline'
+                                alignItems: 'baseline',
                             }}>
                                 <Text style={{
                                     fontSize: 12,
-                                    lineHeight: 12,
-                                    color: '#ff5346'
+                                    color: '#ff5346',
                                 }}>¥</Text>
                                 <Text style={{
                                     fontSize: 18,
-                                    lineHeight: 18,
-                                    color: '#ff5346'
+                                    color: '#ff5346',
                                 }}>{Math.min.apply({}, priceMap)}</Text>
                                 <Text style={{
                                     fontSize: 12,
-                                    lineHeight: 12,
-                                    color: '#ff5346'
+                                    color: '#ff5346',
                                 }}>起</Text>
                             </View>
                         </View>
@@ -324,11 +320,13 @@ export default class ListComponent extends Component {
                     width: viewWidth - 10,
                     backgroundColor: '#FFF',
                     marginBottom: 5,
-                    shadowColor: '#CCC',
-                    shadowOffset: { width: 0, 
-                        height: 0 },
-                    shadowRadius: 5,
-                    shadowOpacity: 1
+                    shadowColor: 'rgba(153,153,153,.2)',
+                    shadowOffset: { width: 1, 
+                        height: 10 },
+                    shadowRadius: 4,
+                    shadowOpacity: 1,
+                    borderRadius: 4,
+                    overflow: 'hidden'
                 }}>
                     {this._renderContent()}
                 </View>
@@ -358,7 +356,6 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#e4e4e4',
-        borderStyle: 'dashed',
         position: 'relative',
         zIndex: 1000
     },
@@ -380,6 +377,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft: 15,
         position: 'relative',
-        bottom: Platform.OS === 'ios' ? 0 : 4
+        ...Platform.select({
+            ios: {
+                bottom: 0,
+                backgroundColor: 'transparent'
+            },
+            android: {
+                bottom: 4,
+                backgroundColor: '#FFF'
+            }
+        })
     }
 });
