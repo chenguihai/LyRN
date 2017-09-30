@@ -53,12 +53,14 @@ const HomeTabNavigator = TabNavigator(
             showIcon: false,
             // 底部标签栏样式
             style: {
-                height: 50,
-                backgroundColor: '#FFF'
+                height: scaleSize(50),
+                backgroundColor: '#FFF',
+                borderWidth: 0
             },
             labelStyle: {
                 fontSize: 14,
-                color: '#666'
+                color: '#666',
+                borderWidth: 0
             },
             activeTintColor: '#09bb07',
             // 底部标签栏指示器的样式
@@ -205,7 +207,7 @@ const AppNavigator = StackNavigator(
         }
     },
     {
-        initialRouteName: 'OnlineSelectSeat',
+        initialRouteName: 'TrainOrder',
         // initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-09-30' } // eslint-disable-line
         initialRouteParams: { data: { 'trainno': 'G102',
             'fmtime': '06:30',
@@ -280,7 +282,10 @@ const AppNavigator = StackNavigator(
                 'isorder': '1', 
                 'upPrice': 0, 
                 'midPrice': 0, 
-                'downPrice': 0 } } }
+                'downPrice': 0 } } },
+        cardStyle: {
+            shadowOpacity: 0 // 去除顶部阴影
+        }
     }
 );
 

@@ -116,10 +116,13 @@ class TrainInfoComponent extends Component {
                         paddingLeft: scaleSize(6)
                     }
                 ]}>
-                    <Text style={styles.station}>
+                    <Text style={styles.station}
+                    >
                         {tocity}
                     </Text>
-                    <Text style={styles.stationTime}>
+                    <Text style={styles.stationTime} onLayout={({ nativeEvent: e }) => { 
+                        console.log(e);
+                    }}>
                         {totime}
                     </Text>
                     <View style={styles.stationDateContainer}>
@@ -156,13 +159,15 @@ const styles = StyleSheet.create({
         fontSize: setSpText(17),
         lineHeight: setSpText(17),
         paddingBottom: scaleSize(10),
-        color: '#FFF'
+        color: '#FFF', 
+        borderColor: '#000',
+        borderWidth: 1
     },
     stationTime: {
         fontSize: setSpText(30),
         lineHeight: setSpText(30),
-        paddingBottom: scaleSize(12),
-        color: '#FFF'
+        paddingBottom: scaleSize(8),
+        color: '#FFF',
     },
     stationDateContainer: {
         flexDirection: 'row',

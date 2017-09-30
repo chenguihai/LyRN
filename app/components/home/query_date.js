@@ -35,8 +35,10 @@ export default class QueryDateComponent extends Component {
         return (
             <TouchableOpacity onPress={this.handlePress} style={styles.query_date}>
                 <View style={styles.query_date_inner}>
-                    <Text style={styles.date}>{this.covertDate(tripTime)}</Text>
-                    <Text style={styles.date_txt}>{tripTimeDes}</Text>
+                    <Text style={styles.date}>
+                        {this.covertDate(tripTime)}
+                        <Text style={styles.date_txt}>{tripTimeDes}</Text>
+                    </Text>
                 </View>
             </TouchableOpacity>
         );
@@ -55,13 +57,10 @@ const styles = StyleSheet.create({
     },
     'query_date_inner': {
         flexDirection: 'row',
-        alignItems: 'baseline'
     },
     date: {
         fontSize: setSpText(25),
-        color: '#333',
-        lineHeight: scaleSize(25),
-        fontWeight: 'normal'
+        color: '#333'
     },
     'date_txt': {
         color: '#999',

@@ -195,23 +195,20 @@ export default class ListComponent extends Component {
                         </View>
                         {/* 票价 */}
                         <View style={styles.info_item}>
-                            <View style={{
-                                flexDirection: 'row',
-                                alignItems: 'flex-end',
+                            <Text style={{
+                                fontSize: setSpText(20),
+                                color: '#ff5346',
                             }}>
                                 <Text style={{
                                     fontSize: setSpText(12),
                                     color: '#ff5346',
                                 }}>¥</Text>
-                                <Text style={{
-                                    fontSize: setSpText(20),
-                                    color: '#ff5346',
-                                }}>{Math.min.apply({}, priceMap)}</Text>
+                                {Math.min.apply({}, priceMap)}
                                 <Text style={{
                                     fontSize: setSpText(12),
                                     color: '#ff5346',
                                 }}>起</Text>
-                            </View>
+                            </Text>
                         </View>
                     </View>
                 </TouchableOpacity>

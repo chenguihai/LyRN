@@ -64,12 +64,12 @@ export default class CheckboxComponent extends Component {
 const styles = StyleSheet.create({
     'checkbox_item': {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        alignItems: 'center'
     },
     'checkbox_txt': {
         fontSize: setSpText(14),
-        lineHeight: scaleSize(18),
-        color: '#2d2d2d'
+        lineHeight: scaleSize(14),
+        color: '#2d2d2d',
     },
     'checkbox_image': {
         width: scaleSize(18),

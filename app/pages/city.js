@@ -59,11 +59,16 @@ class CityPage extends Component {
     }
 
     getHistoryCities = async () => {
-        const historycities = await Storage.getAllDataForKey('trainhistorycities');
-
-        this.setState({
-            historycities
-        });
+        try {
+            const historycities = await Storage.getAllDataForKey('trainhistorycities');
+            
+            this.setState({
+                historycities
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        
     }
 
     addToHistoryCities(data, index) {
