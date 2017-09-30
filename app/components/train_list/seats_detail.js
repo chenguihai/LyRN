@@ -104,7 +104,13 @@ export default class SeatsListComponent extends Component {
 
         return (
             <View style={{
-                backgroundColor: '#FFF'
+                backgroundColor: '#FFF',
+                ...Platform.select({
+                    ios: {
+                        borderBottomLeftRadius: 4,
+                        borderBottomRightRadius: 4
+                    }
+                })
             }}>
                 {this._renderSeatsList(seatsMap)}
             </View>
@@ -119,8 +125,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#dcdcdc',
-        position: 'relative',
-        bottom: Platform.OS === 'ios' ? 0 : 4.5
+        ...Platform.select({
+            android: {
+                position: 'relative',
+                bottom: 4.5
+            }
+        })
     },
     'seats_box': {
         flex: 1,

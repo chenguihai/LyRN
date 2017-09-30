@@ -98,7 +98,9 @@ export default class ListComponent extends Component {
         this.height = seatsMap.length * 51; // 51为火车票详情的高度
         
         return (
-            <View>
+            <View style={{
+                overflow: 'hidden'
+            }}>
                 <TouchableOpacity
                     activeOpacity={0.9}
                     onPress={() => this.handlePress()}
@@ -317,16 +319,14 @@ export default class ListComponent extends Component {
             return (
                 <View style={{
                     marginLeft: 5,
-                    width: viewWidth - 10,
-                    backgroundColor: '#FFF',
+                    marginRight: 5,
                     marginBottom: 5,
                     shadowColor: 'rgba(153,153,153,.2)',
                     shadowOffset: { width: 1, 
-                        height: 10 },
+                        height: 2 },
                     shadowRadius: 4,
                     shadowOpacity: 1,
-                    borderRadius: 4,
-                    overflow: 'hidden'
+                    borderRadius: 4
                 }}>
                     {this._renderContent()}
                 </View>
@@ -356,9 +356,9 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15,
         borderBottomWidth: StyleSheet.hairlineWidth,
-        borderBottomColor: '#e4e4e4',
-        position: 'relative',
-        zIndex: 1000
+        borderBottomColor: '#eee',
+        backgroundColor: '#FFF',
+        borderRadius: 4
     },
     'info_row': {
         flexDirection: 'row'
@@ -377,13 +377,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingLeft: 15,
-        position: 'relative',
         ...Platform.select({
             ios: {
                 bottom: 0,
                 backgroundColor: 'transparent'
             },
             android: {
+                position: 'relative',
                 bottom: 4,
                 backgroundColor: '#FFF'
             }

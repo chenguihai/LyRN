@@ -5,7 +5,8 @@ import {
     Text,
     Image,
     TextInput,
-    ScrollView
+    ScrollView,
+    Platform
 } from 'react-native';
 
 import TrainInfoComponent from '../components/online_select_seat/train_info';
@@ -70,10 +71,10 @@ export default class OnlineSelectSeatPage extends Component {
     renderTitle2(title, after, isHot = false) {
         return (
             <View style={{
-                height: 50,
+                height: Platform.OS === 'ios' ? 44 : 50,
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingLeft: 15,
+                paddingLeft: 15
             }}>
                 {isHot
                     ? <Image 
