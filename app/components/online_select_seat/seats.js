@@ -77,8 +77,8 @@ export default class SeatsComponent extends Component {
                     style={{
                         flex: 1,
                         alignItems: 'center',
-                        paddingTop: 10,
-                        paddingBottom: 10,
+                        paddingTop: scaleSize(10),
+                        paddingBottom: scaleSize(10),
                         borderBottomWidth: StyleSheet.hairlineWidth,
                         borderRightWidth: StyleSheet.hairlineWidth,
                         borderColor: '#ddd',
@@ -108,11 +108,11 @@ export default class SeatsComponent extends Component {
                         ? <Image 
                             source={require('../../images/icon_right.png')}
                             style={{
-                                width: 13,
-                                height: 13,
+                                width: scaleSize(13),
+                                height: scaleSize(13),
                                 position: 'absolute',
-                                right: 6,
-                                bottom: 6,
+                                right: scaleSize(6),
+                                bottom: scaleSize(6),
                                 zIndex: 500
                             }}
                         />
@@ -136,24 +136,24 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#FFF',
         shadowColor: 'rgba(0,0,0,.1)',
-        shadowOffset: { width: 1, 
-            height: 2 }
+        shadowOffset: { width: scaleSize(1), 
+            height: scaleSize(2) }
     },
     seatName: {
-        fontSize: 12,
-        lineHeight: 12,
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12),
         color: '#333'
     },
     price: {
-        fontSize: 12,
-        lineHeight: 12,
-        marginTop: 8,
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12),
+        marginTop: scaleSize(8),
         color: '#ff6540'
     },
     number: {
-        fontSize: 12,
-        lineHeight: 12,
-        marginTop: 8,
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12),
+        marginTop: scaleSize(8),
         color: '#333'
     }
 });

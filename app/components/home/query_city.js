@@ -134,7 +134,7 @@ export default class QueryCityComponent extends Component {
                     <Animated.View
                         style={{
                             position: 'absolute',
-                            top: 40,
+                            top: scaleSize(40),
                             left,
                             opacity
                         }}
@@ -191,7 +191,7 @@ export default class QueryCityComponent extends Component {
                     <Animated.View
                         style={{
                             position: 'absolute',
-                            top: 40,
+                            top: scaleSize(40),
                             right,
                             opacity
                         }}
@@ -222,9 +222,9 @@ export default class QueryCityComponent extends Component {
 const styles = StyleSheet.create({
     'query_city': {
         flexDirection: 'row',
-        height: 84,
-        marginLeft: 15,
-        marginRight: 15,
+        height: scaleSize(84),
+        marginLeft: scaleSize(15),
+        marginRight: scaleSize(15),
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#dcdcdc'
     },
@@ -232,23 +232,23 @@ const styles = StyleSheet.create({
         flex: 1
     },
     'city_desc': {
-        fontSize: 12,
-        lineHeight: 12,
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12),
         color: '#999',
-        paddingTop: 15,
-        paddingBottom: 14
+        paddingTop: scaleSize(15),
+        paddingBottom: scaleSize(14)
     },
     'city_txt': {
-        fontSize: 28,
+        fontSize: setSpText(28),
         color: '#333',
-        lineHeight: 28,
-        // borderWidth: 1,
+        lineHeight: scaleSize(28),
+        // borderWidth: scaleSize(1),
         // borderColor: '#000',
     },
     'image': {
-        width: 30,
-        height: 30,
+        width: scaleSize(30),
+        height: scaleSize(30),
         position: 'relative',
-        top: 30
+        top: scaleSize(30)
     }
 });

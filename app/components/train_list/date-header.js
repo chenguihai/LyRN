@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     'btn_txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: themeColor
     }
 });

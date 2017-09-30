@@ -109,41 +109,41 @@ export default class ItemComponent extends Component {
 
 const styles = StyleSheet.create({
     wrapper: {
-        marginTop: 10,
-        marginLeft: 5, 
-        marginRight: 5,
-        padding: 0,
+        marginTop: scaleSize(10),
+        marginLeft: scaleSize(5), 
+        marginRight: scaleSize(5),
+        padding: scaleSize(0),
         borderRadius: 3
     },
     'item_content': {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingLeft: 15,
+        paddingLeft: scaleSize(15),
         backgroundColor: '#FFF',
         ...Platform.select({
             ios: {
-                height: 44
+                height: scaleSize(44)
             },
             android: {
-                height: 50,
+                height: scaleSize(50),
             }
         })
     },
     'item_title': {
-        fontSize: 16,
-        lineHeight: 16,
+        fontSize: setSpText(16),
+        // lineHeight: scaleSize(16),
         color: '#666'
     },
     'item_after': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#CCC',
-        marginRight: 8
+        marginRight: scaleSize(8)
     },
     icon: {
-        width: 8,
-        height: 8,
-        marginRight: 21,
+        width: scaleSize(8),
+        height: scaleSize(8),
+        marginRight: scaleSize(21),
         borderRightWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#BCBBB8',

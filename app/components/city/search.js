@@ -89,7 +89,7 @@ export default class SearchComponent extends Component {
                     styles.search_inner,
                     {
                         width: innerWidth,
-                        marginLeft: 8
+                        marginLeft: scaleSize(8)
                     }
                 ]}>
                     {/* 搜索图标开始 */}
@@ -153,13 +153,13 @@ export default class SearchComponent extends Component {
 
 const styles = StyleSheet.create({
     'search_wrap': {
-        height: 56,
+        height: scaleSize(56),
         justifyContent: 'center',
         backgroundColor: '#ededed'
     },
     'search_inner': {
         flexDirection: 'row',
-        height: 40,
+        height: scaleSize(40),
         backgroundColor: '#FFF',
         borderRadius: 5
     },
@@ -170,30 +170,30 @@ const styles = StyleSheet.create({
     },
     'search_image': {
         width: searchImageWidth,
-        height: 28
+        height: scaleSize(28)
     },
     'search_input': {
-        padding: 0,
-        fontSize: 14,
-        height: 40
+        padding: scaleSize(0),
+        fontSize: setSpText(14),
+        height: scaleSize(40)
     },
     'search_clear_wrap': {
         position: 'absolute',
-        right: 10,
-        width: 20,
-        height: 40,
+        right: scaleSize(10),
+        width: scaleSize(20),
+        height: scaleSize(40),
         alignItems: 'center'
     },
     'search_clear': {
-        width: 20,
-        height: 20,
-        top: 10
+        width: scaleSize(20),
+        height: scaleSize(20),
+        top: scaleSize(10)
     },
     'search_cancel': {
         position: 'absolute',
-        height: 40,
+        height: scaleSize(40),
         width: searchCancelWidth,
-        right: 0,
+        right: scaleSize(0),
         justifyContent: 'center',
         alignItems: 'center'
     }

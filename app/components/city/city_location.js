@@ -88,14 +88,14 @@ export default class CityLoctionComponent extends Component {
 
 const styles = StyleSheet.create({
     'container': {
-        paddingTop: 6,
-        paddingBottom: 6,
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingTop: scaleSize(6),
+        paddingBottom: scaleSize(6),
+        paddingLeft: scaleSize(15),
+        paddingRight: scaleSize(15),
         backgroundColor: '#FFF'
     },
     'city_item': {
-        height: 35,
+        height: scaleSize(35),
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#dedfe0',
         justifyContent: 'center',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     'city_txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#2d2d2d'
     }
 });

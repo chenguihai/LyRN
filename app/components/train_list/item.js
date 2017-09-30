@@ -52,18 +52,18 @@ export default class ListComponent extends Component {
                 return <Text 
                     key={index} 
                     style={{
-                        fontSize: 11,
-                        lineHeight: 11,
-                        marginLeft: 8,
+                        fontSize: setSpText(11),
+                        // lineHeight: scaleSize(11),
+                        marginLeft: scaleSize(8),
                         color: '#333'
                     }}
                 >{cn} ({seats})</Text>;
             }
 
             return <Text key={index} style={{
-                fontSize: 11,
-                lineHeight: 11,
-                marginLeft: 8,
+                fontSize: setSpText(11),
+                // lineHeight: scaleSize(11),
+                marginLeft: scaleSize(8),
                 color: '#ccc'
             }}
             >{cn} (无)</Text>;
@@ -110,8 +110,8 @@ export default class ListComponent extends Component {
                         {/* 始发时间 */}
                         <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: 20,
-                                lineHeight: 20,
+                                fontSize: setSpText(20),
+                                // lineHeight: scaleSize(20),
                                 color: '#333'
                             }}>{fmtime}</Text>
                         </View>
@@ -125,18 +125,18 @@ export default class ListComponent extends Component {
                         ]}>
                             <View style={styles.trainno}>
                                 <Text style={{
-                                    fontSize: 12,
-                                    lineHeight: 12,
+                                    fontSize: setSpText(12),
+                                    // lineHeight: scaleSize(12),
                                     color: '#333'
                                 }}>{trainno}</Text>
                                 {accbyidcard ? <View style={{
-                                    width: 4
+                                    width: scaleSize(4)
                                 }}></View> : null}
                                 {accbyidcard ? <Image
                                     resizeMode="cover"
                                     style={{
                                         width: cardScale * 12,
-                                        height: 12
+                                        height: scaleSize(12)
                                     }}
                                     source={require('../../images/idcard.png')}
                                 /> : null}
@@ -144,9 +144,9 @@ export default class ListComponent extends Component {
                             <Image
                                 resizeMode="cover"
                                 style={{
-                                    width: 61,
-                                    height: 61 / lineScale,
-                                    marginTop: 3
+                                    width: scaleSize(61),
+                                    height: scaleSize(61) / lineScale,
+                                    marginTop: scaleSize(3)
                                 }}
                                 source={require('../../images/right_line.png')}
                             />
@@ -154,8 +154,8 @@ export default class ListComponent extends Component {
                         {/* 达到时间 */}
                         <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: 20,
-                                lineHeight: 20,
+                                fontSize: setSpText(20),
+                                // lineHeight: scaleSize(20),
                                 color: '#333'
                             }}>{totime}</Text>
                         </View>
@@ -172,24 +172,24 @@ export default class ListComponent extends Component {
                         {/* 始发站点 */}
                         <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: 14,
-                                lineHeight: 14,
+                                fontSize: setSpText(14),
+                                // lineHeight: scaleSize(14),
                                 color: '#333'
                             }}>{fmcity}</Text>
                         </View>
                         {/* 行程总时间 */}
                         <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
+                                fontSize: setSpText(12),
+                                // lineHeight: scaleSize(12),
                                 color: '#999',
                             }}>{usedtime}</Text>
                         </View>
                         {/* 到达站点 */}
                         <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: 14,
-                                lineHeight: 14,
+                                fontSize: setSpText(14),
+                                // lineHeight: scaleSize(14),
                                 color: '#333'
                             }}>{tocity}</Text>
                         </View>
@@ -200,15 +200,15 @@ export default class ListComponent extends Component {
                                 alignItems: 'flex-end',
                             }}>
                                 <Text style={{
-                                    fontSize: 12,
+                                    fontSize: setSpText(12),
                                     color: '#ff5346',
                                 }}>¥</Text>
                                 <Text style={{
-                                    fontSize: 18,
+                                    fontSize: setSpText(20),
                                     color: '#ff5346',
                                 }}>{Math.min.apply({}, priceMap)}</Text>
                                 <Text style={{
-                                    fontSize: 12,
+                                    fontSize: setSpText(12),
                                     color: '#ff5346',
                                 }}>起</Text>
                             </View>
@@ -318,12 +318,12 @@ export default class ListComponent extends Component {
         if (Platform.OS === 'ios') {
             return (
                 <View style={{
-                    marginLeft: 5,
-                    marginRight: 5,
-                    marginBottom: 5,
+                    marginLeft: scaleSize(5),
+                    marginRight: scaleSize(5),
+                    marginBottom: scaleSize(5),
                     shadowColor: 'rgba(153,153,153,.2)',
-                    shadowOffset: { width: 1, 
-                        height: 2 },
+                    shadowOffset: { width: scaleSize(1), 
+                        height: scaleSize(2) },
                     shadowRadius: 4,
                     shadowOpacity: 1,
                     borderRadius: 4
@@ -341,8 +341,8 @@ export default class ListComponent extends Component {
                 style={{
                     backgroundColor: '#FFF',
                     width: viewWidth - 10,
-                    marginLeft: 5,
-                    marginBottom: 3
+                    marginLeft: scaleSize(5),
+                    marginBottom: scaleSize(3)
                 }}
             >
                 {this._renderContent()}
@@ -353,8 +353,8 @@ export default class ListComponent extends Component {
 
 const styles = StyleSheet.create({
     'train_info': {
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingTop: scaleSize(15),
+        paddingBottom: scaleSize(15),
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#eee',
         backgroundColor: '#FFF',
@@ -376,15 +376,15 @@ const styles = StyleSheet.create({
     'train_seats': {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingLeft: 15,
+        paddingLeft: scaleSize(15),
         ...Platform.select({
             ios: {
-                bottom: 0,
+                bottom: scaleSize(0),
                 backgroundColor: 'transparent'
             },
             android: {
                 position: 'relative',
-                bottom: 4,
+                bottom: scaleSize(4),
                 backgroundColor: '#FFF'
             }
         })

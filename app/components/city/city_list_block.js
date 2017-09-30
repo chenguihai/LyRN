@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     'item': {
-        height: 35,
+        height: scaleSize(35),
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#dedfe0',
         alignItems: 'center',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     'txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#2d2d2d'
     }
 });

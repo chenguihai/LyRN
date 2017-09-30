@@ -27,12 +27,12 @@ export default class GetFreeComponent extends Component {
                 <Image 
                     source={require('../../images/getfree.png')}
                     style={{
-                        width: 28,
-                        height: 28
+                        width: scaleSize(28),
+                        height: scaleSize(28)
                     }}
                 />
                 <View style={{
-                    marginLeft: 10
+                    marginLeft: scaleSize(10)
                 }}>
                     <View style={{
                         flexDirection: 'row',
@@ -40,28 +40,28 @@ export default class GetFreeComponent extends Component {
                         alignItems: 'center'
                     }}>
                         <Text style={{
-                            fontSize: 16,
-                            lineHeight: 16,
+                            fontSize: setSpText(16),
+                            lineHeight: scaleSize(16),
                             color: '#666'
                         }}>一元免单</Text>
                         <View style={{
-                            marginLeft: 24,
-                            paddingTop: 2,
-                            paddingBottom: 2,
-                            paddingLeft: 5,
-                            paddingRight: 5,
+                            marginLeft: scaleSize(24),
+                            paddingTop: scaleSize(2),
+                            paddingBottom: scaleSize(2),
+                            paddingLeft: scaleSize(5),
+                            paddingRight: scaleSize(5),
                             borderColor: '#FF6540',
                             borderWidth: StyleSheet.hairlineWidth
                         }}>
                             <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
+                                fontSize: setSpText(12),
+                                lineHeight: scaleSize(12),
                                 color: '#FF6540'
                             }}>热卖</Text>
                         </View>
                     </View>
                     <Text style={{
-                        fontSize: 12,
+                        fontSize: setSpText(12),
                         color: '#999'
                     }}>支付一元赢订单全额免费</Text>
                 </View>
@@ -76,9 +76,9 @@ export default class GetFreeComponent extends Component {
                 alignItems: 'center'
             }}>
                 <Text style={{
-                    fontSize: 16,
+                    fontSize: setSpText(16),
                     color: '#999',
-                    marginRight: 8
+                    marginRight: scaleSize(8)
                 }}>
                     ¥1/人
                 </Text>
@@ -100,8 +100,8 @@ export default class GetFreeComponent extends Component {
                     list: [
                         {
                             style: {
-                                paddingTop: 15,
-                                paddingBottom: 10,
+                                paddingTop: scaleSize(15),
+                                paddingBottom: scaleSize(10),
                                 height: 'auto'
                             },
                             title: this._renderTitle(),

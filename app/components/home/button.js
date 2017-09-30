@@ -32,8 +32,8 @@ export default class ButtonComponent extends Component {
         return (
             <View style={{
                 alignItems: 'center',
-                marginTop: 13,
-                marginBottom: 13
+                marginTop: scaleSize(13),
+                marginBottom: scaleSize(13)
             }}>
                 <TouchableOpacity
                     onPress={this.handlePress}
@@ -42,7 +42,7 @@ export default class ButtonComponent extends Component {
                         style={[
                             styles.button,
                             {
-                                width: width * 0.86,
+                                width: scaleSize(width * 0.86),
                                 position: 'relative'
                             }
                         ]}
@@ -59,15 +59,15 @@ const styles = StyleSheet.create({
     'button': {
         justifyContent: 'center',
         alignItems: 'center',
-        height: 45,
-        // marginTop: 13,
-        // marginBottom: 13,
+        height: scaleSize(45),
+        // marginTop: scaleSize(13),
+        // marginBottom: scaleSize(13),
         backgroundColor: '#28c54d',
         borderRadius: 22.5
     },
     'txt': {
         color: '#FFF',
-        fontSize: 18,
+        fontSize: setSpText(18),
         fontWeight: '700'
     }
 });

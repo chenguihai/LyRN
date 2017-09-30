@@ -65,18 +65,18 @@ export default class CityListComponent extends Component {
 
 const styles = StyleSheet.create({
     'container': {
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: scaleSize(15),
+        paddingRight: scaleSize(15),
         backgroundColor: '#FFF'
     },
     'row': {
-        height: 35,
+        height: scaleSize(35),
         justifyContent: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#eee'
     },
     'txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#2d2d2d',
     }
 });

@@ -24,13 +24,13 @@ export default class ContactComponent extends Component {
                 flexDirection: 'row'
             }}>
                 <View style={{
-                    width: 18,
-                    height: 18
+                    width: scaleSize(18),
+                    height: scaleSize(18)
                 }}>
                     <View
                         style={{
-                            width: 2,
-                            height: 18,
+                            width: scaleSize(2),
+                            height: scaleSize(18),
                             backgroundColor: '#3C6',
                             position: 'absolute',
                             left: 8
@@ -38,8 +38,8 @@ export default class ContactComponent extends Component {
                     ></View>
                     <View
                         style={{
-                            width: 18,
-                            height: 2,
+                            width: scaleSize(18),
+                            height: scaleSize(2),
                             backgroundColor: '#3C6',
                             position: 'absolute',
                             top: 8
@@ -48,9 +48,9 @@ export default class ContactComponent extends Component {
                 </View>
                 <Text style={{
                     color: '#3C6',
-                    fontSize: 16,
-                    lineHeight: 16,
-                    marginLeft: 15,
+                    fontSize: setSpText(16),
+                    // lineHeight: scaleSize(16),
+                    marginLeft: scaleSize(15),
                     marginTop: Platform.OS === 'ios' ? 2 : 0
                 }}>
                     添加/修改乘客
@@ -71,11 +71,11 @@ export default class ContactComponent extends Component {
                     keyboardType="numeric"
                     maxLength={11}
                     style={{
-                        padding: 0,
-                        fontSize: 16,
-                        lineHeight: 16,
-                        height: 44,
-                        marginLeft: 15
+                        padding: scaleSize(0),
+                        fontSize: setSpText(16),
+                        // lineHeight: scaleSize(16),
+                        height: scaleSize(44),
+                        marginLeft: scaleSize(15)
                     }}
                 />
             </View>

@@ -30,17 +30,17 @@ export default class TrainInfoComponent extends Component {
 
         return (
             <View style={{
-                height: 100,
+                height: scaleSize(100),
                 flexDirection: 'row'
             }}>
                 <Image 
                     source={require('../../images/ticketsInfo.png')}
                     resizeMode="cover"
                     style={{
-                        height: 100,
+                        height: scaleSize(100),
                         position: 'absolute',
-                        top: 0,
-                        left: 0
+                        top: scaleSize(0),
+                        left: scaleSize(0)
                     }}
                 />
                 <View style={[
@@ -82,15 +82,15 @@ export default class TrainInfoComponent extends Component {
                         <View style={styles.line}>
                         </View>
                         <View style={{
-                            width: 58,
-                            height: 17,
+                            width: scaleSize(58),
+                            height: scaleSize(17),
                             borderColor: '#FFF',
                             borderWidth: StyleSheet.hairlineWidth,
                             alignItems: 'center',
                             justifyContent: 'center'
                         }}>
                             <Text style={{
-                                fontSize: 12,
+                                fontSize: setSpText(12),
                                 color: '#FFF'
                             }}>经停信息</Text>
                         </View>
@@ -101,7 +101,7 @@ export default class TrainInfoComponent extends Component {
                             }
                         ]}>
                             <View style={{
-                                width: 6,
+                                width: scaleSize(6),
                                 height: StyleSheet.hairlineWidth,
                                 backgroundColor: '#FFF',
                                 position: 'relative',
@@ -153,44 +153,44 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     side: {
-        paddingTop: 15,
-        paddingLeft: 20,
-        paddingRight: 20
+        paddingTop: scaleSize(15),
+        paddingLeft: scaleSize(20),
+        paddingRight: scaleSize(20)
     },
     center: {
         alignItems: 'center',
-        paddingTop: 30,
+        paddingTop: scaleSize(30),
     },
     city: {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: setSpText(14),
+        lineHeight: scaleSize(14),
         color: '#FFF',
-        marginBottom: 9,
+        marginBottom: scaleSize(9),
     },
     time: {
-        fontSize: 30,
-        lineHeight: 30,
+        fontSize: setSpText(30),
+        lineHeight: scaleSize(30),
         color: '#FFF',
-        marginBottom: 6,
+        marginBottom: scaleSize(6),
     },
     date: {
         flexDirection: 'row'
     },
     datetime: {
         color: '#FFF',
-        fontSize: 12,
-        lineHeight: 12
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12)
     },
     weekDay: {
-        marginLeft: 6
+        marginLeft: scaleSize(6)
     },
     trainno: {
         color: '#FFF',
-        fontSize: 12,
-        marginBottom: 6
+        fontSize: setSpText(12),
+        marginBottom: scaleSize(6)
     },
     line: {
-        width: 16,
+        width: scaleSize(16),
         height: StyleSheet.hairlineWidth,
         backgroundColor: '#FFF'
     }

@@ -1,5 +1,9 @@
 import Storage from 'react-native-storage';
-import { AsyncStorage } from 'react-native';
+import { 
+    AsyncStorage,
+    Dimensions,
+    PixelRatio
+} from 'react-native';
 
 const storage = new Storage({
     // 最大容量，默认值1000条数据循环存储
@@ -27,3 +31,27 @@ const storage = new Storage({
 
 // 全局范围内创建一个（且只有一个）storage实例，方便直接调用
 global.Storage = storage;
+
+// px 转换成dp
+
+const deviceWidth = Dimensions.get('window').width; // 设备的宽度
+const deviceHeight = Dimensions.get('window').height; // 设备的高度
+const fontScale = PixelRatio.getFontScale(); // 返回字体大小缩放比例
+
+const pixelRatio = PixelRatio.get(); // 当前设备的像素密度
+const defaultPixel = 2; // iphone6的像素密度
+const w2 = 750 / defaultPixel;
+const h2 = 1334 / defaultPixel;
+const scale = Math.min(deviceHeight / h2, deviceWidth / w2); // 获取缩放比例
+
+global.setSpText = function(size) {
+    const s = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
+    
+    return s / defaultPixel;
+};
+
+global.scaleSize = function(size) {
+    const s = Math.round(size * scale * 2 + 0.5);
+
+    return s / defaultPixel;
+};

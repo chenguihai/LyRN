@@ -1,12 +1,10 @@
-/* eslint-disable no-multi-assign,id-length,no-empty-function */
-
 import {
     findNodeHandle,
     UIManager
 } from 'react-native';
 import lodash from './lodash.custom.min.js';
 
-const Util = () => {};
+const Util = () => { };
 const class2type = {},
     { toString } = class2type;
 

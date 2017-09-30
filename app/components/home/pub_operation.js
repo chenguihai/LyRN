@@ -56,15 +56,15 @@ export default class PubOperationComponent extends Component {
                     index={0}
                     loop={false}
                     dotStyle={{
-                        width: 6,
-                        height: 6
+                        width: scaleSize(6),
+                        height: scaleSize(6)
                     }}
                     activeDotStyle={{
-                        width: 6,
-                        height: 6
+                        width: scaleSize(6),
+                        height: scaleSize(6)
                     }}
                     paginationStyle={{
-                        bottom: 0
+                        bottom: scaleSize(0)
                     }}
                     activeDotColor="#10ce10"
                 >
@@ -77,27 +77,27 @@ export default class PubOperationComponent extends Component {
 
 const styles = StyleSheet.create({
     wrap: {
-        marginTop: 10,
-        paddingBottom: 10,
+        marginTop: scaleSize(10),
+        paddingBottom: scaleSize(10),
         backgroundColor: '#FFF',
-        marginBottom: 20    
+        marginBottom: scaleSize(20)    
     },
     title: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: 15,
-        paddingBottom: 15
+        paddingTop: scaleSize(15),
+        paddingBottom: scaleSize(15)
     },
     'title_txt': {
-        fontSize: 11,
-        lineHeight: 11,
+        fontSize: setSpText(11),
+        lineHeight: scaleSize(11),
         color: '#999',
-        marginRight: 8,
-        marginLeft: 8
+        marginRight: scaleSize(8),
+        marginLeft: scaleSize(8)
     },
     line: {
-        width: 30,
+        width: scaleSize(30),
         backgroundColor: '#ccc',
         height: StyleSheet.hairlineWidth
     },
@@ -109,13 +109,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        width: 30,
-        height: 30
+        width: scaleSize(30),
+        height: scaleSize(30)
     },
     'slide_txt': {
-        fontSize: 12,
-        lineHeight: 12,
-        marginTop: 5,
+        fontSize: setSpText(12),
+        lineHeight: scaleSize(12),
+        marginTop: scaleSize(5),
         color: '#666'
     }
 });

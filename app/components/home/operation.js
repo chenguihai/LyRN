@@ -45,7 +45,7 @@ export default class OperationComponent extends Component {
 const styles = StyleSheet.create({
     box: {
         marginTop: -15,
-        paddingBottom: 22
+        paddingBottom: scaleSize(22)
     },
     row: {
         flexDirection: 'row'
@@ -53,23 +53,23 @@ const styles = StyleSheet.create({
     'row_item': {
         flex: 1,
         alignItems: 'center',
-        marginTop: 20
+        marginTop: scaleSize(20)
     },
     image: {
-        width: 24,
-        height: 24
+        width: scaleSize(24),
+        height: scaleSize(24)
     },
     'sub_image': {
         position: 'absolute',
-        width: 31,
-        height: 14,
-        right: 3,
+        width: scaleSize(31),
+        height: scaleSize(14),
+        right: scaleSize(3),
         top: -5
     },
     txt: {
-        fontSize: 11,
+        fontSize: setSpText(11),
         color: '#666',
-        marginTop: 5,
-        lineHeight: 11,
+        marginTop: scaleSize(5),
+        lineHeight: scaleSize(11),
     }
 });

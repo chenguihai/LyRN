@@ -37,7 +37,7 @@ class TrainInfoComponent extends Component {
                     source={require('../../images/trainBookTop.jpg')}
                     style={{
                         position: 'absolute',
-                        height: 138,
+                        height: scaleSize(138),
                         width,
                         top: 0,
                         left: 0
@@ -48,7 +48,7 @@ class TrainInfoComponent extends Component {
                     styles.item,
                     {
                         alignItems: 'flex-end',
-                        paddingRight: 6
+                        paddingRight: scaleSize(6)
                     }
                 ]}>
                     <Text style={styles.station}>
@@ -84,7 +84,7 @@ class TrainInfoComponent extends Component {
                     <View style={[
                         styles.stopInfo,
                         {
-                            marginTop: 5
+                            marginTop: scaleSize(5)
                         }
                     ]}>
                         <View style={styles.stopInfoLine}>
@@ -94,10 +94,10 @@ class TrainInfoComponent extends Component {
                             borderColor: '#FFF'
                         }}>
                             <Text style={{
-                                fontSize: 14,
-                                lineHeight: 14,
+                                fontSize: setSpText(14),
+                                // lineHeight: 14,
                                 color: '#FFF',
-                                paddingBottom: 2
+                                paddingBottom: scaleSize(2)
                             }}>
                                 经停信息
                             </Text>
@@ -113,7 +113,7 @@ class TrainInfoComponent extends Component {
                     styles.item,
                     {
                         alignItems: 'flex-start',
-                        paddingLeft: 6
+                        paddingLeft: scaleSize(6)
                     }
                 ]}>
                     <Text style={styles.station}>
@@ -141,51 +141,50 @@ class TrainInfoComponent extends Component {
         );
     }
 }
-
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        paddingTop: 15,
-        paddingBottom: 15,
-        height: 138,
+        paddingTop: scaleSize(15),
+        paddingBottom: scaleSize(15),
+        height: scaleSize(138),
         backgroundColor: 'transparent'
     },
     item: {
         flex: 1
     },
     station: {
-        fontSize: 17,
-        lineHeight: 17,
-        paddingBottom: 10,
+        fontSize: setSpText(17),
+        lineHeight: setSpText(17),
+        paddingBottom: scaleSize(10),
         color: '#FFF'
     },
     stationTime: {
-        fontSize: 30,
-        lineHeight: 30,
-        paddingBottom: 12,
+        fontSize: setSpText(30),
+        lineHeight: setSpText(30),
+        paddingBottom: scaleSize(12),
         color: '#FFF'
     },
     stationDateContainer: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        marginBottom: 12
+        marginBottom: scaleSize(12)
     },
     stationDate: {
-        fontSize: 13,
-        lineHeight: 13,
+        fontSize: setSpText(13),
+        lineHeight: setSpText(13),
         color: '#FFF'
     },
     stationDate1: {
-        marginLeft: 10
+        marginLeft: scaleSize(10)
     },
     trainNo: {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: setSpText(14),
+        lineHeight: setSpText(14),
         color: '#FFF'
     },
     usedtime: {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: setSpText(14),
+        lineHeight: setSpText(14),
         color: '#FFF'
     },
     stopInfo: {
@@ -193,13 +192,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     stopInfoLine: {
-        width: 20,
+        width: scaleSize(20),
         height: StyleSheet.hairlineWidth,
         backgroundColor: '#FFF'
     },
     price: {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: setSpText(14),
+        lineHeight: setSpText(14),
         color: '#FFF',
         position: 'absolute',
         bottom: 0

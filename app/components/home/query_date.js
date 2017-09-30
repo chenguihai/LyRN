@@ -45,9 +45,9 @@ export default class QueryDateComponent extends Component {
 
 const styles = StyleSheet.create({
     'query_date': {
-        marginLeft: 15,
-        marginRight: 15,
-        minHeight: 61,
+        marginLeft: scaleSize(15),
+        marginRight: scaleSize(15),
+        minHeight: scaleSize(61),
         alignItems: 'flex-start',
         justifyContent: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
@@ -58,13 +58,13 @@ const styles = StyleSheet.create({
         alignItems: 'baseline'
     },
     date: {
-        fontSize: 25,
+        fontSize: setSpText(25),
         color: '#333',
-        lineHeight: 25,
+        lineHeight: scaleSize(25),
         fontWeight: 'normal'
     },
     'date_txt': {
         color: '#999',
-        fontSize: 14
+        fontSize: setSpText(14)
     },
 });

@@ -23,13 +23,13 @@ export default class NoticeComponent extends Component {
 const styles = StyleSheet.create({
     notice: {
         alignItems: 'center',
-        fontSize: 11,
+        fontSize: setSpText(11),
         backgroundColor: '#fff7dc',
         color: '#9a7126',
-        paddingTop: 5,
-        paddingBottom: 5,
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingTop: scaleSize(5),
+        paddingBottom: scaleSize(5),
+        paddingLeft: scaleSize(15),
+        paddingRight: scaleSize(15),
         
     },
 });

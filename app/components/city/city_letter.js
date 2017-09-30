@@ -106,12 +106,12 @@ export default class CityLetterComponent extends Component {
 const styles = StyleSheet.create({
     'container': {
         backgroundColor: '#FFF',
-        marginBottom: 15,
+        marginBottom: scaleSize(15),
         flexDirection: 'row',
         flexWrap: 'wrap'
     },
     'item': {
-        height: 35,
+        height: scaleSize(35),
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: StyleSheet.hairlineWidth,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     'txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#2d2d2d'
     }
 });

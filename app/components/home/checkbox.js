@@ -67,13 +67,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     'checkbox_txt': {
-        fontSize: 14,
-        lineHeight: 18,
+        fontSize: setSpText(14),
+        lineHeight: scaleSize(18),
         color: '#2d2d2d'
     },
     'checkbox_image': {
-        width: 18,
-        height: 18,
-        marginLeft: 3
+        width: scaleSize(18),
+        height: scaleSize(18),
+        marginLeft: scaleSize(3)
     }
 });

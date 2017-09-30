@@ -36,14 +36,14 @@ export default class OnlineSelectSeatPage extends Component {
                 <Image 
                     source={require('../images/icon_add.png')}
                     style={{
-                        width: 18,
-                        height: 18
+                        width: scaleSize(18),
+                        height: scaleSize(18)
                     }}
                 />
                 <Text style={{
-                    fontSize: 16,
+                    fontSize: setSpText(16),
                     color: '#3c6',
-                    marginLeft: 5
+                    marginLeft: scaleSize(5)
                 }}>添加乘客</Text>
             </View>
         );
@@ -53,10 +53,10 @@ export default class OnlineSelectSeatPage extends Component {
         return (
             <TextInput 
                 style={{
-                    padding: 0,
+                    padding: scaleSize(0),
                     flex: 1,
-                    marginLeft: 20,
-                    fontSize: 16,
+                    marginLeft: scaleSize(20),
+                    fontSize: setSpText(16),
                     color: '#333'
                 }}
                 maxLength={11}
@@ -74,7 +74,7 @@ export default class OnlineSelectSeatPage extends Component {
                 height: Platform.OS === 'ios' ? 44 : 50,
                 alignItems: 'center',
                 flexDirection: 'row',
-                paddingLeft: 15
+                paddingLeft: scaleSize(15)
             }}>
                 {isHot
                     ? <Image 
@@ -83,23 +83,23 @@ export default class OnlineSelectSeatPage extends Component {
                         }
                         style={{
                             position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: 27,
-                            height: 27,
+                            top: scaleSize(0),
+                            left: scaleSize(0),
+                            width: scaleSize(27),
+                            height: scaleSize(27),
                             borderTopLeftRadius: 3
                         }}
                     />
                     : null
                 }
                 <Text style={{
-                    fontSize: 16,
+                    fontSize: setSpText(16),
                     color: '#666'
                 }}>{title}</Text>
                 <Text style={{
-                    fontSize: 16,
+                    fontSize: setSpText(16),
                     color: '#ccc',
-                    marginLeft: 20
+                    marginLeft: scaleSize(20)
                 }}>{after}</Text>
             </View>
         );
@@ -108,29 +108,29 @@ export default class OnlineSelectSeatPage extends Component {
     renderTitle3() {
         return (
             <View style={{
-                paddingTop: 11,
-                paddingBottom: 11,
+                paddingTop: scaleSize(11),
+                paddingBottom: scaleSize(11),
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
                 <Image 
                     source={require('../images/getfree.png')}
                     style={{
-                        width: 25,
-                        height: 25
+                        width: scaleSize(25),
+                        height: scaleSize(25)
                     }}
                 />
                 <View style={{
-                    marginLeft: 15
+                    marginLeft: scaleSize(15)
                 }}>
                     <Text style={{
-                        fontSize: 16,
+                        fontSize: setSpText(16),
                         color: '#333'
                     }}>
                         保证达
                     </Text>
                     <Text style={{
-                        fontSize: 12,
+                        fontSize: setSpText(12),
                         color: '#999'
                     }}>
                         车票配送遗失、延误，赔付损失
@@ -176,13 +176,13 @@ export default class OnlineSelectSeatPage extends Component {
                             list: [
                                 {
                                     style: {
-                                        paddingLeft: 0
+                                        paddingLeft: scaleSize(0)
                                     },
                                     title: this.renderTitle2('指定座位', '请指定座位', true)
                                 }, 
                                 {
                                     style: {
-                                        paddingLeft: 0
+                                        paddingLeft: scaleSize(0)
                                     },
                                     title: this.renderTitle2('取票方式', '指定取票方式')
                                 }

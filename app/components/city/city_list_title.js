@@ -33,13 +33,13 @@ export default class CityListTitle extends Component {
 const styles = StyleSheet.create({
     'title': {
         backgroundColor: '#e9ecf1',
-        paddingLeft: 15,
+        paddingLeft: scaleSize(15),
         justifyContent: 'center',
-        height: 35
+        height: scaleSize(35)
     },
     'title_txt': {
-        fontSize: 14,
-        lineHeight: 14,
+        fontSize: setSpText(14),
+        lineHeight: scaleSize(14),
         color: '#999'
     }
 });

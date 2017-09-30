@@ -23,12 +23,12 @@ export default class BannerComponent extends Component {
                 height={bannerHeight} 
                 autoplay={false} 
                 dotStyle={{
-                    width: 6,
-                    height: 6
+                    width: scaleSize(6),
+                    height: scaleSize(6)
                 }}
                 activeDotStyle={{
-                    width: 6,
-                    height: 6
+                    width: scaleSize(6),
+                    height: scaleSize(6)
                 }}
                 paginationStyle={styles.paginationStyle}
                 activeDotColor="#f63"
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     paginationStyle: {
-        bottom: bannerHeight * 0.06
+        bottom: scaleSize(bannerHeight * 0.06)
     }
 });

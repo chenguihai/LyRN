@@ -42,8 +42,8 @@ export default class SeatsListComponent extends Component {
                 >
                     <View style={styles.seats_box}>
                         <Text style={{
-                            fontSize: 14,
-                            lineHeight: 14,
+                            fontSize: setSpText(16),
+                            // lineHeight: 14,
                             color: '#333'
                         }}>{cn}</Text>
                     </View>
@@ -53,21 +53,21 @@ export default class SeatsListComponent extends Component {
                             alignItems: 'baseline'
                         }}>
                             <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
+                                fontSize: setSpText(12),
+                                // lineHeight: 12,
                                 color: '#FF6540'
                             }}>¥</Text>
                             <Text style={{
-                                fontSize: 16,
-                                lineHeight: 16,
+                                fontSize: setSpText(16),
+                                // lineHeight: 16,
                                 color: '#FF6540'
                             }}>{price}</Text>
                         </View>
                     </View>
                     <View style={styles.seats_box}>
                         <Text style={{
-                            fontSize: 14,
-                            lineHeight: 14,
+                            fontSize: setSpText(14),
+                            // lineHeight: 14,
                             color: 'rgb(170, 170, 170)'
                         }}>{seats} 张</Text>
                     </View>
@@ -88,8 +88,8 @@ export default class SeatsListComponent extends Component {
                             }}
                         >
                             <Text style={{
-                                fontSize: 12,
-                                lineHeight: 12,
+                                fontSize: setSpText(14),
+                                // lineHeight: 12,
                                 color: '#FFF'
                             }}>{seats > 0 ? '预定' : '抢票'}</Text>
                         </TouchableOpacity>

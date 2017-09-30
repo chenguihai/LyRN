@@ -118,7 +118,7 @@ export default class TrainOrderPage extends Component {
                 }}>
                     <Text style={{
                         color: '#FFF',
-                        fontSize: 18,
+                        fontSize: setSpText(18),
                         fontWeight: 'bold'
                     }}>提交订单</Text>
                 </View>
