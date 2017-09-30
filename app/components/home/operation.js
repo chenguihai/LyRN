@@ -44,7 +44,7 @@ export default class OperationComponent extends Component {
 
 const styles = StyleSheet.create({
     box: {
-        marginTop: -15,
+        marginTop: -scaleSize(15),
         paddingBottom: scaleSize(22)
     },
     row: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         width: scaleSize(31),
         height: scaleSize(14),
         right: scaleSize(3),
-        top: -5
+        top: -scaleSize(5)
     },
     txt: {
         fontSize: setSpText(11),

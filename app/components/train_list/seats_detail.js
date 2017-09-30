@@ -79,8 +79,8 @@ export default class SeatsListComponent extends Component {
                                 });
                             }} 
                             style={{
-                                width: 56,
-                                height: 30,
+                                width: scaleSize(56),
+                                height: scaleSize(30),
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 borderRadius: 3,
@@ -121,14 +121,14 @@ export default class SeatsListComponent extends Component {
 const styles = StyleSheet.create({
     'seats_list': {
         flexDirection: 'row',
-        height: 51,
+        height: scaleSize(51),
         alignItems: 'center',
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#dcdcdc',
         ...Platform.select({
             android: {
                 position: 'relative',
-                bottom: 4.5
+                bottom: scaleSize(4.5)
             }
         })
     },

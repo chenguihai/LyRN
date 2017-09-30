@@ -33,9 +33,9 @@ export default class SfzMaskComponent extends Component {
                     <Image 
                         source={require('../../images/identity_guide.png')}
                         style={{
-                            width: 228,
-                            height: 272,
-                            marginTop: height * 0.1
+                            width: scaleSize(228),
+                            height: scaleSize(272),
+                            marginTop: scaleSize(height * 0.1)
                         }}
                     />
                     <TouchableOpacity
@@ -48,9 +48,9 @@ export default class SfzMaskComponent extends Component {
                         <Image 
                             source={require('../../images/Iknow.png')}
                             style={{
-                                width: 115,
-                                height: 50,
-                                marginTop: height * 0.2
+                                width: scaleSize(115),
+                                height: scaleSize(50),
+                                marginTop: scaleSize(height * 0.2)
                             }}
                         />
                     </TouchableOpacity>

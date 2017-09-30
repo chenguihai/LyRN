@@ -141,18 +141,18 @@ const styles = StyleSheet.create({
     },
     seatName: {
         fontSize: setSpText(12),
-        lineHeight: scaleSize(12),
+        lineHeight: setSpText(12),
         color: '#333'
     },
     price: {
         fontSize: setSpText(12),
-        lineHeight: scaleSize(12),
+        lineHeight: setSpText(12),
         marginTop: scaleSize(8),
         color: '#ff6540'
     },
     number: {
         fontSize: setSpText(12),
-        lineHeight: scaleSize(12),
+        lineHeight: setSpText(12),
         marginTop: scaleSize(8),
         color: '#333'
     }

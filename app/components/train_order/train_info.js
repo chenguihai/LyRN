@@ -95,9 +95,9 @@ class TrainInfoComponent extends Component {
                         }}>
                             <Text style={{
                                 fontSize: setSpText(14),
-                                // lineHeight: 14,
+                                lineHeight: setSpText(14),
                                 color: '#FFF',
-                                paddingBottom: scaleSize(2)
+                                // paddingBottom: scaleSize(2)
                             }}>
                                 经停信息
                             </Text>

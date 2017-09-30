@@ -53,7 +53,7 @@ export default class ListComponent extends Component {
                     key={index} 
                     style={{
                         fontSize: setSpText(11),
-                        // lineHeight: scaleSize(11),
+                        // lineHeight: setSpText(11),
                         marginLeft: scaleSize(8),
                         color: '#333'
                     }}
@@ -62,7 +62,7 @@ export default class ListComponent extends Component {
 
             return <Text key={index} style={{
                 fontSize: setSpText(11),
-                // lineHeight: scaleSize(11),
+                // lineHeight: setSpText(11),
                 marginLeft: scaleSize(8),
                 color: '#ccc'
             }}
@@ -111,7 +111,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <Text style={{
                                 fontSize: setSpText(20),
-                                // lineHeight: scaleSize(20),
+                                // lineHeight: setSpText(20),
                                 color: '#333'
                             }}>{fmtime}</Text>
                         </View>
@@ -126,7 +126,7 @@ export default class ListComponent extends Component {
                             <View style={styles.trainno}>
                                 <Text style={{
                                     fontSize: setSpText(12),
-                                    // lineHeight: scaleSize(12),
+                                    // lineHeight: setSpText(12),
                                     color: '#333'
                                 }}>{trainno}</Text>
                                 {accbyidcard ? <View style={{
@@ -155,7 +155,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <Text style={{
                                 fontSize: setSpText(20),
-                                // lineHeight: scaleSize(20),
+                                // lineHeight: setSpText(20),
                                 color: '#333'
                             }}>{totime}</Text>
                         </View>
@@ -173,7 +173,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <Text style={{
                                 fontSize: setSpText(14),
-                                // lineHeight: scaleSize(14),
+                                // lineHeight: setSpText(14),
                                 color: '#333'
                             }}>{fmcity}</Text>
                         </View>
@@ -181,7 +181,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <Text style={{
                                 fontSize: setSpText(12),
-                                // lineHeight: scaleSize(12),
+                                // lineHeight: setSpText(12),
                                 color: '#999',
                             }}>{usedtime}</Text>
                         </View>
@@ -189,7 +189,7 @@ export default class ListComponent extends Component {
                         <View style={styles.info_item}>
                             <Text style={{
                                 fontSize: setSpText(14),
-                                // lineHeight: scaleSize(14),
+                                // lineHeight: setSpText(14),
                                 color: '#333'
                             }}>{tocity}</Text>
                         </View>
@@ -340,7 +340,7 @@ export default class ListComponent extends Component {
                 cornerRadius={5}
                 style={{
                     backgroundColor: '#FFF',
-                    width: viewWidth - 10,
+                    width: scaleSize(viewWidth - 10),
                     marginLeft: scaleSize(5),
                     marginBottom: scaleSize(3)
                 }}
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
         paddingLeft: scaleSize(15),
         ...Platform.select({
             ios: {
-                bottom: scaleSize(0),
+                bottom: 0,
                 backgroundColor: 'transparent'
             },
             android: {

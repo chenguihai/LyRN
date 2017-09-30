@@ -71,25 +71,31 @@ export default class OnlineSelectSeatPage extends Component {
     renderTitle2(title, after, isHot = false) {
         return (
             <View style={{
-                height: Platform.OS === 'ios' ? 44 : 50,
+                height: Platform.OS === 'ios' ? scaleSize(44) : scaleSize(50),
                 alignItems: 'center',
                 flexDirection: 'row',
                 paddingLeft: scaleSize(15)
             }}>
                 {isHot
-                    ? <Image 
-                        source={
-                            require('../images/icon_hot.png')
-                        }
-                        style={{
-                            position: 'absolute',
-                            top: scaleSize(0),
-                            left: scaleSize(0),
-                            width: scaleSize(27),
-                            height: scaleSize(27),
-                            borderTopLeftRadius: 3
-                        }}
-                    />
+                    ? <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: scaleSize(27),
+                        height: scaleSize(27),
+                        borderTopLeftRadius: 3,
+                        overflow: 'hidden'
+                    }}>
+                        <Image 
+                            source={
+                                require('../images/icon_hot.png')
+                            }
+                            style={{
+                                width: scaleSize(27),
+                                height: scaleSize(27)
+                            }}
+                        />
+                    </View>
                     : null
                 }
                 <Text style={{

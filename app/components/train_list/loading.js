@@ -25,9 +25,9 @@ export default class LoadingComponent extends Component {
                 <Image
                     source={require('../../images/gif-loading.gif')}
                     style={{
-                        width: 150,
-                        height: 150,
-                        marginTop: -75
+                        width: scaleSize(150),
+                        height: scaleSize(150),
+                        marginTop: -scaleSize(75)
                     }}
                 />
             </View>

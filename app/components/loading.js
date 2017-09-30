@@ -48,7 +48,7 @@ export default class LoadingComponent extends Component {
                         }}
                     />
                     <Text style={{
-                        fontSize: 14,
+                        fontSize: setSpText(14),
                         color: '#FFF',
                         marginTop: width * 0.03
                     }}>加载中...</Text>

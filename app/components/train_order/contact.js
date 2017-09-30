@@ -49,7 +49,7 @@ export default class ContactComponent extends Component {
                 <Text style={{
                     color: '#3C6',
                     fontSize: setSpText(16),
-                    // lineHeight: scaleSize(16),
+                    // lineHeight: setSpText(16),
                     marginLeft: scaleSize(15),
                     marginTop: Platform.OS === 'ios' ? 2 : 0
                 }}>
@@ -73,7 +73,7 @@ export default class ContactComponent extends Component {
                     style={{
                         padding: scaleSize(0),
                         fontSize: setSpText(16),
-                        // lineHeight: scaleSize(16),
+                        // lineHeight: setSpText(16),
                         height: scaleSize(44),
                         marginLeft: scaleSize(15)
                     }}

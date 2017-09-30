@@ -41,7 +41,7 @@ export default class GetFreeComponent extends Component {
                     }}>
                         <Text style={{
                             fontSize: setSpText(16),
-                            lineHeight: scaleSize(16),
+                            lineHeight: setSpText(16),
                             color: '#666'
                         }}>一元免单</Text>
                         <View style={{
@@ -55,7 +55,7 @@ export default class GetFreeComponent extends Component {
                         }}>
                             <Text style={{
                                 fontSize: setSpText(12),
-                                lineHeight: scaleSize(12),
+                                lineHeight: setSpText(12),
                                 color: '#FF6540'
                             }}>热卖</Text>
                         </View>

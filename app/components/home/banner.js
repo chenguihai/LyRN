@@ -8,7 +8,7 @@ import {
 
 import Swiper from 'react-native-swiper';
 
-const bannerHeight = 116;
+const bannerHeight = scaleSize(116);
 
 export default class BannerComponent extends Component {
     static propTypes = {
@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
         flex: 1
     },
     paginationStyle: {
-        bottom: scaleSize(bannerHeight * 0.06)
+        bottom: bannerHeight * 0.06
     }
 });

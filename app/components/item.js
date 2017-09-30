@@ -132,13 +132,13 @@ const styles = StyleSheet.create({
     },
     'item_title': {
         fontSize: setSpText(16),
-        // lineHeight: scaleSize(16),
+        // lineHeight: setSpText(16),
         color: '#666'
     },
     'item_after': {
         fontSize: setSpText(14),
+        marginRight: scaleSize(8), 
         color: '#CCC',
-        marginRight: scaleSize(8)
     },
     icon: {
         width: scaleSize(8),

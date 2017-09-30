@@ -42,7 +42,7 @@ export default class ButtonComponent extends Component {
                         style={[
                             styles.button,
                             {
-                                width: scaleSize(width * 0.86),
+                                width: width * 0.86,
                                 position: 'relative'
                             }
                         ]}

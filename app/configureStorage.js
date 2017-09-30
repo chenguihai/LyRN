@@ -38,11 +38,13 @@ const deviceWidth = Dimensions.get('window').width; // 设备的宽度
 const deviceHeight = Dimensions.get('window').height; // 设备的高度
 const fontScale = PixelRatio.getFontScale(); // 返回字体大小缩放比例
 
-const pixelRatio = PixelRatio.get(); // 当前设备的像素密度
+let pixelRatio = PixelRatio.get(); // 当前设备的像素密度
 const defaultPixel = 2; // iphone6的像素密度
 const w2 = 750 / defaultPixel;
 const h2 = 1334 / defaultPixel;
 const scale = Math.min(deviceHeight / h2, deviceWidth / w2); // 获取缩放比例
+
+pixelRatio = pixelRatio >= 3 ? 2 : pixelRatio;
 
 global.setSpText = function(size) {
     const s = Math.round((size * scale + 0.5) * pixelRatio / fontScale);

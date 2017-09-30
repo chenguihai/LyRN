@@ -39,8 +39,8 @@ export default class TrainInfoComponent extends Component {
                     style={{
                         height: scaleSize(100),
                         position: 'absolute',
-                        top: scaleSize(0),
-                        left: scaleSize(0)
+                        top: 0,
+                        left: 0
                     }}
                 />
                 <View style={[
@@ -105,7 +105,7 @@ export default class TrainInfoComponent extends Component {
                                 height: StyleSheet.hairlineWidth,
                                 backgroundColor: '#FFF',
                                 position: 'relative',
-                                top: -1,
+                                top: -scaleSize(1),
                                 transform: [
                                     {
                                         rotateZ: '-135deg'
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
     },
     city: {
         fontSize: setSpText(14),
-        lineHeight: scaleSize(14),
+        lineHeight: setSpText(14),
         color: '#FFF',
         marginBottom: scaleSize(9),
     },
     time: {
         fontSize: setSpText(30),
-        lineHeight: scaleSize(30),
+        lineHeight: setSpText(30),
         color: '#FFF',
         marginBottom: scaleSize(6),
     },
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     datetime: {
         color: '#FFF',
         fontSize: setSpText(12),
-        lineHeight: scaleSize(12)
+        lineHeight: setSpText(12)
     },
     weekDay: {
         marginLeft: scaleSize(6)
