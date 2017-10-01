@@ -66,7 +66,7 @@ export default class ListComponent extends Component {
                 return <Text 
                     key={index} 
                     style={{
-                        fontSize: setSpText(11),
+                        fontSize: setSpText(12),
                         // lineHeight: setSpText(11),
                         marginLeft: scaleSize(8),
                         color: '#333'
@@ -75,7 +75,7 @@ export default class ListComponent extends Component {
             }
 
             return <Text key={index} style={{
-                fontSize: setSpText(11),
+                fontSize: setSpText(12),
                 // lineHeight: setSpText(11),
                 marginLeft: scaleSize(8),
                 color: '#ccc'
@@ -287,7 +287,8 @@ export default class ListComponent extends Component {
                     marginLeft: scaleSize(5),
                     marginRight: scaleSize(5),
                     marginBottom: scaleSize(5),
-                    shadowColor: 'rgba(153,153,153,.2)',
+                    // shadowColor: 'rgba(153,153,153,.2)',
+                    shadowColor: '#ccc',
                     shadowOffset: { width: scaleSize(1), 
                         height: scaleSize(2) },
                     shadowRadius: 4,
@@ -346,7 +347,9 @@ const styles = StyleSheet.create({
         paddingLeft: scaleSize(15),
         ...Platform.select({
             ios: {
-                backgroundColor: 'transparent'
+                backgroundColor: 'transparent',
+                borderBottomLeftRadius: 4,
+                borderBottomRightRadius: 4
             },
             android: {
                 position: 'relative',
