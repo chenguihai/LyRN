@@ -2,7 +2,8 @@ import Storage from 'react-native-storage';
 import { 
     AsyncStorage,
     Dimensions,
-    PixelRatio
+    PixelRatio,
+    Platform
 } from 'react-native';
 
 const storage = new Storage({
@@ -44,16 +45,21 @@ const w2 = 750 / defaultPixel;
 const h2 = 1334 / defaultPixel;
 const scale = Math.min(deviceHeight / h2, deviceWidth / w2); // 获取缩放比例
 
-pixelRatio = pixelRatio >= 3 ? 2 : pixelRatio;
+if (Platform.OS === 'ios') {
+    if (pixelRatio >= 2) {
+        pixelRatio = 2;
+    }
+} else if (Platform.OS === 'android') {
+    pixelRatio = 1;
+}
 
 global.setSpText = function(size) {
-    const s = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
+    // size = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
     
-    return s / defaultPixel;
+    return size;
 };
 
 global.scaleSize = function(size) {
-    const s = Math.round(size * scale * 2 + 0.5);
-
-    return s / defaultPixel;
+    // return Math.round(size * scale + 0.5);
+    return size;
 };

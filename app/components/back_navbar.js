@@ -52,8 +52,8 @@ class BackNavbarComponent extends Component {
                     <Image 
                         source={require('../images/icon_back.png')}
                         style={{
-                            width: 32,
-                            height: 28
+                            width: scaleSize(32),
+                            height: scaleSize(28)
                         }}
                     />
                 </TouchableOpacity>
@@ -77,12 +77,12 @@ export default backNavbar;
 
 const styles = StyleSheet.create({
     navbar: {
-        height: 50,
+        height: scaleSize(50),
         flexDirection: 'row',
         justifyContent: Platform.OS === 'ios' ? 'space-between' : 'flex-start',
         alignItems: 'center',
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: scaleSize(5),
+        paddingRight: scaleSize(5),
         backgroundColor: '#FFF',
         borderBottomColor: '#e4e4e4',
         borderBottomWidth: StyleSheet.hairlineWidth
@@ -104,11 +104,11 @@ const styles = StyleSheet.create({
     title: {
         ...Platform.select({
             ios: {
-                fontSize: 18
+                fontSize: setSpText(18)
             },
             android: {
-                fontSize: 20,
-                marginLeft: 37
+                fontSize: setSpText(20),
+                marginLeft: scaleSize(37)
             }
         })
     }

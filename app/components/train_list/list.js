@@ -67,12 +67,12 @@ export default class ListComponent extends Component {
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
                 initialNumToRender={10}
-                data={trainlist.slice(0, length)}
+                data={trainlist.slice(0, 1)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}
                 getItemLayout={(data, index) => ({
-                    length: 99,
-                    offset: 99 * index,
+                    length: scaleSize(100),
+                    offset: scaleSize(100) * index,
                     index
                 })}
             />

@@ -21,20 +21,6 @@ const seatsHeight = scaleSize(34),
     cardScale = 31 / 21, // 身份证
     lineScale = 100 / 7;
 
-const pureText = (content, style, fontSize) => {
-    return Platform.select({
-        ios: <Text style={style}>{content}</Text>,
-        android: <Text style={[
-            style,
-            {
-                fontSize: setSpText(fontSize),
-                lineHeight: setSpText(fontSize),
-                includeFontPadding: false
-            }
-        ]}>{content}</Text>
-    });
-};
-
 export default class ListComponent extends Component {
 
     static propTypes = {
@@ -185,63 +171,112 @@ export default class ListComponent extends Component {
                     activeOpacity={0.9}
                     onPress={() => this.handlePress()}
                     style={styles.train_info}
-                    
                 >
-                    {/* 开始信息开始 */}
-                    <View style={styles.info_column} onLayout={({ nativeEvent: e }) => { 
-                        console.log(e);
-                    }}>
-                        {pureText(fmtime, { color: '#333' }, 20)}
-                        {pureText(fmcity, { color: '#2d2d2d', 
-                            marginTop: 5 }, 14)}
-                    </View>
-                    {/* 开始信息结束 */}
-                    <View style={styles.info_column}>
-                        <View style={styles.trainno}>
-                            {pureText(trainno, { color: '#2d2d2d' }, 12)}
-                            {accbyidcard ? <Image
+                    <View style={styles.info_row} >
+                        {/* 始发时间 */}
+                        <View style={styles.info_item}>
+                            <Text style={{
+                                fontSize: setSpText(20),
+                                // lineHeight: setSpText(20),
+                                color: '#333'
+                            }}>{fmtime}</Text>
+                        </View>
+                        {/* 列车编号 */}
+                        <View style={[
+                            styles.info_item,
+                            {
+                                flexDirection: 'column',
+                                alignItems: 'center'
+                            }
+                        ]}>
+                            <View style={styles.trainno}>
+                                <Text style={{
+                                    fontSize: setSpText(12),
+                                    // lineHeight: setSpText(12),
+                                    color: '#333'
+                                }}>{trainno}</Text>
+                                {accbyidcard ? <View style={{
+                                    width: scaleSize(4)
+                                }}></View> : null}
+                                {accbyidcard ? <Image
+                                    resizeMode="cover"
+                                    style={{
+                                        width: cardScale * 12,
+                                        height: scaleSize(12)
+                                    }}
+                                    source={require('../../images/idcard.png')}
+                                /> : null}
+                            </View>
+                            <Image
                                 resizeMode="cover"
                                 style={{
-                                    width: cardScale * 12,
-                                    height: scaleSize(12),
-                                    marginLeft: 4
+                                    width: scaleSize(61),
+                                    height: scaleSize(61) / lineScale,
+                                    marginTop: scaleSize(3)
                                 }}
-                                source={require('../../images/idcard.png')}
-                            /> : null}
+                                source={require('../../images/right_line.png')}
+                            />
                         </View>
-                        <Image
-                            resizeMode="cover"
-                            style={{
-                                width: scaleSize(61),
-                                height: scaleSize(61) / lineScale
-                            }}
-                            source={require('../../images/right_line.png')}
-                        />
-                        {pureText(usedtime, { color: '#999' }, 12)}
-                    </View>
-                    {/* 到达信息开始 */}
-                    <View style={styles.info_column}>
-                        {pureText(totime, { color: '#333' }, 20)}
-                        {pureText(tocity, { color: '#2d2d2d', 
-                            marginTop: 5 }, 14)}
-                    </View>
-                    {/* 到达信息结束 */}
-                    {/* 票价开始 */}
-                    <View style={styles.info_column}>
-                        <Text style={{
-                            fontSize: setSpText(20),
-                            color: '#ff5346',
-                        }}>
+                        {/* 达到时间 */}
+                        <View style={styles.info_item}>
                             <Text style={{
-                                fontSize: setSpText(12)
-                            }}>¥</Text>
-                            {Math.min.apply({}, priceMap)}
-                            <Text style={{
-                                fontSize: setSpText(12)
-                            }}>起</Text>
-                        </Text>
+                                fontSize: setSpText(20),
+                                // lineHeight: setSpText(20),
+                                color: '#333'
+                            }}>{totime}</Text>
+                        </View>
+                        {/* 空占位符 */}
+                        <View style={styles.info_item}>
+                        </View>
                     </View>
-                    {/* 票价结束 */}
+                    <View style={[
+                        styles.info_row,
+                        {
+                            alignItems: 'baseline'
+                        }
+                    ]}>
+                        {/* 始发站点 */}
+                        <View style={styles.info_item}>
+                            <Text style={{
+                                fontSize: setSpText(14),
+                                // lineHeight: setSpText(14),
+                                color: '#333'
+                            }}>{fmcity}</Text>
+                        </View>
+                        {/* 行程总时间 */}
+                        <View style={styles.info_item}>
+                            <Text style={{
+                                fontSize: setSpText(12),
+                                // lineHeight: setSpText(12),
+                                color: '#999',
+                            }}>{usedtime}</Text>
+                        </View>
+                        {/* 到达站点 */}
+                        <View style={styles.info_item}>
+                            <Text style={{
+                                fontSize: setSpText(14),
+                                // lineHeight: setSpText(14),
+                                color: '#333'
+                            }}>{tocity}</Text>
+                        </View>
+                        {/* 票价 */}
+                        <View style={styles.info_item}>
+                            <Text style={{
+                                fontSize: setSpText(20),
+                                color: '#ff5346',
+                            }}>
+                                <Text style={{
+                                    fontSize: setSpText(12),
+                                    color: '#ff5346',
+                                }}>¥</Text>
+                                {Math.min.apply({}, priceMap)}
+                                <Text style={{
+                                    fontSize: setSpText(12),
+                                    color: '#ff5346',
+                                }}>起</Text>
+                            </Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
                 <Animated.View 
                     style={[
@@ -323,7 +358,6 @@ const styles = StyleSheet.create({
         paddingBottom: scaleSize(15),
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#eee',
-        flexDirection: 'row',
         ...Platform.select({
             ios: {
                 borderRadius: 4,
@@ -331,14 +365,18 @@ const styles = StyleSheet.create({
             }
         })
     },
-    'info_column': {
+    'info_row': {
+        flexDirection: 'row'
+    },
+    'info_item': {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     'trainno': {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'baseline'
     },
     'train_seats': {
         flexDirection: 'row',
