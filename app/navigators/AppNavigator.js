@@ -13,7 +13,8 @@ import CityPage from '../pages/city'; // 选择城市
 import CalendarPage from '../pages/calendar'; // 选择日历
 import TrainListPage from '../pages/train_list'; // 火车时刻表页面
 import TrainOrderPage from '../pages/train_order'; // 火车票订单
-import ContactPage from '../pages/contact'; // 添加乘客
+import ContactPage from '../pages/contact'; // 选择乘客
+import AddContactPage from '../pages/add_contact'; // 新增乘客
 import ComboPage from '../pages/combo'; // 优选服务
 import TinsurancePage from '../pages/tinsurance'; // 行程保险
 import OnlineSelectSeatPage from '../pages/online_select_seat'; // 在线选座
@@ -151,55 +152,61 @@ export const MainNavigator = TabNavigator(MainRouterConfigs, MainTabNavigatorCon
 
 const AppNavigator = StackNavigator(
     {
-        'Main': {
+        'Main': { // 首页
             screen: MainNavigator,
             navigationOptions: {
                 header: null
             }
         },
-        'City': {
+        'City': { // 选择城市
             screen: CityPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Calendar': {
+        'Calendar': { // 选择日期
             screen: CalendarPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'TrainList': {
+        'TrainList': { // 火车列表
             screen: TrainListPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'TrainOrder': {
+        'TrainOrder': { // 下订单
             screen: TrainOrderPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Contact': {
+        'Contact': { // 乘客列表
             screen: ContactPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Combo': {
+        'AddContact': { // 新增乘客
+            screen: AddContactPage,
+            navigationOptions: {
+                header: backNavbar
+            }
+        },
+        'Combo': { // 优选服务
             screen: ComboPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Tinsurance': {
+        'Tinsurance': { // 行程保险
             screen: TinsurancePage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'OnlineSelectSeat': {
+        'OnlineSelectSeat': { // 在线选座
             screen: OnlineSelectSeatPage,
             navigationOptions: {
                 header: backNavbar
@@ -207,7 +214,7 @@ const AppNavigator = StackNavigator(
         }
     },
     {
-        initialRouteName: 'Contact',
+        initialRouteName: 'AddContact',
         initialRouteParams1: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-10-02' }, // eslint-disable-line
         initialRouteParams: { data: { 'trainno': 'G102',
             'fmtime': '06:30',

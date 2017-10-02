@@ -8,13 +8,14 @@ import {
     ScrollView,
     TouchableOpacity,
     Platform,
-    Dimensions,
     StyleSheet
 } from 'react-native';
 
 import TrainInfoComponent from '../components/online_select_seat/train_info';
 import SeatsComponent from '../components/online_select_seat/seats';
-import ItemComponent from '../components/item';
+import ListItemComponent from '../components/list_item';
+
+import SubmitButtonComponent from '../components/submit_button';
 
 const checkbox = {
     true: require('../images/icon2_checkbox_active.png'),
@@ -209,7 +210,6 @@ export default class OnlineSelectSeatPage extends Component {
 
     render() {
         const { state: { params: { data = {} } } } = this.props.navigation;
-        const { width } = Dimensions.get('window');
         
         return (
             <View style={{
@@ -218,7 +218,7 @@ export default class OnlineSelectSeatPage extends Component {
                 <ScrollView>
                     <TrainInfoComponent data={data} />
                     <SeatsComponent data={data} />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -227,7 +227,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -238,7 +238,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -258,7 +258,7 @@ export default class OnlineSelectSeatPage extends Component {
                     
                     />
                     {/* 保证达开始 */}
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -273,7 +273,7 @@ export default class OnlineSelectSeatPage extends Component {
                         }}
                     />
                     {/* 保证达结束 */}
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -283,7 +283,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -296,7 +296,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -310,15 +310,10 @@ export default class OnlineSelectSeatPage extends Component {
                         }}
                     />
                 </ScrollView>
-                <View style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    height: scaleSize(50),
+                <SubmitButtonComponent style={{
                     backgroundColor: '#FFF',
-                    flexDirection: 'row',
-                    width,
-                    borderWidth: StyleSheet.hairlineWidth,
-                    borderColor: '#EEE'
+                    borderTopWidth: StyleSheet.hairlineWidth,
+                    borderTopColor: '#EEE'
                 }}>
                     <View style={{
                         flex: 1,
@@ -360,6 +355,7 @@ export default class OnlineSelectSeatPage extends Component {
                     </View>
                     <View style={{
                         flex: 1,
+                        height: scaleSize(50),
                         backgroundColor: '#3c6',
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -369,7 +365,7 @@ export default class OnlineSelectSeatPage extends Component {
                             color: '#FFF'
                         }}>提交订单</Text>
                     </View>
-                </View>
+                </SubmitButtonComponent>
             </View>
         );
     }

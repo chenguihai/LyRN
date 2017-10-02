@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 // import CardView from 'react-native-cardview';
-import ItemComponent from '../item';
+import ListItemComponent from '../list_item';
 
 export default class GetFreeComponent extends Component {
 
@@ -95,7 +95,7 @@ export default class GetFreeComponent extends Component {
     render() {
 
         return (
-            <ItemComponent
+            <ListItemComponent
                 data={{
                     list: [
                         {
