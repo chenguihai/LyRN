@@ -8,6 +8,8 @@ import {
     Platform
 } from 'react-native';
 
+import _ from '../util';
+
 export default class ItemComponent extends Component {
 
     static defaultProps = {
@@ -54,6 +56,7 @@ export default class ItemComponent extends Component {
                             }
                         });
                     }}
+                    activeOpacity={_.isFunction(onPress) ? 0.8 : 1}
                 >
                     {title.props 
                         ? title 

@@ -23,7 +23,12 @@ const seatsHeight = scaleSize(34),
 
 const pureText = (content, style, fontSize) => {
     return Platform.select({
-        ios: <Text style={style}>{content}</Text>,
+        ios: <Text style={[
+            style,
+            {
+                fontSize: setSpText(fontSize)
+            }
+        ]}>{content}</Text>,
         android: <Text style={[
             style,
             {
@@ -217,7 +222,8 @@ export default class ListComponent extends Component {
                             }}
                             source={require('../../images/right_line.png')}
                         />
-                        {pureText(usedtime, { color: '#999' }, 12)}
+                        {pureText(usedtime, { color: '#999', 
+                            marginTop: Platform.OS === 'ios' ? setSpText(4) : 0 }, 12)}
                     </View>
                     {/* 到达信息开始 */}
                     <View style={styles.info_column}>

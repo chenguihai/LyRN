@@ -35,7 +35,6 @@ export default class TrainOrderPage extends Component {
             <View 
                 style={{ 
                     flex: 1, 
-                    backgroundColor: '#f2f4f7',
                     paddingBottom: 50
                 }}
             >

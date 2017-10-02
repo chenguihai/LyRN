@@ -10,6 +10,28 @@ import {
 
 import TrainDecorator from '../train_decorator';
 
+import _ from '../../util';
+
+const pureText = (content, style, fontSize) => {
+    if (!fontSize) {
+        fontSize = style;
+        style = {};
+    }
+
+    if (_.isNumber(style)) {
+        style = [style];
+    }
+    
+    return <Text style={[
+        { color: '#FFF' },
+        ...style,
+        {
+            fontSize: setSpText(fontSize),
+            lineHeight: setSpText(fontSize)
+        }
+    ]}>{content}</Text>;
+};
+
 @TrainDecorator
 class TrainInfoComponent extends Component {
 
@@ -33,6 +55,7 @@ class TrainInfoComponent extends Component {
 
         return (
             <View style={styles.container}>
+                {/* 背景开始 */}
                 <Image 
                     source={require('../../images/trainBookTop.jpg')}
                     style={{
@@ -44,6 +67,7 @@ class TrainInfoComponent extends Component {
                     }}
                     resizeMode="cover"
                 />
+                {/* 背景结束 */}
                 <View style={[
                     styles.item,
                     {
@@ -51,36 +75,22 @@ class TrainInfoComponent extends Component {
                         paddingRight: scaleSize(6)
                     }
                 ]}>
-                    <Text style={styles.station}>
-                        {fmcity}
-                    </Text>
-                    <Text style={styles.stationTime}>
-                        {fmtime}
-                    </Text>
+                    {pureText(fmcity, styles.station, 17)}
+                    {pureText(fmtime, styles.stationTime, 30)}
                     <View style={styles.stationDateContainer}>
-                        <Text style={styles.stationDate}>
-                            {bDate.date}
-                        </Text>
-                        <Text style={[
-                            styles.stationDate,
-                            styles.stationDate1
-                        ]}>
-                            {bDate.weekDay}
-                        </Text>
+                        {pureText(bDate.date, 13)}
+                        {pureText(bDate.weekDay, styles.stationDate, 13)}
                     </View>
-                    <Text style={styles.trainNo}>
-                        {trainno}
-                    </Text>
+                    {pureText(trainno, 14)}
                 </View>
                 <View style={[
                     styles.item,
                     {
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        paddingTop: scaleSize(15)
                     }
                 ]}>
-                    <Text style={styles.usedtime}>
-                        {usedtime}
-                    </Text>
+                    {pureText(usedtime, 14)}
                     <View style={[
                         styles.stopInfo,
                         {
@@ -93,21 +103,12 @@ class TrainInfoComponent extends Component {
                             borderWidth: StyleSheet.hairlineWidth,
                             borderColor: '#FFF'
                         }}>
-                            <Text style={{
-                                fontSize: setSpText(14),
-                                lineHeight: setSpText(14),
-                                color: '#FFF',
-                                // paddingBottom: scaleSize(2)
-                            }}>
-                                经停信息
-                            </Text>
+                            {pureText('经停信息', { color: '#FFF' }, 14)}
                         </View>
                         <View style={styles.stopInfoLine}>
                         </View>
                     </View>
-                    <Text style={styles.price}>
-                        ¥{price} 
-                    </Text>
+                    {pureText(`¥${price}`, styles.price, 14)}
                 </View>
                 <View style={[
                     styles.item,
@@ -116,29 +117,13 @@ class TrainInfoComponent extends Component {
                         paddingLeft: scaleSize(6)
                     }
                 ]}>
-                    <Text style={styles.station}
-                    >
-                        {tocity}
-                    </Text>
-                    <Text style={styles.stationTime} onLayout={({ nativeEvent: e }) => { 
-                        console.log(e);
-                    }}>
-                        {totime}
-                    </Text>
+                    {pureText(tocity, styles.station, 17)}
+                    {pureText(totime, styles.stationTime, 30)}
                     <View style={styles.stationDateContainer}>
-                        <Text style={styles.stationDate}>
-                            {eDate.date}
-                        </Text>
-                        <Text style={[
-                            styles.stationDate,
-                            styles.stationDate1
-                        ]}>
-                            {eDate.weekDay}
-                        </Text>
+                        {pureText(eDate.date, 13)}
+                        {pureText(eDate.weekDay, styles.stationDate, 13)}
                     </View>
-                    <Text style={styles.trainNo}>
-                        {cn}
-                    </Text>
+                    {pureText(cn, 14)}
                 </View>
             </View>
         );
@@ -153,21 +138,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     item: {
-        flex: 1
+        flex: 1,
+        height: scaleSize(108)
     },
     station: {
-        fontSize: setSpText(17),
-        lineHeight: setSpText(17),
         paddingBottom: scaleSize(10),
-        color: '#FFF', 
-        borderColor: '#000',
-        borderWidth: 1
     },
     stationTime: {
-        fontSize: setSpText(30),
-        lineHeight: setSpText(30),
         paddingBottom: scaleSize(8),
-        color: '#FFF',
     },
     stationDateContainer: {
         flexDirection: 'row',
@@ -175,22 +153,7 @@ const styles = StyleSheet.create({
         marginBottom: scaleSize(12)
     },
     stationDate: {
-        fontSize: setSpText(13),
-        lineHeight: setSpText(13),
-        color: '#FFF'
-    },
-    stationDate1: {
         marginLeft: scaleSize(10)
-    },
-    trainNo: {
-        fontSize: setSpText(14),
-        lineHeight: setSpText(14),
-        color: '#FFF'
-    },
-    usedtime: {
-        fontSize: setSpText(14),
-        lineHeight: setSpText(14),
-        color: '#FFF'
     },
     stopInfo: {
         flexDirection: 'row',
@@ -202,9 +165,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF'
     },
     price: {
-        fontSize: setSpText(14),
-        lineHeight: setSpText(14),
-        color: '#FFF',
         position: 'absolute',
         bottom: 0
     }

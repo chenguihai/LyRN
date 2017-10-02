@@ -151,8 +151,7 @@ export default class OnlineSelectSeatPage extends Component {
         
         return (
             <View style={{
-                flex: 1,
-                backgroundColor: '#f2f4f7'
+                flex: 1
             }}>
                 <ScrollView>
                     <TrainInfoComponent data={data} />

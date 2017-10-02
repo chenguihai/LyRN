@@ -20,7 +20,8 @@ class LyRN extends React.Component {
                 <View
                     style={{
                         flex: 1,
-                        paddingTop: 20
+                        paddingTop: 20,
+                        backgroundColor: '#efeff4',
                     }}
                 >
                     <AppWithNavigationState />

@@ -4,6 +4,7 @@
 import React from 'react';
 import {
     AppRegistry,
+    View
 } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './app/store/configureStore';
@@ -16,7 +17,12 @@ class LyRN extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <AppWithNavigationState />
+                <View style={{
+                    flex: 1,
+                    backgroundColor: '#efeff4',
+                }}>
+                    <AppWithNavigationState />
+                </View>
             </Provider>
         );
     }
