@@ -149,7 +149,6 @@ dependencies {
     compile "com.facebook.react:react-native:+"  // From node_modules
     compile project(':react-native-cardview')
     compile 'com.facebook.fresco:animated-gif:0.13.0'
-    compile project(':lottie-react-native')
     compile project(':react-native-dialogs')
 }
 
