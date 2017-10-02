@@ -116,7 +116,12 @@ const styles = StyleSheet.create({
         marginLeft: scaleSize(5), 
         marginRight: scaleSize(5),
         padding: scaleSize(0),
-        borderRadius: 3
+        borderRadius: 3,
+        shadowColor: '#eee',
+        shadowOpacity: 1,
+        shadowOffset: { width: 1, 
+            height: 1 },
+        shadowRadius: 3
     },
     'item_content': {
         flexDirection: 'row',
