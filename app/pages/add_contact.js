@@ -1,45 +1,179 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
     View,
     Text,
     TextInput,
-    Picker,
-    Dimensions,
-    Animated,
-    Easing,
-    StyleSheet,
-    TouchableOpacity
+    ScrollView,
+    TouchableOpacity,
 } from 'react-native';
 
 import ListItemComponent from '../components/list_item';
+// import PickerComponent from '../components/picker';
+import Picker from 'react-native-picker';
+// import DatePickerComponent from '../components/date_picker';
+
+const pickerTitleMap = {
+    ticket: '选择车票类型',
+    idCard: '选择证件类型',
+    sex: '选择性别',
+    birthDay: '选择日期'
+};
+
+const nowDate = new Date(),
+    years = [],
+    months = [],
+    initialYear = 1900,
+    thisYear = nowDate.getFullYear(), // 今年的年份
+    thisMonth = nowDate.getMonth() + 1, // 今年的月份
+    thisDay = nowDate.getDate(); // 今年的日期
+
+for (let i = 1; i <= 12; i++) {
+    months.push(i); 
+}
+
+/**
+ * @description 每个月的天数
+ * @param {*} year 年份
+ */
+
+const getDayNum = (year) => {
+    const dayOfMonth = [
+        31, 
+        28, 
+        31, 
+        30, 
+        31, 
+        30, 
+        31, 
+        31, 
+        30, 
+        31, 
+        30, 
+        31
+    ];
+    // 如果为闰年，2月份有29天
+
+    if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {
+        dayOfMonth[1] = 29;
+    }
+    
+    return dayOfMonth;
+};
+
+for (let i = initialYear; i <= thisYear; i++) {
+    const dayOfMonth = getDayNum(i);
+
+    const monthData = [];
+
+    // if (i === thisYear) { 
+    months.forEach((item, index) => {
+        const days = [];
+
+        for (let i = 1; i <= dayOfMonth[index]; i++) {
+            days.push(i);
+        }
+        monthData.push({
+            [item]: days
+        });
+    });
+    // }
+    years.push({
+        [i]: monthData
+    });
+}
+const pickerOption = {
+    pickerConfirmBtnText: '确定',
+    pickerCancelBtnText: '取消',
+    onPickerCancel: () => {
+        Picker.hide();
+    }
+};
 
 export default class AddContactPage extends Component {
 
     static propTypes = {
-        
     }
-
-    animatedValue = new Animated.Value(0)
-
+    
     state = {
-        ticketType: {
-            currentVal: '成人票',
-            val: [
-                '成人票',
+        ticket: {
+            selectedValue: '成人票',
+            pickerData: [
+                '成人票', 
                 '儿童票'
             ]
         },
-        cardType: {
-            currentVal: '身份证',
-            val: [
-                '身份证',
+        idCard: {
+            selectedValue: '身份证',
+            pickerData: [
+                '身份证', 
                 '护照',
                 '台胞证',
                 '港澳通行证'
             ]
         },
-        key: 'cardType'
+        sex: {
+            selectedValue: '男',
+            pickerData: [
+                '男', 
+                '女'
+            ]
+        },
+        birthDay: {
+            placeholder: '年/月/日',
+            selectedValue: '',
+            pickSelectedValue: [
+                thisYear, 
+                thisMonth, 
+                thisDay
+            ]
+        }
+    }
+
+    initPicker(key) {
+        const { selectedValue, pickerData } = this.state[key];
+
+        Picker.init({
+            ...{
+                pickerData,
+                selectedValue: [selectedValue],
+                pickerTitleText: pickerTitleMap[key],
+                onPickerConfirm: ([value]) => {
+                    // console.log(`pickerConfirm:${value}`);
+                    const data = this.state[key];
+    
+                    data.selectedValue = value;
+                    this.setState({
+                        [key]: data
+                    });
+                },
+                onPickerSelect: () => {
+                    // console.log(`pickerSelect:${value}`);
+                }
+            },
+            ...pickerOption
+        });
+    }
+
+    initDatePicker(key) {
+        const data = this.state[key];
+
+        Picker.init({
+            ...{
+                pickerData: years,
+                pickerTitleText: pickerTitleMap[key],
+                selectedValue: data.pickSelectedValue,
+                onPickerConfirm: (value) => {
+                    data.pickSelectedValue = value;
+                    data.selectedValue = value.join('-');
+                    data.placeholder = '';
+                    this.setState({
+                        [key]: data
+                    }); 
+                }
+            },
+            ...pickerOption
+        });
     }
 
     _renderTitle(title) {
@@ -55,7 +189,7 @@ export default class AddContactPage extends Component {
         );
     }
 
-    _renderInputAfter(placeholder) {
+    _renderInputAfter(placeholder, keyboardType, maxLength) {
         return (
             <View style={{
                 flex: 2.3
@@ -64,6 +198,8 @@ export default class AddContactPage extends Component {
                     underlineColorAndroid="transparent"
                     placeholder={placeholder}
                     placeholderTextColor="#CCC"
+                    keyboardType={keyboardType}
+                    maxLength={maxLength}
                     style={{
                         padding: scaleSize(0),
                         fontSize: setSpText(16),
@@ -82,126 +218,114 @@ export default class AddContactPage extends Component {
                 activeOpacity={0.8}
                 onPress={() => {
                     requestAnimationFrame(() => {
-                        this.setState({
-                            key
-                        });
-                        Animated.timing(this.animatedValue, {
-                            toValue: 1,
-                            duration: 300,
-                            easing: Easing.linear
-                        }).start();
+                        this.initPicker(key);
                     });
                 }} 
                 style={{
                     flex: 2.3
                 }}
             >
-                <Text>{this.state[key].currentVal}</Text>
+                <Text>{this.state[key].selectedValue}</Text>
             </TouchableOpacity>
         );
     }
 
+    _renderDateAfter = (key) => {
+        const { placeholder, selectedValue } = this.state[key];
+        
+        return (
+            <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                    requestAnimationFrame(() => {
+                        this.initDatePicker(key);
+                    });
+                }} 
+                style={{
+                    flex: 2.3
+                }}
+            >
+                <Text>{placeholder.length > 0 ? placeholder : selectedValue}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    _renderSubmitButton() {
+        return (
+            <View style={{
+                marginTop: scaleSize(40),
+                marginLeft: scaleSize(20),
+                marginRight: scaleSize(20),
+                height: scaleSize(50),
+                backgroundColor: '#3c6',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 5
+            }}>
+                <Text style={{
+                    fontSize: setSpText(18),
+                    color: '#FFF'
+                }}>确定</Text>
+            </View>
+        );
+    }
+
     render() {
-        const { key } = this.state;
-        const { width } = Dimensions.get('window');
+        const { idCard } = this.state;
+
+        const reset = idCard.selectedValue !== '身份证' 
+            ? [
+                {
+                    iconDirection: 'down',
+                    title: this._renderTitle('生日'),
+                    after: this._renderDateAfter('birthDay')
+                },
+                {
+                    iconDirection: 'down',
+                    title: this._renderTitle('性别'),
+                    after: this._renderAfter('sex')
+                }
+            ] : [];
 
         return (
             <View style={{
                 flex: 1
             }}>
-                <ListItemComponent 
-                    data={{
-                        borderRadius: 2,
-                        list: [
-                            {
-                                iconStyle: {
-                                    opacity: 0,
+                <ScrollView>
+                    <ListItemComponent 
+                        data={{
+                            borderRadius: 3,
+                            list: [
+                                {
+                                    iconStyle: {
+                                        opacity: 0,
+                                    },
+                                    title: this._renderTitle('姓名'),
+                                    after: this._renderInputAfter('乘客姓名', 'default', 20)
                                 },
-                                title: this._renderTitle('姓名'),
-                                after: this._renderInputAfter('乘客姓名')
-                            },
-                            {
-                                iconDirection: 'down',
-                                title: this._renderTitle('车票类型'),
-                                after: this._renderAfter('ticketType')
-                            },
-                            {
-                                iconDirection: 'down',
-                                title: this._renderTitle('证件类型'),
-                                after: this._renderAfter('cardType')
-                            },
-                            {
-                                iconStyle: {
-                                    opacity: 0,
+                                {
+                                    iconDirection: 'down',
+                                    title: this._renderTitle('车票类型'),
+                                    after: this._renderAfter('ticket')
                                 },
-                                title: this._renderTitle('证件号码'),
-                                after: this._renderInputAfter('证件号码')
-                            }
-                        ]
-                    }}
-                />
-                <Animated.View style={{
-                    position: 'absolute',
-                    bottom: this.animatedValue.interpolate({
-                        inputRange: [
-                            0, 
-                            1
-                        ],
-                        outputRange: [
-                            scaleSize(-260), 
-                            0
-                        ]
-                    })
-                }}>
-                    <View style={{
-                        width,
-                        height: scaleSize(44),
-                        backgroundColor: '#f7f7f8',
-                        borderTopWidth: StyleSheet.hairlineWidth,
-                        borderTopColor: '#929499',
-                        paddingRight: scaleSize(15),
-                        paddingLeft: scaleSize(15),
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end'
-                    }}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                requestAnimationFrame(() => {
-                                    Animated.timing(this.animatedValue, {
-                                        toValue: 0,
-                                        duration: 300,
-                                        easing: Easing.linear
-                                    }).start();
-                                });
-                            }}
-                        >
-                            <Text style={{
-                                fontSize: setSpText(17),
-                                color: '#007aff'
-                            }}>完成</Text>
-                        </TouchableOpacity> 
-                    </View>
-                    <Picker
-                        style={{
-                            width,
-                            backgroundColor: '#cfd5da',
+                                {
+                                    iconDirection: 'down',
+                                    title: this._renderTitle('证件类型'),
+                                    after: this._renderAfter('idCard')
+                                },
+                                {
+                                    iconStyle: {
+                                        opacity: 0,
+                                    },
+                                    title: this._renderTitle('证件号码'),
+                                    after: this._renderInputAfter('乘客证件号码', 'numeric', 18)
+                                },
+                                ...reset
+                            ]
                         }}
-                        itemStyle={{
-                            height: scaleSize(216)
-                        }}
-                        selectedValue={this.state[key].currentVal}
-                        onValueChange={(val) => {
-                            const types = this.state[key];
-
-                            types.currentVal = val;
-                            this.setState({ [key]: types });
-                        }}>
-                        {this.state[key].val.map((item, index) => 
-                            <Picker.Item key={index} label={item} value={item} />
-                        )}
-                    </Picker>
-                </Animated.View>
+                    />
+                    {this._renderSubmitButton()}
+                </ScrollView>
             </View>
         );
     }

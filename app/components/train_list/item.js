@@ -193,9 +193,7 @@ export default class ListComponent extends Component {
                     
                 >
                     {/* 开始信息开始 */}
-                    <View style={styles.info_column} onLayout={({ nativeEvent: e }) => { 
-                        console.log(e);
-                    }}>
+                    <View style={styles.info_column}>
                         {pureText(fmtime, { color: '#333' }, 20)}
                         {pureText(fmcity, { color: '#2d2d2d', 
                             marginTop: 5 }, 14)}
