@@ -20,6 +20,23 @@ const pickerTitleMap = {
     birthDay: '选择日期'
 };
 
+const pickerDataMap = {
+    contType: [
+        '成人票', 
+        '儿童票'
+    ],
+    cardType: [
+        '身份证', 
+        '护照',
+        '台胞证',
+        '港澳通行证'
+    ],
+    sex: [
+        '男',
+        '女'
+    ]
+};
+
 const nowDate = new Date(),
     years = [],
     months = [],
@@ -95,56 +112,29 @@ export default class AddContactPage extends Component {
     static propTypes = {
     }
     
+    birthPlaceholder = '年/月/日'
+
     state = {
-        ticket: {
-            selectedValue: '成人票',
-            pickerData: [
-                '成人票', 
-                '儿童票'
-            ]
-        },
-        idCard: {
-            selectedValue: '身份证',
-            pickerData: [
-                '身份证', 
-                '护照',
-                '台胞证',
-                '港澳通行证'
-            ]
-        },
-        sex: {
-            selectedValue: '男',
-            pickerData: [
-                '男', 
-                '女'
-            ]
-        },
-        birthDay: {
-            placeholder: '年/月/日',
-            selectedValue: '',
-            pickSelectedValue: [
-                thisYear, 
-                thisMonth, 
-                thisDay
-            ]
-        }
+        name: '',
+        contType: '成人票', // 车票类型
+        cardType: '身份证', // 证件类型
+        sex: '男',
+        cardNum: '',
+        birth: `${thisYear}-${thisMonth}-${thisDay}`
     }
 
-    initPicker(key) {
-        const { selectedValue, pickerData } = this.state[key];
+    initPicker(field) {
+        const selectedValue = this.state[field];
 
         Picker.init({
             ...{
-                pickerData,
+                pickerData: pickerDataMap[field],
                 selectedValue: [selectedValue],
-                pickerTitleText: pickerTitleMap[key],
+                pickerTitleText: pickerTitleMap[field],
                 onPickerConfirm: ([value]) => {
                     // console.log(`pickerConfirm:${value}`);
-                    const data = this.state[key];
-    
-                    data.selectedValue = value;
                     this.setState({
-                        [key]: data
+                        [field]: value
                     });
                 },
                 onPickerSelect: () => {
@@ -155,20 +145,18 @@ export default class AddContactPage extends Component {
         });
     }
 
-    initDatePicker(key) {
-        const data = this.state[key];
+    initDatePicker(field) {
+        const selectedValue = this.state[field];
 
         Picker.init({
             ...{
                 pickerData: years,
-                pickerTitleText: pickerTitleMap[key],
-                selectedValue: data.pickSelectedValue,
+                pickerTitleText: pickerTitleMap[field],
+                selectedValue,
                 onPickerConfirm: (value) => {
-                    data.pickSelectedValue = value;
-                    data.selectedValue = value.join('-');
-                    data.placeholder = '';
+                    this.birthPlaceholder = '';
                     this.setState({
-                        [key]: data
+                        [field]: value.join('-')
                     }); 
                 }
             },
@@ -189,7 +177,7 @@ export default class AddContactPage extends Component {
         );
     }
 
-    _renderInputAfter(placeholder, keyboardType, maxLength) {
+    _renderInputAfter(placeholder, keyboardType, maxLength, field) {
         return (
             <View style={{
                 flex: 2.3
@@ -200,6 +188,11 @@ export default class AddContactPage extends Component {
                     placeholderTextColor="#CCC"
                     keyboardType={keyboardType}
                     maxLength={maxLength}
+                    clearButtonMode="while-editing" // ios only
+                    onChangeText={(value) => {
+                        this.handleInputChange(field, value);
+                    }}
+                    value={this.state[field]}
                     style={{
                         padding: scaleSize(0),
                         fontSize: setSpText(16),
@@ -212,73 +205,86 @@ export default class AddContactPage extends Component {
         );
     }
 
-    _renderAfter = (key) => {
+    _renderAfter = (field) => {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
                     requestAnimationFrame(() => {
-                        this.initPicker(key);
+                        this.initPicker(field);
                     });
                 }} 
                 style={{
                     flex: 2.3
                 }}
             >
-                <Text>{this.state[key].selectedValue}</Text>
+                <Text>{this.state[field]}</Text>
             </TouchableOpacity>
         );
     }
 
-    _renderDateAfter = (key) => {
-        const { placeholder, selectedValue } = this.state[key];
+    _renderDateAfter = (field) => {
+        const selectedValue = this.state[field];
         
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => {
                     requestAnimationFrame(() => {
-                        this.initDatePicker(key);
+                        this.initDatePicker(field);
                     });
                 }} 
                 style={{
                     flex: 2.3
                 }}
             >
-                <Text>{placeholder.length > 0 ? placeholder : selectedValue}</Text>
+                <Text>{this.birthPlaceholder.length > 0 ? this.birthPlaceholder : selectedValue}</Text>
             </TouchableOpacity>
         );
     }
 
     _renderSubmitButton() {
         return (
-            <View style={{
-                marginTop: scaleSize(40),
-                marginLeft: scaleSize(20),
-                marginRight: scaleSize(20),
-                height: scaleSize(50),
-                backgroundColor: '#3c6',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 5
-            }}>
+            <TouchableOpacity 
+                style={{
+                    marginTop: scaleSize(40),
+                    marginLeft: scaleSize(20),
+                    marginRight: scaleSize(20),
+                    height: scaleSize(50),
+                    backgroundColor: '#3c6',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 5
+                }}
+                onPress={this.handleSubmit}
+            >
                 <Text style={{
                     fontSize: setSpText(18),
                     color: '#FFF'
                 }}>确定</Text>
-            </View>
+            </TouchableOpacity>
         );
     }
 
-    render() {
-        const { idCard } = this.state;
+    handleInputChange = (field, value) => {
+        this.setState({
+            [field]: value
+        });
+    }
 
-        const reset = idCard.selectedValue !== '身份证' 
+    handleSubmit = () => {
+        alert(JSON.stringify(this.state));
+    }
+
+    render() {
+        const { cardType } = this.state;
+
+        const reset = cardType.selectedValue !== '身份证' 
             ? [
                 {
                     iconDirection: 'down',
                     title: this._renderTitle('生日'),
-                    after: this._renderDateAfter('birthDay')
+                    after: this._renderDateAfter('birth')
                 },
                 {
                     iconDirection: 'down',
@@ -301,24 +307,24 @@ export default class AddContactPage extends Component {
                                         opacity: 0,
                                     },
                                     title: this._renderTitle('姓名'),
-                                    after: this._renderInputAfter('乘客姓名', 'default', 20)
+                                    after: this._renderInputAfter('乘客姓名', 'default', 20, 'name')
                                 },
                                 {
                                     iconDirection: 'down',
                                     title: this._renderTitle('车票类型'),
-                                    after: this._renderAfter('ticket')
+                                    after: this._renderAfter('contType')
                                 },
                                 {
                                     iconDirection: 'down',
                                     title: this._renderTitle('证件类型'),
-                                    after: this._renderAfter('idCard')
+                                    after: this._renderAfter('cardType')
                                 },
                                 {
                                     iconStyle: {
                                         opacity: 0,
                                     },
                                     title: this._renderTitle('证件号码'),
-                                    after: this._renderInputAfter('乘客证件号码', 'numeric', 18)
+                                    after: this._renderInputAfter('乘客证件号码', 'numeric', 18, 'cardNum')
                                 },
                                 ...reset
                             ]
