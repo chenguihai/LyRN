@@ -6,6 +6,7 @@ import {
     TextInput,
     ScrollView,
     TouchableOpacity,
+    Alert
 } from 'react-native';
 
 import ListItemComponent from '../components/list_item';
@@ -21,17 +22,17 @@ const pickerTitleMap = {
 };
 
 const pickerDataMap = {
-    contType: [
+    contTypeName: [
         '成人票', 
         '儿童票'
     ],
-    cardType: [
+    cardTypeName: [
         '身份证', 
         '护照',
         '台胞证',
         '港澳通行证'
     ],
-    sex: [
+    sexName: [
         '男',
         '女'
     ]
@@ -116,9 +117,9 @@ export default class AddContactPage extends Component {
 
     state = {
         name: '',
-        contType: '成人票', // 车票类型
-        cardType: '身份证', // 证件类型
-        sex: '男',
+        contTypeName: '成人票', // 车票类型
+        cardTypeName: '身份证', // 证件类型
+        sexName: '男',
         cardNum: '',
         birth: `${thisYear}-${thisMonth}-${thisDay}`
     }
@@ -146,13 +147,13 @@ export default class AddContactPage extends Component {
     }
 
     initDatePicker(field) {
-        const selectedValue = this.state[field];
+        const birth = this.state[field];
 
         Picker.init({
             ...{
                 pickerData: years,
                 pickerTitleText: pickerTitleMap[field],
-                selectedValue,
+                selectedValue: birth.split('-'),
                 onPickerConfirm: (value) => {
                     this.birthPlaceholder = '';
                     this.setState({
@@ -273,13 +274,38 @@ export default class AddContactPage extends Component {
     }
 
     handleSubmit = () => {
-        alert(JSON.stringify(this.state));
+        const { name, cardNum } = this.state;
+        const matchCharacter = /[\d|\s|\W]/ig;
+
+        if (name === '') {
+            this.alert('请填写姓名');
+            
+            return false;
+        }
+        if (matchCharacter.test(name)) {
+            this.alert('姓名只能包含中文或者英文，不能有空格、符号等特殊字符！');
+            
+            return false;
+        }
+        if (cardNum === '') {
+            this.alert('请输入证件号码');
+            
+            return false;
+        }
+    }
+
+    alert(content) {
+        Alert.alert(
+            '提示',
+            content,
+            [{ text: '确定' }]
+        );
     }
 
     render() {
-        const { cardType } = this.state;
+        const { cardTypeName } = this.state;
 
-        const reset = cardType.selectedValue !== '身份证' 
+        const reset = cardTypeName !== '身份证' 
             ? [
                 {
                     iconDirection: 'down',
@@ -289,7 +315,7 @@ export default class AddContactPage extends Component {
                 {
                     iconDirection: 'down',
                     title: this._renderTitle('性别'),
-                    after: this._renderAfter('sex')
+                    after: this._renderAfter('sexName')
                 }
             ] : [];
 
@@ -312,12 +338,12 @@ export default class AddContactPage extends Component {
                                 {
                                     iconDirection: 'down',
                                     title: this._renderTitle('车票类型'),
-                                    after: this._renderAfter('contType')
+                                    after: this._renderAfter('contTypeName')
                                 },
                                 {
                                     iconDirection: 'down',
                                     title: this._renderTitle('证件类型'),
-                                    after: this._renderAfter('cardType')
+                                    after: this._renderAfter('cardTypeName')
                                 },
                                 {
                                     iconStyle: {
