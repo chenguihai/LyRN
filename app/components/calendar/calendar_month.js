@@ -6,26 +6,53 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Dimensions,
-    InteractionManager
+    InteractionManager,
+    Dimensions
 } from 'react-native';
 
+import date from '../../util/date';
+import festival from '../../util/festival';
+
 const themeColor = '#09bb07';
-const todayBgColor = '#e7e7e7';
+const grayBgColor = '#e7e7e7';
 
 export default class CalendarMonthComponent extends Component {
-
     static defaultProps = {
         data: []
+    }
+
+    static contextTypes = {
+        navigation: PropTypes.object
     }
 
     static propTypes = {
         data: PropTypes.array,
         onSelect: PropTypes.func,
-        dayMap: PropTypes.object
+        dayMap: PropTypes.object,
+        selectedTime: PropTypes.number
     }
 
-    beforeToday = true; // 用来判断日期是否小于今天
+    endHolidayTime; // 放假结束日期的时间戳
+
+    oneDayTimeStamp = 24 * 60 * 60 * 1000;
+    todayTimeStamp = date.getToday();
+    startSubScribeTime = this.todayTimeStamp + 29 * this.oneDayTimeStamp; // 开始预约时间戳
+    endSubscribeTime = this.todayTimeStamp + 75 * this.oneDayTimeStamp; // 结束预约时间戳
+
+    dayIMap = [
+        0,
+        6,
+        7, 
+        13, 
+        14, 
+        20,
+        21,
+        27,
+        28,
+        34,
+        35,
+        41
+    ]
 
     _refView = [];
 
@@ -72,26 +99,62 @@ export default class CalendarMonthComponent extends Component {
     }
 
     _renderRow(day, index, year, month) {
-        const time = `${year}-${month > 9 ? month : `0${month}`}-${day > 9 ? day : `0${day}`}`;
-        let todayBg, txtColor, handlePress;
-
-        if (this.dayMap[time] === '今天') {
-            this.beforeToday = false;
-            todayBg = todayBgColor;
-        } else {
-            todayBg = '#FFF';
+        const time = day === null ? 0 : Number(new Date(year, month - 1, day));
+        let bgColor = '#FFF', 
+            numColor = '#2d2d2d', 
+            handlePress;
+        
+        if (time < this.todayTimeStamp || time >= this.endSubscribeTime) {
+            numColor = '#CCC';
+            handlePress = null;
+        } else if (this.dayIMap.includes(index) && time !== 0) {
+            numColor = themeColor;
         }
 
         handlePress = () => this.handlePress(time);
-        
-        if (this.beforeToday) {
-            txtColor = '#CCC';
+
+        if (time === 0) {
             handlePress = null;
-        } else if (this.dayIMap.includes(index) && day !== null) {
-            txtColor = themeColor;
-        } else {
-            txtColor = '#000';
         }
+
+        // 高亮上一选择的时间
+        if (time === this.selectedTime) {
+            bgColor = themeColor;
+            numColor = '#FFF';
+        } else if (this.dayMap[time] === '今天') {
+            bgColor = grayBgColor;
+        }
+
+        // 节假日
+        const fest = festival[time];
+        let number;
+        
+        if (fest) {
+            number = fest[0];
+            const holidayNum = fest[1];
+
+            if (holidayNum > 0) {
+                this.endHolidayTime = time + holidayNum * this.oneDayTimeStamp;
+            }
+        }
+
+        let holidayTxt = false; // 是否显示假
+
+        if (this.endHolidayTime && time < this.endHolidayTime) {
+            holidayTxt = true;
+        }
+
+        if (time === this.endHolidayTime) {
+            this.endHolidayTime = void 0;
+        }
+
+        // 预约
+        let txt;
+        
+        if (time > this.startSubScribeTime && time < this.endSubscribeTime) {
+            txt = '可预约';
+        }
+        
         
         return (
             <TouchableOpacity
@@ -107,7 +170,9 @@ export default class CalendarMonthComponent extends Component {
                     }} style={[
                         styles.each_day_number,
                         {
-                            backgroundColor: todayBg
+                            
+                            backgroundColor: bgColor,
+                            width: number ? scaleSize(50) : scaleSize(20)
                         }
                     ]}
                 >
@@ -116,16 +181,28 @@ export default class CalendarMonthComponent extends Component {
                             day !== null && (this._refText[time] = ref);
                         }} 
                         style={{
-                            color: txtColor // 如果为每行的第一个或者最后一个字体高亮显示
+                            color: numColor, // 如果为每行的第一个或者最后一个字体高亮显示
                         }}
-                    >{day}</Text>
+                    >{number ? number : day}</Text>
                 </View>
-                <Text 
-                    style={[
-                        styles.each_day_txt,
-                        { color: themeColor }
-                    ]}
-                >{this.dayMap[time]}</Text>
+                {
+                    txt || this.dayMap[time]
+                        ? <Text 
+                            style={[
+                                styles.each_day_txt,
+                                { color: txt ? '#FF6540' : themeColor }
+                            ]}
+                        >{txt ? txt : this.dayMap[time]}</Text> 
+                        : null
+                }{
+                    holidayTxt && <Text style={{
+                        position: 'absolute',
+                        top: scaleSize(3),
+                        right: scaleSize(1),
+                        fontSize: setSpText(10),
+                        color: '#33cc66'
+                    }}>假</Text>
+                }
             </TouchableOpacity>
         );
     }
@@ -133,24 +210,12 @@ export default class CalendarMonthComponent extends Component {
     render() {
         const { width } = Dimensions.get('window');
         const { data, dayMap } = this.props;
+        const { navigation: { state: { params: { selectedTime } } } } = this.context;
 
+        this.selectedTime = selectedTime; // 上一次选择的时间
         this.dayMap = dayMap;
-        this.dayIMap = [
-            0,
-            6,
-            7, 
-            13, 
-            14, 
-            20,
-            21,
-            27,
-            28,
-            34,
-            35,
-            41
-        ];
         this.innerWidth = width * 0.9;
-        
+
         return (
             <ScrollView style={{ flex: 1 }}>
                 {
@@ -180,13 +245,13 @@ export default class CalendarMonthComponent extends Component {
 
 const styles = StyleSheet.create({
     'month_header': {
-        height: 30,
+        height: scaleSize(30),
         backgroundColor: '#f2f5f7',
         alignItems: 'center',
         justifyContent: 'center'
     },
     'month_header_txt': {
-        fontSize: 14,
+        fontSize: setSpText(14),
         color: '#000'
     },
     'month_body': {
@@ -196,19 +261,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     'each_day': {
-        height: 50,
+        height: scaleSize(50),
+        // padding: 5,
         alignItems: 'center',
         justifyContent: 'center'
     },
     'each_day_number': {
-        width: 28,
-        height: 28,
-        borderRadius: 5,
+        // width: scaleSize(18),
+        height: scaleSize(20),
+        borderRadius: scaleSize(5),
         justifyContent: 'center',
         alignItems: 'center'
     },
     'each_day_txt': {
-        fontSize: 11,
-        lineHeight: 11
+        fontSize: setSpText(11),
+        lineHeight: setSpText(11),
+        paddingTop: scaleSize(3),
     }
 });

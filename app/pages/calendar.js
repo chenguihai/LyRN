@@ -17,6 +17,20 @@ import date from '../util/date';
 
 class CalenDarPage extends Component {
 
+    childContextTypes = {
+        navigation: PropTypes.object
+    }
+
+    getChildContext = {
+        navigation: this.props.navigation 
+    }
+
+    dayMap = {
+        [date.getToday()]: '今天',
+        [date.getTomorrow()]: '明天',
+        [date.getAfterTomorrow()]: '后天'
+    }
+
     static propTypes = {
         selectDate: PropTypes.func,
         navigation: PropTypes.object
@@ -36,15 +50,17 @@ class CalenDarPage extends Component {
         const { navigation, selectDate } = this.props;
         const { key } = navigation.state.params || {};
         
+        const dateSpe = date.format(time);
+
         // 判断是否从首页进来
         if (key.indexOf('TripTime')) {
             selectDate({
-                [key]: time,
-                [`${key}Desc`]: this.getDayMap()[time] || ''
+                [key]: dateSpe,
+                [`${key}Desc`]: this.dayMap[new Date(time)] || ''
             });
         } else {
             selectDate({
-                [key]: time
+                [key]: dateSpe
             });
         }
         InteractionManager.runAfterInteractions(() => {
@@ -52,23 +68,14 @@ class CalenDarPage extends Component {
         });
     }
 
-    getDayMap() {
-        return {
-            [date.format(date.getToday())]: '今天',
-            [date.format(date.getTomorrow())]: '明天',
-            [date.format(date.getAfterTomorrow())]: '后天'
-        };
-    }
-
     render() {
-
         return (
             <View style={{ flex: 1 }}>
                 <CalendarHeaderPage />
                 <CalendarMonthComponent 
                     onSelect={this.handleSelect} 
                     data={this.state.calendar} 
-                    dayMap = {this.getDayMap()}
+                    dayMap={this.dayMap}
                 />
             </View>
         );

@@ -257,7 +257,11 @@ export default class AddContactPage extends Component {
                     justifyContent: 'center',
                     borderRadius: 5
                 }}
-                onPress={this.handleSubmit}
+                onPress={() => {
+                    requestAnimationFrame(() => {
+                        this.handleSubmit();
+                    });
+                }}
             >
                 <Text style={{
                     fontSize: setSpText(18),

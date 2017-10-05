@@ -63,6 +63,18 @@ export default class ListComponent extends Component {
         return nextProps.data !== this.props.data || height !== nextState.height;
     }
 
+    _renderOrderTips(notetime) {
+        return (
+            <Text style={{
+                fontSize: 12,
+                color: '#666'
+            }}>将于 <Text style={{
+                    color: '#FF6540'
+                }}>{notetime} </Text> 
+            起售，可预约抢票</Text>
+        );
+    }
+
     _renderSeats(data) {
         return data.map((item, index) => {
             const { cn, seats } = item;
@@ -164,7 +176,18 @@ export default class ListComponent extends Component {
         // usedtime 花费时间
         // ticketstatus 座位类型数组
 
-        const { accbyidcard, fmcity, tocity, fmtime, totime, trainno, usedtime, ticketstatus } = data.item;
+        const { 
+            accbyidcard, 
+            fmcity, 
+            tocity, 
+            fmtime, 
+            totime, 
+            trainno, 
+            usedtime, 
+            ticketstatus,
+            notetype, // 1 还没开售，预约抢票
+            notetime 
+        } = data.item;
 
         const seatsMap = [];
         const priceMap = [];
@@ -190,7 +213,6 @@ export default class ListComponent extends Component {
                     activeOpacity={0.9}
                     onPress={() => this.handlePress()}
                     style={styles.train_info}
-                    
                 >
                     {/* 开始信息开始 */}
                     <View style={styles.info_column}>
@@ -266,7 +288,7 @@ export default class ListComponent extends Component {
                             }
                         ]}
                     >
-                        {this._renderSeats(seatsMap)}
+                        {notetype === 1 ? this._renderOrderTips(notetime) : this._renderSeats(seatsMap)}
                     </Animated.View>
                     <Animated.View
                         style={[
@@ -284,7 +306,12 @@ export default class ListComponent extends Component {
 
     render() {
         const { viewWidth } = this.props;
+        // trainflag 1 列车停运 0 正常车次，不受控
+        const { item: { trainflag = '1' } } = this.props.data;
 
+        if (trainflag === '1') {
+            return null;
+        }
         if (Platform.OS === 'ios') {
             return (
                 <View style={{

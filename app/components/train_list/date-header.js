@@ -146,9 +146,12 @@ class DateHeaderComponent extends Component {
     }
 
     toSelectDate = () => {
+        const { index, dayArr } = this.state;
+
         requestAnimationFrame(() => {
             this.context.navigation.navigate('Calendar', {
-                key: 'trainlistTime'
+                key: 'trainlistTime',
+                selectedTime: dayArr[index]
             });
         });
     }
