@@ -1,8 +1,8 @@
 # LyRN
-同城旅游的react-native版(非官方)
+An React-Native app simulting tongcheng App run on both Android and iOS
 
 ## ScreenShots
-### ios
+### iOS
 <img src="https://raw.githubusercontent.com/zhiyingzzhou/LyRN/master/Screenshots/home.ios.png">
 <img src="https://raw.githubusercontent.com/zhiyingzzhou/LyRN/master/Screenshots/date.ios.png">
 <img src="https://raw.githubusercontent.com/zhiyingzzhou/LyRN/master/Screenshots/trainlist-refresh.ios.png">
