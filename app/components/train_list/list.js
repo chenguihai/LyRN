@@ -12,6 +12,7 @@ export default class ListComponent extends Component {
     static propTypes = {
         data: PropTypes.object,
         length: PropTypes.number,
+        parentContext: PropTypes.object
     }
 
     state = {
@@ -29,7 +30,8 @@ export default class ListComponent extends Component {
     }
     
     _renderItem = (data) => {
-        return <ItemComponent 
+        return <ItemComponent
+            parentContext={this.props.parentContext}
             viewWidth={this.width} 
             data={data}
         />;
@@ -50,6 +52,10 @@ export default class ListComponent extends Component {
         }
     }
 
+    onLayout = () => {
+        this.props.parentContext.FlatList = this._flatListRef;
+    }
+
     render() {
         const { width } = Dimensions.get('window');
         const { length } = this.state;
@@ -64,9 +70,13 @@ export default class ListComponent extends Component {
         
         return (       
             <FlatList
+                onLayout={this.onLayout}
+                ref={(ref) => { 
+                    this._flatListRef = ref;
+                }}
                 onEndReached={this.onEndReached}
                 onEndReachedThreshold={0.9}
-                initialNumToRender={10}
+                initialNumToRender={20}
                 data={trainlist.slice(0, length)}
                 keyExtractor={this.keyExtractor}
                 renderItem={this._renderItem}

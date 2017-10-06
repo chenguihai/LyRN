@@ -215,7 +215,7 @@ const AppNavigator = StackNavigator(
     },
     {
         initialRouteName: 'Main',
-        initialRouteParams1: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-10-02' }, // eslint-disable-line
+        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-10-10' }, // eslint-disable-line
         initialRouteParams2: { data: { 'trainno': 'G102',
             'fmtime': '06:30',
             'fmtimeps': 630, 

@@ -65,7 +65,7 @@
             "error",
             "last"
         ],
-        "complexity": "error",
+        "complexity": "off",
         "computed-property-spacing": "error",
         "consistent-return": "error",
         "consistent-this": "error",

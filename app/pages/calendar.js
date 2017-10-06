@@ -51,12 +51,13 @@ class CalenDarPage extends Component {
         const { key } = navigation.state.params || {};
         
         const dateSpe = date.format(time);
-
+        const description = this.dayMap[time] ? `${this.dayMap[time]}出发` : '';
         // 判断是否从首页进来
+
         if (key.indexOf('TripTime')) {
             selectDate({
                 [key]: dateSpe,
-                [`${key}Desc`]: this.dayMap[new Date(time)] || ''
+                [`${key}Desc`]: description
             });
         } else {
             selectDate({

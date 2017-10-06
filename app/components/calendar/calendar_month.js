@@ -34,10 +34,9 @@ export default class CalendarMonthComponent extends Component {
 
     endHolidayTime; // 放假结束日期的时间戳
 
-    oneDayTimeStamp = 24 * 60 * 60 * 1000;
     todayTimeStamp = date.getToday();
-    startSubScribeTime = this.todayTimeStamp + 29 * this.oneDayTimeStamp; // 开始预约时间戳
-    endSubscribeTime = this.todayTimeStamp + 75 * this.oneDayTimeStamp; // 结束预约时间戳
+    startSubScribeTime = date.startSubScribeTime(); 
+    endSubscribeTime = date.endSubscribeTime();
 
     dayIMap = [
         0,
@@ -104,7 +103,7 @@ export default class CalendarMonthComponent extends Component {
             numColor = '#2d2d2d', 
             handlePress;
         
-        if (time < this.todayTimeStamp || time >= this.endSubscribeTime) {
+        if (time < this.todayTimeStamp || time > this.endSubscribeTime) {
             numColor = '#CCC';
             handlePress = null;
         } else if (this.dayIMap.includes(index) && time !== 0) {
@@ -113,7 +112,7 @@ export default class CalendarMonthComponent extends Component {
 
         handlePress = () => this.handlePress(time);
 
-        if (time === 0) {
+        if (time === 0 || time < this.todayTimeStamp || this.endSubscribeTime < time) {
             handlePress = null;
         }
 
@@ -151,7 +150,7 @@ export default class CalendarMonthComponent extends Component {
         // 预约
         let txt;
         
-        if (time > this.startSubScribeTime && time < this.endSubscribeTime) {
+        if (time > this.startSubScribeTime && time <= this.endSubscribeTime) {
             txt = '可预约';
         }
         

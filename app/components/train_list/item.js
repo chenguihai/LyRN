@@ -40,13 +40,12 @@ const pureText = (content, style, fontSize) => {
     });
 };
 
-export default class ListComponent extends Component {
+export default class ItemComponent extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        lineScale: PropTypes.number,
-        cardScale: PropTypes.number,
-        viewWidth: PropTypes.number
+        viewWidth: PropTypes.number,
+        parentContext: PropTypes.object
     }
 
     showDetail = false;
@@ -101,66 +100,86 @@ export default class ListComponent extends Component {
         });
     }
 
+    close() {
+        Animated.parallel([
+            Animated.timing(this.state.height, {
+                toValue: scaleSize(seatsHeight),
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.topHeight, {
+                toValue: scaleSize(seatsHeight),
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.bottomHeight, {
+                toValue: 0,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+        ]).start(() => {
+            this.showDetail = false;
+        });
+        setTimeout(() => {
+            this._topRef && this._topRef.setNativeProps({
+                style: {
+                    opacity: 1
+                }
+            });
+        }, 100);
+    }
+
+    open() {
+        this._topRef && this._topRef.setNativeProps({
+            style: {
+                opacity: 0
+            }
+        });
+        Animated.parallel([
+            Animated.timing(this.state.height, {
+                toValue: this.height,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.topHeight, {
+                toValue: 0,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.bottomHeight, {
+                toValue: this.height,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            })
+        ]).start(() => {
+            this.showDetail = true;
+        });
+    }
+
     handlePress = () => {
         requestAnimationFrame(() => {
-            if (this.showDetail) {
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: scaleSize(seatsHeight),
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: scaleSize(seatsHeight),
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                ]).start();
-                setTimeout(() => {
-                    this._topRef.setNativeProps({
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                }, 100);
-            } else {
-                this._topRef.setNativeProps({
-                    style: {
-                        opacity: 0
-                    }
-                });
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    })
-                ]).start();
+            if (this.props.parentContext.childContext !== this && this.props.parentContext.hasChildOpen) {
+                this.props.parentContext.hasChildOpen = false; // 放在close里面赋值，会比open里面的赋值慢
+                this.props.parentContext.childContext.close();
             }
-            this.showDetail = !this.showDetail;
+            if (this.showDetail) {
+                this.props.parentContext.hasChildOpen = false;
+                this.close();
+            } else {
+                this.props.parentContext.hasChildOpen = true;
+                this.open();
+            }
+
+            if (this.props.parentContext.childContext !== this) {
+                this.props.parentContext.childContext = this; // 把当前组件实例复制给父组件的childContext属性
+            }
         });
-        
     }
 
     _renderContent = () => {

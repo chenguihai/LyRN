@@ -60,6 +60,12 @@ export default class TrainListPage extends Component {
             });
         }
 
+        // 列表重新滚动到顶部
+        this.FlatList && this.FlatList.scrollToOffset({ 
+            animated: false, 
+            offset: 0 
+        });        
+
         // 保存选择的时间给订单页面用
         Storage.save({
             key: 'bDate',
@@ -84,6 +90,9 @@ export default class TrainListPage extends Component {
                 }
             },
             callback: ({ data }) => {
+                if (this.hasChildOpen) { // itemCompnent子组件的上下文
+                    this.childContext.close(); 
+                }
                 setTimeout(() => {
                     if (this.state.showLoading1) {
                         this.setState({
@@ -105,7 +114,7 @@ export default class TrainListPage extends Component {
         return (
             <View style={styles.container}>
                 <DateHeaderComponent getTrainList={this.requestTrainList} />
-                <ListComponent data={data} />
+                <ListComponent data={data} parentContext={this} />
                 <SfzMaskComponent />
                 {showLoading1 ? <Loading1Component /> : null}
                 {showLoading2 ? <Loading2Component /> : null}
