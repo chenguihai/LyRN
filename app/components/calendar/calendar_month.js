@@ -133,7 +133,7 @@ export default class CalendarMonthComponent extends Component {
             const holidayNum = fest[1];
 
             if (holidayNum > 0) {
-                this.endHolidayTime = time + holidayNum * this.oneDayTimeStamp;
+                this.endHolidayTime = time + holidayNum * 24 * 60 * 60 * 1000;
             }
         }
 
