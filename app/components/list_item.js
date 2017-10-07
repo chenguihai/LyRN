@@ -8,7 +8,9 @@ import {
     Platform
 } from 'react-native';
 
-export default class ItemComponent extends Component {
+import _ from '../util';
+
+export default class ListItemComponent extends Component {
 
     static defaultProps = {
         data: {}
@@ -19,28 +21,39 @@ export default class ItemComponent extends Component {
     }
 
     _renderItem(list, item, index) {
-        const { style = {}, title = '', titleStyle = {}, after = '', afterStyle = {}, linkIcon = true, onPress } = item;
+        const { data: { borderRadius = 3 } } = this.props;
+        const { 
+            style = {}, // 行样式
+            title = '', 
+            titleStyle = {}, 
+            after = '', 
+            afterStyle = {},
+            iconStyle = {},
+            linkIcon = true, // 是否显示肩头
+            iconDirection = 'right', // 箭头方向
+            onPress 
+        } = item;
 
         // 如果list元素大于1,第一个元素添加上边radius,最后一个元素添加下边radius
         let borderRadiusStyle;
 
         if (list.length > 1) {
             borderRadiusStyle = index === 0 ? {
-                borderTopLeftRadius: 3,
-                borderTopRightRadius: 3
+                borderTopLeftRadius: borderRadius,
+                borderTopRightRadius: borderRadius
             } : index === list.length - 1 ? {
-                borderBottomLeftRadius: 3, 
-                borderBottomRightRadius: 3
+                borderBottomLeftRadius: borderRadius, 
+                borderBottomRightRadius: borderRadius
             } : {};
         } else {
-            borderRadiusStyle = { borderRadius: 3 };
+            borderRadiusStyle = { borderRadius };
         }
 
         return (
             <View key={index} >
                 <TouchableOpacity 
                     style={[
-                        styles.item_content,
+                        styles.item_inner,
                         {
                             paddingRight: linkIcon ? 0 : 5
                         },
@@ -54,18 +67,16 @@ export default class ItemComponent extends Component {
                             }
                         });
                     }}
+                    activeOpacity={_.isFunction(onPress) ? 0.8 : 1}
                 >
-                    {title.props 
-                        ? title 
-                        : <Text style={[
-                            styles.item_title,
-                            titleStyle
-                        ]}>{title}</Text>
-                    }
-                    <View style={{
-                        flexDirection: 'row',
-                        alignItems: 'center'
-                    }}>
+                    <View style={styles.item_content}>
+                        {title.props 
+                            ? title 
+                            : <Text style={[
+                                styles.item_title,
+                                titleStyle
+                            ]}>{title}</Text>
+                        }
                         {after.props 
                             ? after
                             : <Text style={[
@@ -73,10 +84,23 @@ export default class ItemComponent extends Component {
                                 afterStyle
                             ]}>{after}</Text>
                         }
-                        {
-                            linkIcon && <View style={styles.icon}></View>
-                        }
                     </View>
+                    {
+                        linkIcon && 
+                        <View style={styles.item_icon}>
+                            <View style={[
+                                styles.icon,
+                                iconStyle,
+                                {
+                                    transform: [
+                                        {
+                                            rotateZ: iconDirection === 'right' ? '-45deg' : '45deg'
+                                        }
+                                    ]
+                                }
+                            ]}></View>
+                        </View>
+                    }
                 </TouchableOpacity>
                 {list.length > 1 && index < list.length - 1 && <View style={{
                     height: StyleSheet.hairlineWidth,
@@ -86,21 +110,19 @@ export default class ItemComponent extends Component {
         );
     }
 
-    _renderList() {
-        const { data: { list } } = this.props;
-
-        return list.map(this._renderItem.bind(this, list));
-    }
-
     render() {
-        const { data: { style = {} } } = this.props;
+        const { data: { style = {}, list = [], borderRadius = 3 } } = this.props;
         
         return (
             <View style={[
                 styles.wrapper,
-                style
+                style,
+                {
+                    borderRadius,
+                    shadowRadius: borderRadius
+                }
             ]}>
-                {this._renderList()}
+                {list.map(this._renderItem.bind(this, list))}
             </View>
             
         );
@@ -113,9 +135,12 @@ const styles = StyleSheet.create({
         marginLeft: scaleSize(5), 
         marginRight: scaleSize(5),
         padding: scaleSize(0),
-        borderRadius: 3
+        shadowColor: '#eee',
+        shadowOpacity: 1,
+        shadowOffset: { width: 1, 
+            height: 1 }
     },
-    'item_content': {
+    'item_inner': {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -130,27 +155,31 @@ const styles = StyleSheet.create({
             }
         })
     },
+    'item_content': {
+        flex: 9,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     'item_title': {
         fontSize: setSpText(16),
-        // lineHeight: setSpText(16),
         color: '#666'
     },
     'item_after': {
         fontSize: setSpText(14),
-        marginRight: scaleSize(8), 
         color: '#CCC',
+    },
+    'item_icon': {
+        flex: 1,
+        justifyContent: 'center',
     },
     icon: {
         width: scaleSize(8),
         height: scaleSize(8),
-        marginRight: scaleSize(21),
+        marginLeft: scaleSize(8),
         borderRightWidth: StyleSheet.hairlineWidth,
         borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#BCBBB8',
-        transform: [
-            {
-                rotateZ: '-45deg'
-            }
-        ]
+        
     }
 });

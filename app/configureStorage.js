@@ -54,12 +54,13 @@ if (Platform.OS === 'ios') {
 }
 
 global.setSpText = function(size) {
-    // size = Math.round((size * scale + 0.5) * pixelRatio / fontScale);
+    size = Math.round(size * scale / fontScale);
     
     return size;
 };
 
 global.scaleSize = function(size) {
-    // return Math.round(size * scale + 0.5);
-    return size;
+    return Math.round(size * scale + 0.5);
+    
+    // return size;
 };

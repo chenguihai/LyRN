@@ -68,11 +68,15 @@ class TrainPage extends Component {
     }
 
     selectDate = () => {
-        const { navigation } = this.props;
+        // tripTime year-month-day 2017-10-06
+        const { navigation, tripTime } = this.props;
 
         InteractionManager.runAfterInteractions(() => {
+            // 去除日期中的0，因为年月日中的日如果为两位数的话时间戳显示的是8点的时间戳
+            
             navigation.navigate('Calendar', {
-                key: 'trainTripTime'
+                key: 'trainTripTime',
+                selectedTime: new Date(tripTime).getTime() - 8 * 60 * 60 * 1000
             });
         });
     }

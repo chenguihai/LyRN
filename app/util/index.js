@@ -60,6 +60,16 @@ Util.prototype.isFunction = function (value) {
 };
 
 /**
+ * @description 判断元素是否为数字
+ * @param {*} 要判断的元素
+ * @return {boolean}
+ */
+
+Util.prototype.isNumber = function (value) {
+    return type(value) === 'number';
+};
+
+/**
  * @description 将数组分割成相等数量的块
  * @param {array} arr 要切割的数组
  * @param {number} num 块的数量 

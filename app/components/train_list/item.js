@@ -23,7 +23,12 @@ const seatsHeight = scaleSize(34),
 
 const pureText = (content, style, fontSize) => {
     return Platform.select({
-        ios: <Text style={style}>{content}</Text>,
+        ios: <Text style={[
+            style,
+            {
+                fontSize: setSpText(fontSize)
+            }
+        ]}>{content}</Text>,
         android: <Text style={[
             style,
             {
@@ -35,13 +40,12 @@ const pureText = (content, style, fontSize) => {
     });
 };
 
-export default class ListComponent extends Component {
+export default class ItemComponent extends Component {
 
     static propTypes = {
         data: PropTypes.object,
-        lineScale: PropTypes.number,
-        cardScale: PropTypes.number,
-        viewWidth: PropTypes.number
+        viewWidth: PropTypes.number,
+        parentContext: PropTypes.object
     }
 
     showDetail = false;
@@ -58,6 +62,18 @@ export default class ListComponent extends Component {
         return nextProps.data !== this.props.data || height !== nextState.height;
     }
 
+    _renderOrderTips(notetime) {
+        return (
+            <Text style={{
+                fontSize: 12,
+                color: '#666'
+            }}>将于 <Text style={{
+                    color: '#FF6540'
+                }}>{notetime} </Text> 
+            起售，可预约抢票</Text>
+        );
+    }
+
     _renderSeats(data) {
         return data.map((item, index) => {
             const { cn, seats } = item;
@@ -66,7 +82,7 @@ export default class ListComponent extends Component {
                 return <Text 
                     key={index} 
                     style={{
-                        fontSize: setSpText(11),
+                        fontSize: setSpText(12),
                         // lineHeight: setSpText(11),
                         marginLeft: scaleSize(8),
                         color: '#333'
@@ -75,7 +91,7 @@ export default class ListComponent extends Component {
             }
 
             return <Text key={index} style={{
-                fontSize: setSpText(11),
+                fontSize: setSpText(12),
                 // lineHeight: setSpText(11),
                 marginLeft: scaleSize(8),
                 color: '#ccc'
@@ -84,66 +100,86 @@ export default class ListComponent extends Component {
         });
     }
 
+    close() {
+        Animated.parallel([
+            Animated.timing(this.state.height, {
+                toValue: scaleSize(seatsHeight),
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.topHeight, {
+                toValue: scaleSize(seatsHeight),
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.bottomHeight, {
+                toValue: 0,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+        ]).start(() => {
+            this.showDetail = false;
+        });
+        setTimeout(() => {
+            this._topRef && this._topRef.setNativeProps({
+                style: {
+                    opacity: 1
+                }
+            });
+        }, 100);
+    }
+
+    open() {
+        this._topRef && this._topRef.setNativeProps({
+            style: {
+                opacity: 0
+            }
+        });
+        Animated.parallel([
+            Animated.timing(this.state.height, {
+                toValue: this.height,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.topHeight, {
+                toValue: 0,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            }),
+            Animated.timing(this.state.bottomHeight, {
+                toValue: this.height,
+                duration: 150,
+                easing: Easing.ease,
+                // useNativeDriver: true
+            })
+        ]).start(() => {
+            this.showDetail = true;
+        });
+    }
+
     handlePress = () => {
         requestAnimationFrame(() => {
-            if (this.showDetail) {
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: scaleSize(seatsHeight),
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: scaleSize(seatsHeight),
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                ]).start();
-                setTimeout(() => {
-                    this._topRef.setNativeProps({
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                }, 100);
-            } else {
-                this._topRef.setNativeProps({
-                    style: {
-                        opacity: 0
-                    }
-                });
-                Animated.parallel([
-                    Animated.timing(this.state.height, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.topHeight, {
-                        toValue: 0,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    }),
-                    Animated.timing(this.state.bottomHeight, {
-                        toValue: this.height,
-                        duration: 150,
-                        easing: Easing.ease,
-                        // useNativeDriver: true
-                    })
-                ]).start();
+            if (this.props.parentContext.childContext !== this && this.props.parentContext.hasChildOpen) {
+                this.props.parentContext.hasChildOpen = false; // 放在close里面赋值，会比open里面的赋值慢
+                this.props.parentContext.childContext.close();
             }
-            this.showDetail = !this.showDetail;
+            if (this.showDetail) {
+                this.props.parentContext.hasChildOpen = false;
+                this.close();
+            } else {
+                this.props.parentContext.hasChildOpen = true;
+                this.open();
+            }
+
+            if (this.props.parentContext.childContext !== this) {
+                this.props.parentContext.childContext = this; // 把当前组件实例复制给父组件的childContext属性
+            }
         });
-        
     }
 
     _renderContent = () => {
@@ -159,7 +195,18 @@ export default class ListComponent extends Component {
         // usedtime 花费时间
         // ticketstatus 座位类型数组
 
-        const { accbyidcard, fmcity, tocity, fmtime, totime, trainno, usedtime, ticketstatus } = data.item;
+        const { 
+            accbyidcard, 
+            fmcity, 
+            tocity, 
+            fmtime, 
+            totime, 
+            trainno, 
+            usedtime, 
+            ticketstatus,
+            notetype, // 1 还没开售，预约抢票
+            notetime 
+        } = data.item;
 
         const seatsMap = [];
         const priceMap = [];
@@ -185,12 +232,9 @@ export default class ListComponent extends Component {
                     activeOpacity={0.9}
                     onPress={() => this.handlePress()}
                     style={styles.train_info}
-                    
                 >
                     {/* 开始信息开始 */}
-                    <View style={styles.info_column} onLayout={({ nativeEvent: e }) => { 
-                        console.log(e);
-                    }}>
+                    <View style={styles.info_column}>
                         {pureText(fmtime, { color: '#333' }, 20)}
                         {pureText(fmcity, { color: '#2d2d2d', 
                             marginTop: 5 }, 14)}
@@ -217,7 +261,8 @@ export default class ListComponent extends Component {
                             }}
                             source={require('../../images/right_line.png')}
                         />
-                        {pureText(usedtime, { color: '#999' }, 12)}
+                        {pureText(usedtime, { color: '#999', 
+                            marginTop: Platform.OS === 'ios' ? setSpText(4) : 0 }, 12)}
                     </View>
                     {/* 到达信息开始 */}
                     <View style={styles.info_column}>
@@ -262,7 +307,7 @@ export default class ListComponent extends Component {
                             }
                         ]}
                     >
-                        {this._renderSeats(seatsMap)}
+                        {notetype === 1 ? this._renderOrderTips(notetime) : this._renderSeats(seatsMap)}
                     </Animated.View>
                     <Animated.View
                         style={[
@@ -280,14 +325,20 @@ export default class ListComponent extends Component {
 
     render() {
         const { viewWidth } = this.props;
+        // trainflag 1 列车停运 0 正常车次，不受控
+        const { item: { trainflag = '1' } } = this.props.data;
 
+        if (trainflag === '1') {
+            return null;
+        }
         if (Platform.OS === 'ios') {
             return (
                 <View style={{
                     marginLeft: scaleSize(5),
                     marginRight: scaleSize(5),
                     marginBottom: scaleSize(5),
-                    shadowColor: 'rgba(153,153,153,.2)',
+                    // shadowColor: 'rgba(153,153,153,.2)',
+                    shadowColor: '#ccc',
                     shadowOffset: { width: scaleSize(1), 
                         height: scaleSize(2) },
                     shadowRadius: 4,
@@ -346,7 +397,9 @@ const styles = StyleSheet.create({
         paddingLeft: scaleSize(15),
         ...Platform.select({
             ios: {
-                backgroundColor: 'transparent'
+                backgroundColor: 'transparent',
+                borderBottomLeftRadius: 4,
+                borderBottomRightRadius: 4
             },
             android: {
                 position: 'relative',

@@ -13,7 +13,8 @@ import CityPage from '../pages/city'; // 选择城市
 import CalendarPage from '../pages/calendar'; // 选择日历
 import TrainListPage from '../pages/train_list'; // 火车时刻表页面
 import TrainOrderPage from '../pages/train_order'; // 火车票订单
-import ContactPage from '../pages/contact'; // 添加乘客
+import ContactPage from '../pages/contact'; // 选择乘客
+import AddContactPage from '../pages/add_contact'; // 新增乘客
 import ComboPage from '../pages/combo'; // 优选服务
 import TinsurancePage from '../pages/tinsurance'; // 行程保险
 import OnlineSelectSeatPage from '../pages/online_select_seat'; // 在线选座
@@ -151,55 +152,61 @@ export const MainNavigator = TabNavigator(MainRouterConfigs, MainTabNavigatorCon
 
 const AppNavigator = StackNavigator(
     {
-        'Main': {
+        'Main': { // 首页
             screen: MainNavigator,
             navigationOptions: {
                 header: null
             }
         },
-        'City': {
+        'City': { // 选择城市
             screen: CityPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Calendar': {
+        'Calendar': { // 选择日期
             screen: CalendarPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'TrainList': {
+        'TrainList': { // 火车列表
             screen: TrainListPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'TrainOrder': {
+        'TrainOrder': { // 下订单
             screen: TrainOrderPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Contact': {
+        'Contact': { // 乘客列表
             screen: ContactPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Combo': {
+        'AddContact': { // 新增乘客
+            screen: AddContactPage,
+            navigationOptions: {
+                header: backNavbar
+            }
+        },
+        'Combo': { // 优选服务
             screen: ComboPage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'Tinsurance': {
+        'Tinsurance': { // 行程保险
             screen: TinsurancePage,
             navigationOptions: {
                 header: backNavbar
             }
         },
-        'OnlineSelectSeat': {
+        'OnlineSelectSeat': { // 在线选座
             screen: OnlineSelectSeatPage,
             navigationOptions: {
                 header: backNavbar
@@ -207,82 +214,82 @@ const AppNavigator = StackNavigator(
         }
     },
     {
-        initialRouteName: 'TrainList',
-        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-10-02' }, // eslint-disable-line
-        // initialRouteParams: { data: { 'trainno': 'G102',
-        //     'fmtime': '06:30',
-        //     'fmtimeps': 630, 
-        //     'totime': '12:18', 
-        //     'totimeps': 1218, 
-        //     'bgplace': '上海虹桥',
-        //     'endplace': '北京南', 
-        //     'fmcity': '上海虹桥', 
-        //     'fmcitypy': 'shanghaihongqiao',
-        //     'tocity': '北京南',
-        //     'tocitypy': 'beijingnan', 
-        //     'usedtime': '5小时48分钟', 
-        //     'usedtimeps': 348, 
-        //     'fmtype': 0,
-        //     'totype': 2,
-        //     'ifbook': 1,
-        //     'priority': 0, 
-        //     'sort': 'GD',
-        //     'note': '', 
-        //     'notetype': 0,
-        //     'notetime': '', 
-        //     'ticketstatus': { 'secseats': { 'cn': '二等座', 
-        //         'price': 553, 
-        //         'state': 1, 
-        //         'seats': '99', 
-        //         'isorder': '1', 
-        //         'upPrice': 0, 
-        //         'midPrice': 0, 
-        //         'downPrice': 0 }, 
-        //     'firtseats': { 'cn': '一等座', 
-        //         'price': 933,
-        //         'state': 1,
-        //         'seats': '99', 
-        //         'isorder': '1', 
-        //         'upPrice': 0, 
-        //         'midPrice': 0, 
-        //         'downPrice': 0 },
-        //     'busseats': { 'cn': '商务座',
-        //         'price': 1748,
-        //         'state': 1,
-        //         'seats': '99', 
-        //         'isorder': '1',
-        //         'upPrice': 0, 
-        //         'midPrice': 0, 
-        //         'downPrice': 0 }, 
-        //     'specseats': null, 
-        //     'hardseats': null, 
-        //     'noseats': { 'cn': '无座', 
-        //         'price': 553,
-        //         'state': 0,
-        //         'seats': '0', 
-        //         'isorder': '1', 
-        //         'upPrice': 0,
-        //         'midPrice': 0, 
-        //         'downPrice': 0 }, 
-        //     'hardslp': null, 
-        //     'softslp': null, 
-        //     'softsleeperdown': null, 
-        //     'advancedsoftsleeper': null, 
-        //     'dsleeperdown': null }, 
-        //     'isbook': 1, 
-        //     'bothmile': 0, 
-        //     'accbyidcard': 1, 
-        //     'trianid': 1, 
-        //     'trainflag': '0', 
-        //     'trainflagmsg': '正常车次，不受控',
-        //     'selectedSeats': { 'cn': '二等座',
-        //         'price': 553, 
-        //         'state': 1, 
-        //         'seats': '99',
-        //         'isorder': '1', 
-        //         'upPrice': 0, 
-        //         'midPrice': 0, 
-        //         'downPrice': 0 } } },
+        initialRouteName: 'Main',
+        initialRouteParams: { from: { Name: '上海' }, to: { Name: '北京' }, tripTime: '2017-10-10' }, // eslint-disable-line
+        initialRouteParams2: { data: { 'trainno': 'G102',
+            'fmtime': '06:30',
+            'fmtimeps': 630, 
+            'totime': '12:18', 
+            'totimeps': 1218, 
+            'bgplace': '上海虹桥',
+            'endplace': '北京南', 
+            'fmcity': '上海虹桥', 
+            'fmcitypy': 'shanghaihongqiao',
+            'tocity': '北京南',
+            'tocitypy': 'beijingnan', 
+            'usedtime': '5小时48分钟', 
+            'usedtimeps': 348, 
+            'fmtype': 0,
+            'totype': 2,
+            'ifbook': 1,
+            'priority': 0, 
+            'sort': 'GD',
+            'note': '', 
+            'notetype': 0,
+            'notetime': '', 
+            'ticketstatus': { 'secseats': { 'cn': '二等座', 
+                'price': 553, 
+                'state': 1, 
+                'seats': '99', 
+                'isorder': '1', 
+                'upPrice': 0, 
+                'midPrice': 0, 
+                'downPrice': 0 }, 
+            'firtseats': { 'cn': '一等座', 
+                'price': 933,
+                'state': 1,
+                'seats': '99', 
+                'isorder': '1', 
+                'upPrice': 0, 
+                'midPrice': 0, 
+                'downPrice': 0 },
+            'busseats': { 'cn': '商务座',
+                'price': 1748,
+                'state': 1,
+                'seats': '99', 
+                'isorder': '1',
+                'upPrice': 0, 
+                'midPrice': 0, 
+                'downPrice': 0 }, 
+            'specseats': null, 
+            'hardseats': null, 
+            'noseats': { 'cn': '无座', 
+                'price': 553,
+                'state': 0,
+                'seats': '0', 
+                'isorder': '1', 
+                'upPrice': 0,
+                'midPrice': 0, 
+                'downPrice': 0 }, 
+            'hardslp': null, 
+            'softslp': null, 
+            'softsleeperdown': null, 
+            'advancedsoftsleeper': null, 
+            'dsleeperdown': null }, 
+            'isbook': 1, 
+            'bothmile': 0, 
+            'accbyidcard': 1, 
+            'trianid': 1, 
+            'trainflag': '0', 
+            'trainflagmsg': '正常车次，不受控',
+            'selectedSeats': { 'cn': '二等座',
+                'price': 553, 
+                'state': 1, 
+                'seats': '99',
+                'isorder': '1', 
+                'upPrice': 0, 
+                'midPrice': 0, 
+                'downPrice': 0 } } },
         cardStyle: {
             shadowOpacity: 0 // 去除顶部阴影
         }

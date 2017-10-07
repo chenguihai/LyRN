@@ -36,6 +36,8 @@ class DateHeaderComponent extends Component {
         index: 0
     }
 
+    endSubscribeTime = date.endSubscribeTime();
+
     componentWillMount() {
         this.todayTimeStamp = date.getToday(); // 提前存储当日的时间戳
 
@@ -146,9 +148,12 @@ class DateHeaderComponent extends Component {
     }
 
     toSelectDate = () => {
+        const { index, dayArr } = this.state;
+
         requestAnimationFrame(() => {
             this.context.navigation.navigate('Calendar', {
-                key: 'trainlistTime'
+                key: 'trainlistTime',
+                selectedTime: dayArr[index]
             });
         });
     }
@@ -157,9 +162,11 @@ class DateHeaderComponent extends Component {
         const { dayArr, index } = this.state;
         const { width } = Dimensions.get('window');
         const btnWidth = (width - 12) * 0.28;
+        const lastIndex = dayArr.length - 1;
         
         const isPreventSelectPrev = dayArr[index > 0 ? index : 0] === this.todayTimeStamp;
-
+        const isPreventSelectNext = index === lastIndex && dayArr[lastIndex] === this.endSubscribeTime;
+        
         return (
             <View style={styles.header}>
                 {/* 前一天开始 */}
@@ -205,7 +212,7 @@ class DateHeaderComponent extends Component {
                         borderRadius: 3,
                         overflow: 'hidden'
                     }}
-                    activeOpacity={0.8}
+                    activeOpacity={0.4}
                     onPress={this.toSelectDate}
                 >
                     <Animated.View style={{
@@ -273,7 +280,7 @@ class DateHeaderComponent extends Component {
                 {/* 日历结束 */}
                 {/* 后一天开始 */}
                 <TouchableOpacity
-                    onPress={this.selectNextDay}
+                    onPress={!isPreventSelectNext ? this.selectNextDay : null}
                 >
                     <View style={[
                         styles.btn,
@@ -283,7 +290,12 @@ class DateHeaderComponent extends Component {
                             paddingRight: 15
                         }
                     ]}>
-                        <Text style={styles.btn_txt}>
+                        <Text style={[
+                            styles.btn_txt,
+                            {
+                                opacity: isPreventSelectNext ? 0.4 : 1
+                            }
+                        ]}>
                         后一天
                         </Text>
                         {/* <Image

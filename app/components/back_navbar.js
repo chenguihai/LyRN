@@ -19,7 +19,8 @@ class BackNavbarComponent extends Component {
         City: '选择城市',
         Calendar: '选择日期',
         TrainOrder: '订单',
-        Contact: '新增乘客',
+        Contact: '选择乘客',
+        AddContact: '新增乘客',
         Combo: '优选服务',
         Tinsurance: '行程保险',
         OnlineSelectSeat: '在线选座'

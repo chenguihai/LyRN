@@ -7,7 +7,7 @@ import {
     Platform
 } from 'react-native';
 
-import ItemComponent from '../item';
+import ListItemComponent from '../list_item';
 
 export default class ContactComponent extends Component {
 
@@ -84,7 +84,7 @@ export default class ContactComponent extends Component {
 
     render() {
         return (
-            <ItemComponent
+            <ListItemComponent
                 data = {{
                     list: [
                         {  

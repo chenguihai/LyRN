@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import {
     View,
     Text,
-    ScrollView,
-    Dimensions,
+    ScrollView
 } from 'react-native';
 
 import TrainInfoComponent from '../components/train_order/train_info';
 import ConcatComponent from '../components/train_order/contact';
 import GetFreeComponent from '../components/train_order/getfree';
+import SubmitButtonComponent from '../components/submit_button';
 
-import ItemComponent from '../components/item';
+import ListItemComponent from '../components/list_item';
 
 export default class TrainOrderPage extends Component {
 
@@ -28,20 +28,18 @@ export default class TrainOrderPage extends Component {
     }
 
     render() {
-        const { width } = Dimensions.get('window');
         const { navigation: { state: { params: { data } } } } = this.props;
 
         return (
             <View 
                 style={{ 
                     flex: 1, 
-                    backgroundColor: '#f2f4f7',
                     paddingBottom: 50
                 }}
             >
                 <ScrollView>
                     <TrainInfoComponent data={data} />
-                    <ItemComponent
+                    <ListItemComponent
                         data = {{
                             style: {
                                 marginTop: 0,
@@ -62,7 +60,7 @@ export default class TrainOrderPage extends Component {
                 
                     <ConcatComponent />
                 
-                    <ItemComponent
+                    <ListItemComponent
                         data = {{
                             list: [
                                 {
@@ -76,7 +74,7 @@ export default class TrainOrderPage extends Component {
                         }}
                     />
 
-                    <ItemComponent
+                    <ListItemComponent
                         data = {{
                             list: [
                                 {
@@ -91,7 +89,7 @@ export default class TrainOrderPage extends Component {
 
                     <GetFreeComponent />
 
-                    <ItemComponent
+                    <ListItemComponent
                         data = {{
                             style: {
                                 marginBottom: 50
@@ -107,21 +105,17 @@ export default class TrainOrderPage extends Component {
                         }}
                     />
                 </ScrollView>
-                <View style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    height: 55,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    backgroundColor: '#3C6',
-                    width
-                }}>
+                <SubmitButtonComponent
+                    style={{
+                        backgroundColor: '#3C6',
+                    }}
+                >
                     <Text style={{
                         color: '#FFF',
                         fontSize: setSpText(18),
                         fontWeight: 'bold'
                     }}>提交订单</Text>
-                </View>
+                </SubmitButtonComponent>
             </View>
         );
     }

@@ -20,9 +20,15 @@ class LyRN extends React.Component {
                 <View
                     style={{
                         flex: 1,
-                        paddingTop: 20
+                        backgroundColor: '#efeff4',
                     }}
                 >
+                    {/* statusBar背景开始 */}
+                    <View style={{
+                        height: scaleSize(20),
+                        backgroundColor: '#FFF'
+                    }}></View>
+                    {/* statusBar背景结束 */}
                     <AppWithNavigationState />
                 </View>
             </Provider>

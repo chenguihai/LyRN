@@ -20,6 +20,14 @@ _Date.prototype.resetTime = function (date) {
     return Number(date);
 };
 
+_Date.prototype.oneDayTimeStamp = 24 * 60 * 60 * 1000;
+_Date.prototype.startSubScribeTime = function() {
+    return date.getToday() + 29 * date.oneDayTimeStamp;
+}; // 开始预约时间戳
+_Date.prototype.endSubscribeTime = function() {
+    return date.getToday() + 75 * date.oneDayTimeStamp;
+}; // 结束预约时间戳
+
 /**
  * @description 获取今天凌晨0点0时0分的时间戳(毫秒为单位)
  */
@@ -81,6 +89,7 @@ _Date.prototype.covertToMonthAndDay = function(time) {
         weekDay
     };
 };
+
 
 const date = new _Date();
 

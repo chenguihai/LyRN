@@ -94,26 +94,7 @@ export default class TrainInfoComponent extends Component {
                                 color: '#FFF'
                             }}>经停信息</Text>
                         </View>
-                        <View style={[
-                            styles.line,
-                            {
-                                alignItems: 'flex-end'
-                            }
-                        ]}>
-                            <View style={{
-                                width: scaleSize(6),
-                                height: StyleSheet.hairlineWidth,
-                                backgroundColor: '#FFF',
-                                position: 'relative',
-                                top: -scaleSize(1),
-                                transform: [
-                                    {
-                                        rotateZ: '-135deg'
-                                    }
-                                ]
-                            }}>
-
-                            </View>
+                        <View style={styles.line}>
                         </View>
                     </View>
                 </View>

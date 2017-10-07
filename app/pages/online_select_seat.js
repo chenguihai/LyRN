@@ -6,12 +6,21 @@ import {
     Image,
     TextInput,
     ScrollView,
-    Platform
+    TouchableOpacity,
+    Platform,
+    StyleSheet
 } from 'react-native';
 
 import TrainInfoComponent from '../components/online_select_seat/train_info';
 import SeatsComponent from '../components/online_select_seat/seats';
-import ItemComponent from '../components/item';
+import ListItemComponent from '../components/list_item';
+
+import SubmitButtonComponent from '../components/submit_button';
+
+const checkbox = {
+    true: require('../images/icon2_checkbox_active.png'),
+    false: require('../images/icon_checkbox.png')
+};
 
 export default class OnlineSelectSeatPage extends Component {
 
@@ -25,6 +34,10 @@ export default class OnlineSelectSeatPage extends Component {
 
     getChildContext = {
         navigation: this.props.navigation
+    }
+
+    state = {
+        isSelect: false
     }
 
     renderTitle1() {
@@ -120,28 +133,77 @@ export default class OnlineSelectSeatPage extends Component {
                 alignItems: 'center'
             }}>
                 <Image 
-                    source={require('../images/getfree.png')}
+                    source={require('../images/guarantee.png')}
                     style={{
                         width: scaleSize(25),
-                        height: scaleSize(25)
+                        height: scaleSize(25),
                     }}
+                    resizeMode="cover"
                 />
                 <View style={{
                     marginLeft: scaleSize(15)
                 }}>
-                    <Text style={{
-                        fontSize: setSpText(16),
-                        color: '#333'
+                    <View style={{
+                        flexDirection: 'row'
                     }}>
+                        <Text style={{
+                            fontSize: setSpText(16),
+                            color: '#333'
+                        }}>
                         保证达
-                    </Text>
+                        </Text>
+                        <Image 
+                            source={require('../images/info.png')}
+                            style={{
+                                width: scaleSize(15),
+                                height: scaleSize(15),
+                                marginLeft: scaleSize(5)
+                            }}
+                            resizeMode="cover"
+                        />
+                    </View>
                     <Text style={{
                         fontSize: setSpText(12),
-                        color: '#999'
+                        color: '#999',
+                        marginTop: scaleSize(5)
                     }}>
                         车票配送遗失、延误，赔付损失
                     </Text>
                 </View>
+            </View>
+        );
+    }
+
+    renderAfter() {
+        return (
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center'
+            }}>
+                <Text style={{
+                    fontSize: setSpText(14),
+                    lineHeight: setSpText(14),
+                    color: '#999'
+                }}>¥5/人</Text>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                        this.setState({
+                            isSelect: !this.state.isSelect
+                        });
+                    }}
+                >
+                    <Image 
+                        source={checkbox[this.state.isSelect]}
+                        style={{
+                            width: scaleSize(22),
+                            height: scaleSize(22),
+                            marginRight: scaleSize(7),
+                            marginLeft: scaleSize(13)
+                        }}
+                        resizeMode="cover"
+                    />
+                </TouchableOpacity>
             </View>
         );
     }
@@ -151,13 +213,12 @@ export default class OnlineSelectSeatPage extends Component {
         
         return (
             <View style={{
-                flex: 1,
-                backgroundColor: '#f2f4f7'
+                flex: 1
             }}>
                 <ScrollView>
                     <TrainInfoComponent data={data} />
                     <SeatsComponent data={data} />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -166,7 +227,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -177,7 +238,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -197,7 +258,7 @@ export default class OnlineSelectSeatPage extends Component {
                     
                     />
                     {/* 保证达开始 */}
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -205,13 +266,14 @@ export default class OnlineSelectSeatPage extends Component {
                                         height: 'auto',
                                     }, 
                                     linkIcon: false,
-                                    title: this.renderTitle3()
+                                    title: this.renderTitle3(),
+                                    after: this.renderAfter()
                                 }
                             ]
                         }}
                     />
                     {/* 保证达结束 */}
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -221,7 +283,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -234,7 +296,7 @@ export default class OnlineSelectSeatPage extends Component {
                             ]
                         }}
                     />
-                    <ItemComponent
+                    <ListItemComponent
                         data={{
                             list: [
                                 {
@@ -248,6 +310,62 @@ export default class OnlineSelectSeatPage extends Component {
                         }}
                     />
                 </ScrollView>
+                <SubmitButtonComponent style={{
+                    backgroundColor: '#FFF',
+                    borderTopWidth: StyleSheet.hairlineWidth,
+                    borderTopColor: '#EEE'
+                }}>
+                    <View style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        // paddingLeft: scaleSize(15)
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{
+                            fontSize: setSpText(16),
+                            color: '#4d4d4d'
+                        }}>总价</Text>
+                        <Text style={{
+                            fontSize: setSpText(14),
+                            color: '#ff6540',
+                            marginLeft: scaleSize(5)
+                        }}>¥</Text>
+                        <Text style={{
+                            fontSize: setSpText(18),
+                            color: '#ff6540',
+                            marginRight: 2
+                        }}>0</Text>
+                        {/* <Image 
+                            source={require('../images/pay_arrow.png')}
+                            style={{
+                                width: scaleSize(20),
+                                height: scaleSize(20),
+                                transform: [
+                                    {
+                                        rotate: '-90deg'
+                                        
+                                    },
+                                    {
+                                        scale: 0.8
+                                    }
+                                ]
+                            }}
+                        /> */}
+                    </View>
+                    <View style={{
+                        flex: 1,
+                        height: scaleSize(50),
+                        backgroundColor: '#3c6',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Text style={{
+                            fontSize: setSpText(18),
+                            color: '#FFF'
+                        }}>提交订单</Text>
+                    </View>
+                </SubmitButtonComponent>
             </View>
         );
     }
