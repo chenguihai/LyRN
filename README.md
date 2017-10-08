@@ -1,5 +1,5 @@
 # LyRN
-An React-Native app simulting tongcheng App run on both Android and iOS
+A React-Native app simulting tongcheng App run on both Android and iOS
 
 ## ScreenShots
 ### iOS
