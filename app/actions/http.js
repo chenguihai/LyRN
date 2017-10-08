@@ -79,3 +79,12 @@ export const getCurrentCity = ({ params, callback }) => {
     );
 };
 
+// 优选服务
+export const getPackageInfo = ({ params, callback }) => {
+    ajaxByGet(
+        'http://train.17usoft.net/offticketsgateway/ots/Book/GetPackageInfo',
+        params, 
+        callback
+    );
+};
+

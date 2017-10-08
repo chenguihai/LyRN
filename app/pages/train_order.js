@@ -65,7 +65,7 @@ export default class TrainOrderPage extends Component {
                             list: [
                                 {
                                     onPress: () => {
-                                        this.props.navigation.navigate('Combo');
+                                        this.props.navigation.navigate('Combo', { ...data });
                                     },
                                     title: '优选服务',
                                     after: '服务名称'
